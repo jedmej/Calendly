@@ -94,9 +94,14 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
     return timeString.split(":").slice(0, 2).join(":");
   };
 
-  const displayAmount = isTransaction ? 
-    (typeof amount === 'number' ? amount : amount?.value) : 
-    (total_earnings !== undefined && total_earnings !== null ? total_earnings : amount?.value);
+  const getDisplayAmount = () => {
+    if (isTransaction) {
+      return typeof amount === 'number' ? amount : amount?.value;
+    }
+    return total_earnings !== undefined && total_earnings !== null ? total_earnings : (typeof amount === 'object' ? amount.value : undefined);
+  };
+
+  const displayAmount = getDisplayAmount();
 
   return (
     <div 
