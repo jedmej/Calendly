@@ -11,7 +11,7 @@ const AddEvent = () => {
 
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4">
-      <div className="w-full max-w-[480px]">
+      <div className="w-full max-w-[480px] mx-auto">
         {/* Header */}
         <div className="bg-white/70 rounded-[500px] min-h-[60px] w-full px-2 py-3 flex items-center gap-2">
           <button 
@@ -24,7 +24,7 @@ const AddEvent = () => {
         </div>
 
         {/* Event/Transaction Toggle */}
-        <div className="mt-4 flex gap-4 px-4">
+        <div className="mt-4 flex flex-col sm:flex-row gap-2 sm:gap-4 px-0 sm:px-4">
           <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-[15px] px-[30px] text-sm font-medium">
             <div className="flex items-center justify-center gap-2">
               <Calendar className="w-5 h-5" />
@@ -40,15 +40,15 @@ const AddEvent = () => {
         </div>
 
         {/* Form Container */}
-        <div className="bg-white/70 border border-white/20 rounded-2xl p-6 mt-4">
+        <div className="bg-white/70 border border-white/20 rounded-2xl p-4 sm:p-6 mt-4 w-full">
           {/* Category Buttons */}
-          <div className="flex gap-2 text-xs font-medium mb-6">
-            <button className="bg-[#2563EB] text-white rounded-[500px] px-8 py-3.5">Work</button>
-            <button className="bg-black/5 rounded-[500px] px-7 py-3.5">School</button>
-            <button className="bg-black/5 rounded-[500px] px-8 py-3.5">Other</button>
+          <div className="flex flex-wrap gap-2 text-xs font-medium mb-6">
+            <button className="flex-1 sm:flex-none bg-[#2563EB] text-white rounded-[500px] px-4 sm:px-8 py-3.5">Work</button>
+            <button className="flex-1 sm:flex-none bg-black/5 rounded-[500px] px-4 sm:px-7 py-3.5">School</button>
+            <button className="flex-1 sm:flex-none bg-black/5 rounded-[500px] px-4 sm:px-8 py-3.5">Other</button>
           </div>
 
-          <div className="space-y-4 max-w-[291px]">
+          <div className="space-y-4 w-full sm:max-w-[291px]">
             {/* Title Input */}
             <div>
               <Label htmlFor="title" className="text-xs text-[#374151] font-medium">Title</Label>
@@ -67,21 +67,21 @@ const AddEvent = () => {
                   id="date" 
                   type="date"
                   inputMode="none"
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm pr-10 [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer" 
+                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm pr-10 [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer w-full" 
                 />
                 <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
               </div>
             </div>
 
             {/* Time Inputs */}
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1">
                 <Label htmlFor="startTime" className="text-xs text-[#374151] font-medium">Start Time</Label>
                 <Input 
                   id="startTime" 
                   type="time"
                   inputMode="none"
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer" 
+                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer w-full" 
                 />
               </div>
               <div className="flex-1">
@@ -90,7 +90,7 @@ const AddEvent = () => {
                   id="endTime" 
                   type="time"
                   inputMode="none"
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer" 
+                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer w-full" 
                 />
               </div>
             </div>
@@ -104,7 +104,7 @@ const AddEvent = () => {
               <Input 
                 id="wage" 
                 placeholder="15.00"
-                className="mt-1.5 bg-[#EEEEEE]/60 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC]" 
+                className="mt-1.5 bg-[#EEEEEE]/60 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full" 
               />
             </div>
 
@@ -117,7 +117,7 @@ const AddEvent = () => {
               <Input 
                 id="coworkers" 
                 placeholder="Add co-workers (comma separated)"
-                className="mt-1.5 bg-white/60 border border-black/10 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC]" 
+                className="mt-1.5 bg-white/60 border border-black/10 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full" 
               />
             </div>
           </div>
