@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -124,6 +123,8 @@ const AddTransaction = () => {
     }
   };
 
+  const isEditing = state?.isEditing || location.pathname === '/add';
+
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4">
       <div className="w-full max-w-[480px] mx-auto space-y-4">
@@ -135,11 +136,11 @@ const AddTransaction = () => {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <span className="text-[17px] text-[#111827] font-medium">
-            {state?.isEditing ? 'Edit Transaction' : 'Add New'}
+            {isEditing ? 'Edit Transaction' : 'Add New'}
           </span>
         </div>
 
-        {!state?.isEditing && (
+        {!isEditing && (
           <div className="flex gap-3 px-2">
             <button 
               onClick={() => navigate('/add')}
@@ -252,7 +253,7 @@ const AddTransaction = () => {
             onClick={handleSubmit}
             className="w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-[500px] h-[48px] text-sm font-medium mt-6"
           >
-            {state?.isEditing ? 'Update Transaction' : 'Add Transaction'}
+            {isEditing ? 'Update Transaction' : 'Add Transaction'}
           </Button>
         </div>
       </div>
