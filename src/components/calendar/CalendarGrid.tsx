@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { startOfMonth, endOfMonth, eachDayOfInterval, format, addDays, startOfWeek, isSameMonth, isSameDay, isToday } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
@@ -5,12 +6,15 @@ import { supabase } from "@/integrations/supabase/client";
 interface Event {
   id: string;
   title: string;
-  event_date: string;
+  event_date?: string;
+  transaction_date?: string;
   category: string;
   start_time?: string;
   end_time?: string;
   coworkers?: string[] | null;
   hourly_wage?: number | null;
+  amount?: number;
+  type?: 'income' | 'expense';
 }
 
 interface DayProps {
@@ -22,8 +26,14 @@ interface DayProps {
 }
 
 const Day: React.FC<DayProps> = ({ date, events, isWeekView = false, isSelected = false, onSelect }) => {
-  const getEventColor = (category: string) => {
-    switch (category.toLowerCase()) {
+  const getEventColor = (event: Event) => {
+    // If it's a transaction (has amount and type), return yellow
+    if (event.amount !== undefined && event.type !== undefined) {
+      return "bg-[#FEF7CD]";
+    }
+    
+    // For regular events, use the existing color logic
+    switch (event.category.toLowerCase()) {
       case "work":
         return "bg-[rgba(59,130,246,0.7)]";
       case "school":
@@ -36,9 +46,10 @@ const Day: React.FC<DayProps> = ({ date, events, isWeekView = false, isSelected 
   };
 
   const isCurrentDay = isToday(date);
-  const dayEvents = events.filter(event => 
-    isSameDay(new Date(event.event_date), date)
-  );
+  const dayEvents = events.filter(event => {
+    const eventDate = event.event_date || event.transaction_date;
+    return eventDate && isSameDay(new Date(eventDate), date);
+  });
 
   return (
     <div 
@@ -60,7 +71,7 @@ const Day: React.FC<DayProps> = ({ date, events, isWeekView = false, isSelected 
           {dayEvents.map((event, index) => (
             <div
               key={event.id}
-              className={`flex min-h-1.5 w-1.5 h-1.5 rounded-full ${getEventColor(event.category)}`}
+              className={`flex min-h-1.5 w-1.5 h-1.5 rounded-full ${getEventColor(event)}`}
             />
           ))}
         </div>
@@ -102,27 +113,39 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
   const isWeekView = view === "week";
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchEventsAndTransactions = async () => {
       try {
-        const { data, error } = await supabase
-          .from('events')
-          .select('*');
+        const [eventsResult, transactionsResult] = await Promise.all([
+          supabase.from('events').select('*'),
+          supabase.from('transactions').select('*')
+        ]);
         
-        if (error) throw error;
-        setEvents(data || []);
+        if (eventsResult.error) throw eventsResult.error;
+        if (transactionsResult.error) throw transactionsResult.error;
+
+        const allEvents = [
+          ...(eventsResult.data || []),
+          ...(transactionsResult.data?.map(transaction => ({
+            ...transaction,
+            event_date: transaction.transaction_date
+          })) || [])
+        ];
+
+        setEvents(allEvents);
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchEvents();
+    fetchEventsAndTransactions();
   }, []);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
-    const dayEvents = events.filter(event => 
-      isSameDay(new Date(event.event_date), date)
-    );
+    const dayEvents = events.filter(event => {
+      const eventDate = event.event_date || event.transaction_date;
+      return eventDate && isSameDay(new Date(eventDate), date);
+    });
     onSelectDate(date, dayEvents);
   };
 

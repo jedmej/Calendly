@@ -17,10 +17,12 @@ interface EventListProps {
     };
     category?: string;
     event_date?: string;
+    transaction_date?: string;
     start_time?: string;
     end_time?: string;
     hourly_wage?: number;
     total_earnings?: number;
+    type?: 'income' | 'expense';
   }>;
 }
 
