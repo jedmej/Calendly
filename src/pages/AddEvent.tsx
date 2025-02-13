@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,17 +8,33 @@ import { ArrowLeft, Calendar, CreditCard, DollarSign, Users } from "lucide-react
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
+interface LocationState {
+  id?: string;
+  title?: string;
+  date?: string;
+  startTime?: string;
+  endTime?: string;
+  category?: "Work" | "School" | "Other";
+  hourlyWage?: string;
+  coworkers?: string;
+  isEditing?: boolean;
+}
+
 const AddEvent = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [category, setCategory] = useState<"Work" | "School" | "Other">("Work");
+  const location = useLocation();
+  const state = location.state as LocationState;
+  const isEditing = state?.isEditing || false;
+
+  const [category, setCategory] = useState<"Work" | "School" | "Other">(state?.category as "Work" | "School" | "Other" || "Work");
   const [formData, setFormData] = useState({
-    title: "",
-    date: "",
-    startTime: "",
-    endTime: "",
-    hourlyWage: "",
-    coworkers: ""
+    title: state?.title || "",
+    date: state?.date || "",
+    startTime: state?.startTime || "",
+    endTime: state?.endTime || "",
+    hourlyWage: state?.hourlyWage || "",
+    coworkers: state?.coworkers || ""
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,30 +47,54 @@ const AddEvent = () => {
 
   const handleSubmit = async () => {
     try {
-      const { error } = await supabase.from('events').insert({
-        title: formData.title,
-        event_date: formData.date,
-        start_time: formData.startTime,
-        end_time: formData.endTime,
-        category: category,
-        hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
-        coworkers: formData.coworkers ? formData.coworkers.split(',').map(c => c.trim()) : null
-      });
+      if (isEditing && state?.id) {
+        // Update existing event
+        const { error } = await supabase
+          .from('events')
+          .update({
+            title: formData.title,
+            event_date: formData.date,
+            start_time: formData.startTime,
+            end_time: formData.endTime,
+            category: category,
+            hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
+            coworkers: formData.coworkers ? formData.coworkers.split(',').map(c => c.trim()) : null
+          })
+          .eq('id', state.id);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: "Success!",
-        description: "Event has been created successfully.",
-      });
+        toast({
+          title: "Success!",
+          description: "Event has been updated successfully.",
+        });
+      } else {
+        // Create new event
+        const { error } = await supabase.from('events').insert({
+          title: formData.title,
+          event_date: formData.date,
+          start_time: formData.startTime,
+          end_time: formData.endTime,
+          category: category,
+          hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
+          coworkers: formData.coworkers ? formData.coworkers.split(',').map(c => c.trim()) : null
+        });
+
+        if (error) throw error;
+
+        toast({
+          title: "Success!",
+          description: "Event has been created successfully.",
+        });
+      }
 
       navigate('/');
     } catch (error) {
-      console.error('Error adding event:', error);
+      console.error('Error saving event:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to create event. Please try again.",
+        description: "Failed to save event. Please try again.",
       });
     }
   };
@@ -70,7 +110,7 @@ const AddEvent = () => {
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <span className="text-[17px] text-[#111827] font-medium">Add New</span>
+          <span className="text-[17px] text-[#111827] font-medium">{isEditing ? "Edit Event" : "Add New"}</span>
         </div>
 
         {/* Event/Transaction Toggle */}
@@ -200,7 +240,7 @@ const AddEvent = () => {
           onClick={handleSubmit}
           className="w-full mt-4 bg-[#2563EB] text-white rounded-xl h-[52px] text-xs font-medium shadow-sm hover:bg-[#2563EB]/90"
         >
-          Add Event
+          {isEditing ? "Save" : "Add Event"}
         </Button>
       </div>
     </div>
