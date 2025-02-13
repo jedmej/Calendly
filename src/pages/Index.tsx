@@ -79,9 +79,7 @@ const Index = () => {
                 </div>
               </div>
               <div className="flex w-full gap-2 text-xs md:text-sm lg:text-base font-medium whitespace-nowrap text-center leading-loose mt-4">
-                <button onClick={() => setView("week")} className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${view === "week" ? "bg-blue-600 text-white" : "bg-[rgba(0,0,0,0.05)] text-gray-600"}`}>
-                  Week
-                </button>
+                <button onClick={() => setView("week")} className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${view === "week" ? "bg-blue-600 text-white" : "bg-[rgba(0,0,0,0.05)] text-gray-600"}`}>Tydzien</button>
                 <button onClick={() => setView("month")} className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${view === "month" ? "bg-blue-600 text-white" : "bg-[rgba(0,0,0,0.05)] text-gray-600"}`}>Miesiac</button>
               </div>
               <CalendarGrid view={view} currentDate={currentDate} onSelectDate={handleDateSelect} />
