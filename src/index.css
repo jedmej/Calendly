@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,19 +36,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -97,5 +91,43 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Base heading styles */
+  h1, .h1 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-medium;
+  }
+
+  h2, .h2 {
+    @apply text-xl md:text-2xl lg:text-3xl font-medium;
+  }
+
+  h3, .h3 {
+    @apply text-lg md:text-xl lg:text-2xl font-medium;
+  }
+
+  /* Base text styles */
+  p, .text-base {
+    @apply text-sm md:text-base lg:text-lg;
+  }
+
+  /* Form input heights */
+  input, select, textarea {
+    @apply h-[42px] md:h-[48px] lg:h-[52px];
+  }
+
+  /* Button base styles */
+  button, .button {
+    @apply text-sm md:text-base lg:text-lg;
+  }
+
+  /* Section widths */
+  .section-container {
+    @apply w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto px-4 md:px-6 lg:px-8;
+  }
+
+  /* Card paddings */
+  .card-padding {
+    @apply p-4 md:p-6 lg:p-8;
   }
 }
