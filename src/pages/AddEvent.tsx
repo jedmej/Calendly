@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,7 @@ interface LocationState {
   coworkers?: string;
   isEditing?: boolean;
   totalEarnings?: number;
+  returnDate?: string;
 }
 
 const AddEvent = () => {
@@ -51,7 +51,6 @@ const AddEvent = () => {
     calculateEarnings();
   }, [formData.startTime, formData.endTime, formData.hourlyWage]);
 
-  // Initialize tips when editing
   useEffect(() => {
     if (isEditing && state?.totalEarnings !== undefined && formData.hourlyWage) {
       const start = new Date(`2000/01/01 ${formData.startTime}`);
@@ -80,7 +79,6 @@ const AddEvent = () => {
       ...prev,
       [id]: value,
     }));
-    // Clear error when user starts typing
     if (errors[id]) {
       setErrors((prev) => ({
         ...prev,
@@ -200,12 +198,17 @@ const AddEvent = () => {
     }
   };
 
+  const handleBack = () => {
+    const returnDate = state?.date ? new Date(state.date) : new Date();
+    navigate('/', { state: { returnDate: returnDate.toISOString() } });
+  };
+
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4">
       <div className="w-full max-w-[480px] mx-auto">
         <div className="bg-white/70 backdrop-blur-lg rounded-[500px] min-h-[60px] w-full px-2 py-3 flex items-center gap-2">
           <button
-            onClick={() => navigate(-1)}
+            onClick={handleBack}
             className="rounded-xl p-2 hover:bg-black/5 w-[36px] h-[36px] flex items-center justify-center"
           >
             <ArrowLeft className="w-5 h-5" />
