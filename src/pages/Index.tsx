@@ -53,8 +53,8 @@ const Index = () => {
   };
 
   return (
-    <div className="bg-[rgba(246,247,249,1)] flex max-w-[480px] w-full flex-col overflow-hidden items-stretch justify-between mx-auto p-4">
-      <div className="h-[836px] w-full">
+    <div className="bg-[rgba(246,247,249,1)] flex max-w-[480px] w-full flex-col items-stretch justify-between mx-auto p-4">
+      <div className="w-full">
         <CalendarHeader title="Calendar" />
         <div className="w-full mt-4">
           <div className="bg-[rgba(255,255,255,0.7)] border w-full p-4 rounded-2xl border-[rgba(255,255,255,0.2)] border-solid">
