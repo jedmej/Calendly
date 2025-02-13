@@ -95,39 +95,149 @@
 
   /* Base heading styles */
   h1, .h1 {
-    @apply text-2xl md:text-3xl lg:text-4xl font-medium;
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 500;
+  }
+
+  @screen md {
+    h1, .h1 {
+      font-size: 1.875rem; /* text-3xl */
+    }
+  }
+
+  @screen lg {
+    h1, .h1 {
+      font-size: 2.25rem; /* text-4xl */
+    }
   }
 
   h2, .h2 {
-    @apply text-xl md:text-2xl lg:text-3xl font-medium;
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 500;
+  }
+
+  @screen md {
+    h2, .h2 {
+      font-size: 1.5rem; /* text-2xl */
+    }
+  }
+
+  @screen lg {
+    h2, .h2 {
+      font-size: 1.875rem; /* text-3xl */
+    }
   }
 
   h3, .h3 {
-    @apply text-lg md:text-xl lg:text-2xl font-medium;
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 500;
+  }
+
+  @screen md {
+    h3, .h3 {
+      font-size: 1.25rem; /* text-xl */
+    }
+  }
+
+  @screen lg {
+    h3, .h3 {
+      font-size: 1.5rem; /* text-2xl */
+    }
   }
 
   /* Base text styles */
   p, .text-base {
-    @apply text-sm md:text-base lg:text-lg;
+    font-size: 0.875rem; /* text-sm */
+  }
+
+  @screen md {
+    p, .text-base {
+      font-size: 1rem; /* text-base */
+    }
+  }
+
+  @screen lg {
+    p, .text-base {
+      font-size: 1.125rem; /* text-lg */
+    }
   }
 
   /* Form input heights */
   input, select, textarea {
-    @apply h-[42px] md:h-[48px] lg:h-[52px];
+    height: 42px;
+  }
+
+  @screen md {
+    input, select, textarea {
+      height: 48px;
+    }
+  }
+
+  @screen lg {
+    input, select, textarea {
+      height: 52px;
+    }
   }
 
   /* Button base styles */
   button, .button {
-    @apply text-sm md:text-base lg:text-lg;
+    font-size: 0.875rem; /* text-sm */
   }
 
+  @screen md {
+    button, .button {
+      font-size: 1rem; /* text-base */
+    }
+  }
+
+  @screen lg {
+    button, .button {
+      font-size: 1.125rem; /* text-lg */
+    }
+  }
+}
+
+@layer components {
   /* Section widths */
   .section-container {
-    @apply w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto px-4 md:px-6 lg:px-8;
+    width: 100%;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @screen md {
+    .section-container {
+      max-width: 640px;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @screen lg {
+    .section-container {
+      max-width: 800px;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
 
   /* Card paddings */
   .card-padding {
-    @apply p-4 md:p-6 lg:p-8;
+    padding: 1rem;
+  }
+
+  @screen md {
+    .card-padding {
+      padding: 1.5rem;
+    }
+  }
+
+  @screen lg {
+    .card-padding {
+      padding: 2rem;
+    }
   }
 }
