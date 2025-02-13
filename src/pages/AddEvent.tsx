@@ -60,6 +60,7 @@ const AddEvent = () => {
       const baseEarnings = hours * parseFloat(formData.hourlyWage);
       const calculatedTips = (state.totalEarnings - baseEarnings).toFixed(2);
       setTips(calculatedTips);
+      setTotalEarnings(state.totalEarnings); // Set initial total earnings from state
     }
   }, [isEditing, state?.totalEarnings, formData.startTime, formData.endTime, formData.hourlyWage]);
 
@@ -70,6 +71,7 @@ const AddEvent = () => {
       const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
       const earnings = hours * parseFloat(formData.hourlyWage);
       setEstimatedEarnings(earnings);
+      // Always include tips in total earnings calculation
       setTotalEarnings(earnings + parseFloat(tips || "0"));
     }
   };
@@ -91,6 +93,7 @@ const AddEvent = () => {
   const handleTipsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setTips(value);
+    // Update total earnings immediately when tips change
     setTotalEarnings(estimatedEarnings + parseFloat(value || "0"));
   };
 
