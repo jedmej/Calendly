@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ArrowLeft, Calendar, CreditCard, DollarSign, Users } from "lucide-react";
 
 const AddEvent = () => {
   const navigate = useNavigate();
@@ -17,11 +18,7 @@ const AddEvent = () => {
             onClick={() => navigate(-1)}
             className="rounded-xl p-2 hover:bg-black/5 w-[36px] h-[36px] flex items-center justify-center"
           >
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/194100382beea9a7388c598de790d73dab7df312b64b483063e7ac20d7c1c164"
-              alt="Back"
-              className="w-5 h-5"
-            />
+            <ArrowLeft className="w-5 h-5" />
           </button>
           <span className="text-[17px] text-[#111827] font-medium">Add New</span>
         </div>
@@ -30,21 +27,13 @@ const AddEvent = () => {
         <div className="mt-4 flex gap-4 px-4">
           <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-[15px] px-[30px] text-sm font-medium">
             <div className="flex items-center justify-center gap-2">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4bc3856ce93226d5b80694dcf0ee837a054018ca3e3c1147ef1492d79935cfe"
-                alt="Calendar"
-                className="w-5 h-5"
-              />
+              <Calendar className="w-5 h-5" />
               Event
             </div>
           </button>
           <button className="flex-1 bg-black/5 text-black rounded-[500px] py-[15px] px-[30px] text-sm font-medium">
             <div className="flex items-center justify-center gap-3.5">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4256662ac526d04d0232ed0bd0a7c7c130b68639dfacfe1d2809c94b09890ae"
-                alt="Transaction"
-                className="w-5 h-5"
-              />
+              <CreditCard className="w-5 h-5" />
               Transaction
             </div>
           </button>
@@ -79,11 +68,7 @@ const AddEvent = () => {
                   placeholder="mm/dd/yyyy"
                   className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm pr-10" 
                 />
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/007e686618b4b9fe3c9639738e36231618daadf67e8db4258fe94fedbccc1fe9"
-                  alt="Calendar"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5"
-                />
+                <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
               </div>
             </div>
 
@@ -110,11 +95,7 @@ const AddEvent = () => {
             {/* Hourly Wage */}
             <div>
               <div className="flex items-center gap-1">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/965f9968558b0b87ce4e90063c48d663f7a47ff99a0c0d8d927634488b3ce05c"
-                  alt="Wage"
-                  className="w-4 h-4"
-                />
+                <DollarSign className="w-4 h-4 text-[#374151]" />
                 <Label htmlFor="wage" className="text-xs text-[#374151] font-medium">Hourly Wage</Label>
               </div>
               <Input 
@@ -127,11 +108,7 @@ const AddEvent = () => {
             {/* Co-workers */}
             <div>
               <div className="flex items-center gap-1">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/b7c21b76f8b308ba3857cdfcd9a91ff10c361f9b70056ac9fc0dddf5d932a7e1"
-                  alt="Co-workers"
-                  className="w-4 h-4"
-                />
+                <Users className="w-4 h-4 text-[#374151]" />
                 <Label htmlFor="coworkers" className="text-xs text-[#374151] font-medium">Co-workers</Label>
               </div>
               <Input 
