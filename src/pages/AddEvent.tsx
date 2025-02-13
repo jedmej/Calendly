@@ -199,8 +199,8 @@ const AddEvent = () => {
   };
 
   const handleBack = () => {
-    const returnDate = state?.date ? new Date(state.date) : new Date();
-    navigate('/', { state: { returnDate: returnDate.toISOString() } });
+    const returnDate = state?.returnDate || state?.date || new Date().toISOString();
+    navigate('/', { state: { returnDate } });
   };
 
   return (
