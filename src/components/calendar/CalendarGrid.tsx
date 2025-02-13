@@ -1,3 +1,4 @@
+
 import React from "react";
 
 interface DayProps {
@@ -21,7 +22,7 @@ const Day: React.FC<DayProps> = ({ day, events, isCurrentMonth = true }) => {
   };
 
   return (
-    <div className="bg-[rgba(255,255,255,0.5)] flex flex-col items-center w-[49px] h-[49px] flex-1 shrink basis-[0%] px-2 py-3">
+    <div className={`bg-[rgba(255,255,255,0.5)] flex flex-col items-center w-[49px] h-[49px] flex-1 shrink basis-[0%] px-2 py-3 ${!isCurrentMonth ? 'opacity-50' : ''}`}>
       <div className="text-gray-900 text-xs font-medium leading-loose">
         {day}
       </div>
@@ -63,6 +64,15 @@ export const CalendarGrid: React.FC = () => {
     <div className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid">
       <WeekHeader />
       <div className="flex min-h-[50px] w-full items-stretch gap-px">
+        <Day day={26} events={[{ type: "blue" }]} isCurrentMonth={false} />
+        <Day day={27} events={[{ type: "blue" }]} isCurrentMonth={false} />
+        <Day day={28} events={[{ type: "green" }]} isCurrentMonth={false} />
+        <Day day={29} events={[{ type: "green" }]} isCurrentMonth={false} />
+        <Day day={30} events={[{ type: "blue" }, { type: "green" }]} isCurrentMonth={false} />
+        <Day day={31} events={[{ type: "blue" }, { type: "green" }]} isCurrentMonth={false} />
+        <Day day={1} events={[]} />
+      </div>
+      <div className="flex min-h-[50px] w-full items-stretch gap-px">
         <Day day={2} events={[{ type: 'blue' }]} />
         <Day day={3} events={[]} />
         <Day day={4} events={[{ type: 'orange' }]} />
@@ -98,34 +108,6 @@ export const CalendarGrid: React.FC = () => {
         <Day day={28} events={[{ type: 'blue' }, { type: 'green' }]} />
         <Day day={1} events={[{ type: 'blue' }, { type: 'orange' }]} isCurrentMonth={false} />
       </div>
-    </div>
-        <Day day={26} events={[{ type: "blue" }]} isCurrentMonth={false} />
-        <Day day={27} events={[{ type: "blue" }]} isCurrentMonth={false} />
-        <Day day={28} events={[{ type: "green" }]} isCurrentMonth={false} />
-        <Day day={29} events={[{ type: "green" }]} isCurrentMonth={false} />
-        <Day
-          day={30}
-          events={[{ type: "blue" }, { type: "green" }]}
-          isCurrentMonth={false}
-        />
-        <Day
-          day={31}
-          events={[{ type: "blue" }, { type: "green" }]}
-          isCurrentMonth={false}
-        />
-        <Day day={1} events={[]} />
-      </div>
-      {/* Additional weeks would follow the same pattern */}
-      <div className="flex min-h-[50px] w-full items-stretch gap-px">
-        <Day day={2} events={[{ type: "blue" }]} />
-        <Day day={3} events={[]} />
-        <Day day={4} events={[{ type: "orange" }]} />
-        <Day day={5} events={[]} />
-        <Day day={6} events={[{ type: "green" }]} />
-        <Day day={7} events={[{ type: "blue" }, { type: "green" }]} />
-        <Day day={8} events={[{ type: "blue" }]} />
-      </div>
-      {/* Continue with remaining weeks */}
     </div>
   );
 };
