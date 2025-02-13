@@ -25,7 +25,6 @@ const AddTransaction = () => {
   const { toast } = useToast();
   const state = location.state as LocationState;
   
-  // Fix: Explicitly type useState as boolean and use proper initialization
   const [isIncome, setIsIncome] = useState<boolean>(() => {
     if (state?.type !== undefined) {
       return state.type === 'income';
@@ -140,25 +139,27 @@ const AddTransaction = () => {
           </span>
         </div>
 
-        <div className="flex gap-3 px-2">
-          <button 
-            onClick={() => navigate('/add')}
-            className="flex-1 bg-black/5 text-black rounded-[500px] py-3.5 px-6"
-          >
-            <div className="flex items-center justify-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Event
-            </div>
-          </button>
-          <button 
-            className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-3.5 px-6"
-          >
-            <div className="flex items-center justify-center gap-2">
-              <CreditCard className="w-4 h-4" />
-              Transaction
-            </div>
-          </button>
-        </div>
+        {!state?.isEditing && (
+          <div className="flex gap-3 px-2">
+            <button 
+              onClick={() => navigate('/add')}
+              className="flex-1 bg-black/5 text-black rounded-[500px] py-3.5 px-6"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Calendar className="w-4 h-4" />
+                Event
+              </div>
+            </button>
+            <button 
+              className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-3.5 px-6"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <CreditCard className="w-4 h-4" />
+                Transaction
+              </div>
+            </button>
+          </div>
+        )}
 
         <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
           <div className="flex flex-wrap gap-2 text-xs font-medium mb-8">
