@@ -1,8 +1,10 @@
 
 import React from "react";
 import { Briefcase } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface CalendarEventProps {
+  id?: string;
   icon?: string;
   title: string;
   time?: string;
@@ -13,9 +15,14 @@ interface CalendarEventProps {
     type: "income" | "expense";
   };
   category?: string;
+  event_date?: string;
+  start_time?: string;
+  end_time?: string;
+  hourly_wage?: number;
 }
 
 export const CalendarEvent: React.FC<CalendarEventProps> = ({
+  id,
   icon,
   title,
   time,
@@ -23,11 +30,37 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   withPeople,
   amount,
   category,
+  event_date,
+  start_time,
+  end_time,
+  hourly_wage,
 }) => {
+  const navigate = useNavigate();
   const showWorkIcon = category?.toLowerCase() === "work";
 
+  const handleClick = () => {
+    if (id) {
+      navigate('/add', {
+        state: {
+          id,
+          title,
+          date: event_date,
+          startTime: start_time,
+          endTime: end_time,
+          category,
+          hourlyWage: hourly_wage?.toString(),
+          coworkers: withPeople?.join(', '),
+          isEditing: true
+        }
+      });
+    }
+  };
+
   return (
-    <div className="bg-[rgba(255,255,255,0.5)] border flex w-full items-center gap-4 mt-2.5 p-4 rounded-xl border-[rgba(0,0,0,0.05)] border-solid">
+    <div 
+      onClick={handleClick}
+      className="bg-[rgba(255,255,255,0.5)] border flex w-full items-center gap-4 mt-2.5 p-4 rounded-xl border-[rgba(0,0,0,0.05)] border-solid cursor-pointer hover:bg-[rgba(255,255,255,0.7)] transition-colors"
+    >
       {showWorkIcon && (
         <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
           <Briefcase className="w-5 h-5 text-gray-600" />
