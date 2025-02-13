@@ -45,6 +45,7 @@ const AddEvent = () => {
   const [estimatedEarnings, setEstimatedEarnings] = useState(0);
   const [tips, setTips] = useState("0");
   const [totalEarnings, setTotalEarnings] = useState(state?.totalEarnings || 0);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     calculateEarnings();
