@@ -29,16 +29,25 @@ const AddTransaction = () => {
   };
 
   const handleSubmit = async () => {
+    if (!formData.title || !formData.amount || !formData.date) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please fill in all required fields.",
+        className: "bg-red-50/90 text-red-900 border-none"
+      });
+      return;
+    }
+
     try {
-      const { error } = await supabase
-        .from("transactions")
-        .insert({
-          title: formData.title,
-          amount: parseFloat(formData.amount),
-          category: formData.category,
-          transaction_date: formData.date,
-          type: isIncome ? 'income' : 'expense'
-        });
+      // @ts-ignore - Temporarily ignore type checking for the transactions table
+      const { error } = await supabase.from('transactions').insert({
+        title: formData.title,
+        amount: parseFloat(formData.amount),
+        category: formData.category,
+        transaction_date: formData.date,
+        type: isIncome ? 'income' : 'expense'
+      });
 
       if (error) throw error;
 
