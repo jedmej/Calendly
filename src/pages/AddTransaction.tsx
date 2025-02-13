@@ -25,7 +25,14 @@ const AddTransaction = () => {
   const { toast } = useToast();
   const state = location.state as LocationState;
   
-  const [isIncome, setIsIncome] = useState(state?.type === 'income' || true);
+  // Fix: Explicitly type useState as boolean and use proper initialization
+  const [isIncome, setIsIncome] = useState<boolean>(() => {
+    if (state?.type !== undefined) {
+      return state.type === 'income';
+    }
+    return true;
+  });
+
   const [formData, setFormData] = useState({
     title: "",
     amount: "",
