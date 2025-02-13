@@ -1,16 +1,16 @@
 
 import React from "react";
+import { startOfMonth, endOfMonth, eachDayOfInterval, format, addDays, startOfWeek, isSameMonth } from "date-fns";
 
 interface DayProps {
-  day: number;
+  date: Date;
   events: {
     type: "blue" | "green" | "orange";
   }[];
-  isCurrentMonth?: boolean;
   isWeekView?: boolean;
 }
 
-const Day: React.FC<DayProps> = ({ day, events, isCurrentMonth = true, isWeekView = false }) => {
+const Day: React.FC<DayProps> = ({ date, events, isWeekView = false }) => {
   const getEventColor = (type: "blue" | "green" | "orange") => {
     switch (type) {
       case "blue":
@@ -23,9 +23,9 @@ const Day: React.FC<DayProps> = ({ day, events, isCurrentMonth = true, isWeekVie
   };
 
   return (
-    <div className={`bg-[rgba(255,255,255,0.5)] flex flex-col items-center ${isWeekView ? 'min-h-[60px]' : 'w-[49px] h-[49px]'} flex-1 shrink basis-[0%] px-2 py-3 ${!isCurrentMonth ? 'opacity-50' : ''}`}>
+    <div className={`bg-[rgba(255,255,255,0.5)] flex flex-col items-center ${isWeekView ? 'min-h-[60px]' : 'w-[49px] h-[49px]'} flex-1 shrink basis-[0%] px-2 py-3 ${!isSameMonth(date, startOfMonth(date)) ? 'opacity-50' : ''}`}>
       <div className="text-gray-900 text-xs font-medium leading-loose">
-        {day}
+        {format(date, 'd')}
       </div>
       {events.length > 0 && (
         <div className="flex gap-1 mt-1">
@@ -62,31 +62,44 @@ const WeekHeader: React.FC = () => {
 
 interface CalendarGridProps {
   view: "week" | "month";
+  currentDate: Date;
 }
 
-export const CalendarGrid: React.FC<CalendarGridProps> = ({ view }) => {
+export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate }) => {
   const isWeekView = view === "week";
 
-  const weekEvents = [
-    { day: 9, events: [{ type: "blue" as const }] },
-    { day: 10, events: [{ type: "green" as const }, { type: "orange" as const }] },
-    { day: 11, events: [{ type: "blue" as const }] },
-    { day: 12, events: [{ type: "green" as const }] },
-    { day: 13, events: [{ type: "blue" as const }, { type: "green" as const }, { type: "orange" as const }] },
-    { day: 14, events: [{ type: "blue" as const }, { type: "green" as const }] },
-    { day: 15, events: [{ type: "orange" as const }] },
-  ];
+  const getMonthDays = () => {
+    const start = startOfMonth(currentDate);
+    const end = endOfMonth(currentDate);
+    const firstWeek = startOfWeek(start);
+    const totalDays = eachDayOfInterval({ start: firstWeek, end });
+    return totalDays;
+  };
+
+  const getWeekDays = () => {
+    const start = startOfWeek(currentDate);
+    return Array.from({ length: 7 }, (_, i) => addDays(start, i));
+  };
+
+  const getDayEvents = (date: Date) => {
+    // Mock events - you can replace this with real event data
+    const day = parseInt(format(date, 'd'));
+    if (day % 3 === 0) return [{ type: "blue" as const }];
+    if (day % 3 === 1) return [{ type: "green" as const }, { type: "orange" as const }];
+    return [{ type: "orange" as const }];
+  };
 
   if (isWeekView) {
+    const weekDays = getWeekDays();
     return (
       <div className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid">
         <WeekHeader />
         <div className="flex min-h-[60px] w-full items-stretch gap-px">
-          {weekEvents.map((dayData, index) => (
+          {weekDays.map((date, index) => (
             <Day
               key={index}
-              day={dayData.day}
-              events={dayData.events}
+              date={date}
+              events={getDayEvents(date)}
               isWeekView={true}
             />
           ))}
@@ -95,54 +108,25 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view }) => {
     );
   }
 
+  const monthDays = getMonthDays();
+  const weeks = Array.from({ length: Math.ceil(monthDays.length / 7) }, (_, i) =>
+    monthDays.slice(i * 7, (i + 1) * 7)
+  );
+
   return (
     <div className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid">
       <WeekHeader />
-      <div className="flex min-h-[50px] w-full items-stretch gap-px">
-        <Day day={26} events={[{ type: "blue" }]} isCurrentMonth={false} />
-        <Day day={27} events={[{ type: "blue" }]} isCurrentMonth={false} />
-        <Day day={28} events={[{ type: "green" }]} isCurrentMonth={false} />
-        <Day day={29} events={[{ type: "green" }]} isCurrentMonth={false} />
-        <Day day={30} events={[{ type: "blue" }, { type: "green" }]} isCurrentMonth={false} />
-        <Day day={31} events={[{ type: "blue" }, { type: "green" }]} isCurrentMonth={false} />
-        <Day day={1} events={[]} />
-      </div>
-      <div className="flex min-h-[50px] w-full items-stretch gap-px">
-        <Day day={2} events={[{ type: 'blue' }]} />
-        <Day day={3} events={[]} />
-        <Day day={4} events={[{ type: 'orange' }]} />
-        <Day day={5} events={[]} />
-        <Day day={6} events={[{ type: 'green' }]} />
-        <Day day={7} events={[{ type: 'blue' }, { type: 'green' }]} />
-        <Day day={8} events={[{ type: 'blue' }]} />
-      </div>
-      <div className="flex min-h-[50px] w-full items-stretch gap-px">
-        <Day day={9} events={[{ type: 'blue' }]} />
-        <Day day={10} events={[{ type: 'green' }, { type: 'orange' }]} />
-        <Day day={11} events={[{ type: 'blue' }]} />
-        <Day day={12} events={[{ type: 'green' }]} />
-        <Day day={13} events={[{ type: 'blue' }, { type: 'green' }, { type: 'orange' }]} />
-        <Day day={14} events={[{ type: 'blue' }, { type: 'green' }]} />
-        <Day day={15} events={[{ type: 'orange' }]} />
-      </div>
-      <div className="flex min-h-[50px] w-full items-stretch gap-px">
-        <Day day={16} events={[{ type: 'blue' }]} />
-        <Day day={17} events={[{ type: 'green' }]} />
-        <Day day={18} events={[{ type: 'orange' }]} />
-        <Day day={19} events={[{ type: 'green' }]} />
-        <Day day={20} events={[{ type: 'green' }]} />
-        <Day day={21} events={[{ type: 'blue' }, { type: 'green' }]} />
-        <Day day={22} events={[{ type: 'orange' }]} />
-      </div>
-      <div className="flex min-h-[50px] w-full items-stretch gap-px">
-        <Day day={23} events={[{ type: 'blue' }]} />
-        <Day day={24} events={[{ type: 'orange' }]} />
-        <Day day={25} events={[{ type: 'blue' }]} />
-        <Day day={26} events={[{ type: 'orange' }]} />
-        <Day day={27} events={[{ type: 'blue' }, { type: 'green' }]} />
-        <Day day={28} events={[{ type: 'blue' }, { type: 'green' }]} />
-        <Day day={1} events={[{ type: 'blue' }, { type: 'orange' }]} isCurrentMonth={false} />
-      </div>
+      {weeks.map((week, weekIndex) => (
+        <div key={weekIndex} className="flex min-h-[50px] w-full items-stretch gap-px">
+          {week.map((date, dayIndex) => (
+            <Day
+              key={dayIndex}
+              date={date}
+              events={getDayEvents(date)}
+            />
+          ))}
+        </div>
+      ))}
     </div>
   );
 };

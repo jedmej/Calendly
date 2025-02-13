@@ -4,10 +4,20 @@ import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarGrid } from "@/components/calendar/CalendarGrid";
 import { EventList } from "@/components/calendar/EventList";
 import { ActionBar } from "@/components/calendar/ActionBar";
+import { addMonths, format } from "date-fns";
 
 const Index = () => {
   const [view, setView] = useState<"week" | "month">("week");
+  const [currentDate, setCurrentDate] = useState(new Date(2025, 1, 13)); // February 13, 2025
   
+  const handlePreviousMonth = () => {
+    setCurrentDate(prev => addMonths(prev, -1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(prev => addMonths(prev, 1));
+  };
+
   const events = [
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/5576966015d8b62dfac43aef83af7ed921e00a905a5d084a7871b2b6f745987d",
@@ -42,14 +52,32 @@ const Index = () => {
           <div className="bg-[rgba(255,255,255,0.7)] border w-full p-4 rounded-2xl border-[rgba(255,255,255,0.2)] border-solid">
             <div className="flex w-full items-center gap-[40px_100px] text-[15px] text-gray-900 font-medium leading-loose justify-between">
               <div className="self-stretch w-[122px] my-auto">
-                February 2025
+                {format(currentDate, 'MMMM yyyy')}
               </div>
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/152312aa8d49520e1dcf138697063cc5d50a3728dd082875446466a099aa6bc4"
-                className="aspect-[2.22] object-contain w-20 self-stretch shrink-0 my-auto"
-                alt="Calendar navigation"
-              />
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={handlePreviousMonth}
+                  className="p-2 hover:bg-gray-100 rounded-full"
+                >
+                  <img
+                    loading="lazy"
+                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/152312aa8d49520e1dcf138697063cc5d50a3728dd082875446466a099aa6bc4"
+                    className="aspect-[2.22] object-contain w-5 rotate-180"
+                    alt="Previous month"
+                  />
+                </button>
+                <button 
+                  onClick={handleNextMonth}
+                  className="p-2 hover:bg-gray-100 rounded-full"
+                >
+                  <img
+                    loading="lazy"
+                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/152312aa8d49520e1dcf138697063cc5d50a3728dd082875446466a099aa6bc4"
+                    className="aspect-[2.22] object-contain w-5"
+                    alt="Next month"
+                  />
+                </button>
+              </div>
             </div>
             <div className="flex w-full gap-2 text-xs font-medium whitespace-nowrap text-center leading-loose mt-4">
               <button
@@ -73,9 +101,9 @@ const Index = () => {
                 Month
               </button>
             </div>
-            <CalendarGrid view={view} />
+            <CalendarGrid view={view} currentDate={currentDate} />
           </div>
-          <EventList date="Feb 13, 2025" events={events} />
+          <EventList date={format(currentDate, 'MMM dd, yyyy')} events={events} />
         </div>
       </div>
       <ActionBar />
