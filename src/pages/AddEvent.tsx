@@ -24,7 +24,7 @@ const AddEvent = () => {
         </div>
 
         {/* Event/Transaction Toggle */}
-        <div className="mt-4 flex flex-col sm:flex-row gap-2 sm:gap-4 px-0 sm:px-4">
+        <div className="mt-4 flex gap-4 px-4">
           <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-[15px] px-[30px] text-sm font-medium">
             <div className="flex items-center justify-center gap-2">
               <Calendar className="w-5 h-5" />
@@ -74,7 +74,7 @@ const AddEvent = () => {
             </div>
 
             {/* Time Inputs */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex gap-4">
               <div className="flex-1">
                 <Label htmlFor="startTime" className="text-xs text-[#374151] font-medium">Start Time</Label>
                 <Input 
