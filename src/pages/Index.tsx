@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarGrid } from "@/components/calendar/CalendarGrid";
@@ -5,6 +6,7 @@ import { EventList } from "@/components/calendar/EventList";
 import { ActionBar } from "@/components/calendar/ActionBar";
 import { addMonths, format } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface Event {
   id: string;
@@ -53,7 +55,13 @@ const Index = () => {
   };
 
   return (
-    <div className="bg-[rgba(246,247,249,1)] flex max-w-[480px] w-full flex-col min-h-screen items-stretch mx-auto p-4">
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 8 }}
+      transition={{ duration: 0.2 }}
+      className="bg-[rgba(246,247,249,1)] flex max-w-[480px] w-full flex-col min-h-screen items-stretch mx-auto p-4"
+    >
       <div className="flex-1 w-full">
         <CalendarHeader title="Calendar" />
         <div className="w-full mt-4">
@@ -134,7 +142,7 @@ const Index = () => {
         </div>
       </div>
       <ActionBar />
-    </div>
+    </motion.div>
   );
 };
 
