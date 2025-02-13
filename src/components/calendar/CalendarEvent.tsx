@@ -54,7 +54,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           coworkers: withPeople?.join(', '),
           isEditing: true,
           totalEarnings: total_earnings,
-          returnDate: event_date // Pass the event date as return date
+          returnDate: event_date
         }
       });
     }
@@ -65,6 +65,11 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
       return "text-green-600";
     }
     return amount?.type === "income" ? "text-green-600" : "text-red-600";
+  };
+
+  const formatTime = (timeString?: string) => {
+    if (!timeString) return "";
+    return timeString.split(":").slice(0, 2).join(":");
   };
 
   return (
@@ -92,6 +97,9 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           {title}
         </div>
         {time && <div>{time}</div>}
+        {(start_time && end_time) && (
+          <div>{formatTime(start_time)} - {formatTime(end_time)}</div>
+        )}
         {location && <div>{location}</div>}
         {withPeople && withPeople.length > 0 && (
           <div className="flex w-full items-center">
