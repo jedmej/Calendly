@@ -19,7 +19,7 @@ interface CalendarEventProps {
   start_time?: string;
   end_time?: string;
   hourly_wage?: number;
-  total_earnings?: number;
+  total_earnings?: number | null;
 }
 
 export const CalendarEvent: React.FC<CalendarEventProps> = ({
@@ -93,7 +93,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           </div>
         )}
       </div>
-      {(total_earnings !== undefined || amount) && (
+      {(total_earnings !== undefined && total_earnings !== null) || amount ? (
         <div
           className={`self-stretch flex items-center text-sm ${
             (total_earnings !== undefined || amount?.type === "income") ? "text-green-600" : "text-red-600"
@@ -102,7 +102,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           <div className="self-stretch w-2.5 my-auto">+</div>
           <div className="self-stretch w-2.5 my-auto">$</div>
           <div className="leading-6 self-stretch my-auto">
-            {total_earnings !== undefined ? total_earnings.toFixed(2) : amount?.value.toFixed(2)}
+            {total_earnings !== undefined && total_earnings !== null ? total_earnings.toFixed(2) : amount?.value.toFixed(2)}
           </div>
         </div>
       )}
