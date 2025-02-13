@@ -15,6 +15,17 @@ interface Event {
   hourly_wage?: number | null;
   amount?: number;
   type?: 'income' | 'expense';
+  total_earnings?: number | null;
+}
+
+interface Transaction {
+  id: string;
+  title: string;
+  amount: number;
+  category: string;
+  transaction_date: string;
+  type: string;
+  created_at: string;
 }
 
 interface DayProps {
@@ -123,12 +134,20 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
         if (eventsResult.error) throw eventsResult.error;
         if (transactionsResult.error) throw transactionsResult.error;
 
-        const allEvents = [
+        // Transform transactions to match Event type
+        const transformedTransactions: Event[] = (transactionsResult.data || []).map((transaction: Transaction) => ({
+          id: transaction.id,
+          title: transaction.title,
+          amount: transaction.amount,
+          category: transaction.category,
+          transaction_date: transaction.transaction_date,
+          // Ensure type is strictly 'income' or 'expense'
+          type: transaction.type === 'income' ? 'income' : 'expense'
+        }));
+
+        const allEvents: Event[] = [
           ...(eventsResult.data || []),
-          ...(transactionsResult.data?.map(transaction => ({
-            ...transaction,
-            event_date: transaction.transaction_date
-          })) || [])
+          ...transformedTransactions
         ];
 
         setEvents(allEvents);
