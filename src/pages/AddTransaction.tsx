@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -18,20 +19,24 @@ interface LocationState {
   returnDate?: string;
 }
 
+interface FormData {
+  title: string;
+  amount: string;
+  category: string;
+  date: string;
+}
+
 const AddTransaction = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   const state = location.state as LocationState;
   
-  const [isIncome, setIsIncome] = useState<boolean>(() => {
-    if (state?.type !== undefined) {
-      return state.type === 'income';
-    }
-    return true;
-  });
+  const [isIncome, setIsIncome] = useState<boolean>(() => 
+    state?.type !== undefined ? state.type === 'income' : true
+  );
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     title: "",
     amount: "",
     category: "Work",
@@ -71,7 +76,6 @@ const AddTransaction = () => {
 
     try {
       if (state?.isEditing && state.id) {
-        // Update existing transaction
         const { error } = await supabase
           .from('transactions')
           .update({
@@ -91,7 +95,6 @@ const AddTransaction = () => {
           className: "bg-[#F2FCE2]/90 text-green-800 border-none"
         });
       } else {
-        // Create new transaction
         const { error } = await supabase
           .from('transactions')
           .insert({
@@ -123,8 +126,6 @@ const AddTransaction = () => {
     }
   };
 
-  const isEditing = state?.isEditing;
-
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4">
       <div className="w-full max-w-[480px] mx-auto space-y-4">
@@ -136,11 +137,11 @@ const AddTransaction = () => {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <span className="text-[17px] text-[#111827] font-medium">
-            {isEditing ? 'Edit Transaction' : 'Add New'}
+            {state?.isEditing ? 'Edit Transaction' : 'Add New'}
           </span>
         </div>
 
-        {!isEditing && (
+        {!state?.isEditing && (
           <div className="flex gap-3 px-2">
             <button 
               onClick={() => navigate('/add')}
@@ -253,7 +254,7 @@ const AddTransaction = () => {
             onClick={handleSubmit}
             className="w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-[500px] h-[48px] text-sm font-medium mt-6"
           >
-            {isEditing ? 'Update Transaction' : 'Add Transaction'}
+            {state?.isEditing ? 'Update Transaction' : 'Add Transaction'}
           </Button>
         </div>
       </div>
