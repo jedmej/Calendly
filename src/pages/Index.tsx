@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarGrid } from "@/components/calendar/CalendarGrid";
 import { EventList } from "@/components/calendar/EventList";
@@ -27,6 +27,11 @@ const Index = () => {
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   
+  // Add useEffect to update selectedDate when currentDate changes from navigation
+  useEffect(() => {
+    setSelectedDate(currentDate);
+  }, [currentDate]);
+
   const handlePreviousMonth = () => {
     setCurrentDate(prev => addMonths(prev, -1));
   };
@@ -42,6 +47,7 @@ const Index = () => {
   const handleDateSelect = (date: Date, events: Event[]) => {
     setSelectedDate(date);
     setSelectedEvents(events);
+    setCurrentDate(date); // Also update currentDate when a date is selected
   };
 
   return (
