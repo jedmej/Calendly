@@ -42,6 +42,7 @@ const AddEvent = () => {
     coworkers: state?.coworkers || "",
   });
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [estimatedEarnings, setEstimatedEarnings] = useState(0);
   const [tips, setTips] = useState("0");
   const [totalEarnings, setTotalEarnings] = useState(0);
