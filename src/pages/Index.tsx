@@ -70,9 +70,7 @@ const Index = () => {
                   <button onClick={handlePreviousMonth} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-gray-100">
                     <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
                   </button>
-                  <button onClick={handleToday} className="px-4 py-1 md:px-6 md:py-2 rounded-full bg-[rgba(0,0,0,0.05)] hover:bg-[rgba(0,0,0,0.08)] transition-colors">
-                    Today
-                  </button>
+                  <button onClick={handleToday} className="px-4 py-1 md:px-6 md:py-2 rounded-full bg-[rgba(0,0,0,0.05)] hover:bg-[rgba(0,0,0,0.08)] transition-colors">Dzisaj</button>
                   <button onClick={handleNextMonth} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-gray-100">
                     <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
                   </button>
