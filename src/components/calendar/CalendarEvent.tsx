@@ -95,10 +95,16 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   };
 
   const getDisplayAmount = () => {
-    if (isTransaction) {
-      return typeof amount === 'number' ? amount : amount?.value;
+    if (isTransaction && amount !== undefined) {
+      return typeof amount === 'number' ? amount : amount.value;
     }
-    return total_earnings !== undefined && total_earnings !== null ? total_earnings : (typeof amount === 'object' ? amount.value : undefined);
+    if (total_earnings !== undefined && total_earnings !== null) {
+      return total_earnings;
+    }
+    if (typeof amount === 'object' && amount !== null) {
+      return amount.value;
+    }
+    return undefined;
   };
 
   const displayAmount = getDisplayAmount();
