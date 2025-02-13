@@ -20,7 +20,10 @@ interface Event {
 
 const Index = () => {
   const [view, setView] = useState<"week" | "month">("week");
-  const [currentDate, setCurrentDate] = useState(new Date(2025, 1, 13));
+  const [currentDate, setCurrentDate] = useState(() => {
+    const locationState = history.state?.usr;
+    return locationState?.returnDate ? new Date(locationState.returnDate) : new Date();
+  });
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   
@@ -123,7 +126,7 @@ const Index = () => {
                 start_time: event.start_time,
                 end_time: event.end_time,
                 hourly_wage: event.hourly_wage,
-                total_earnings: event.total_earnings // Add this line to pass total_earnings
+                total_earnings: event.total_earnings
               }))} 
             />
           )}

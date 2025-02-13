@@ -52,7 +52,8 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           category,
           hourlyWage: hourly_wage?.toString(),
           coworkers: withPeople?.join(', '),
-          isEditing: true
+          isEditing: true,
+          returnDate: new Date().toISOString() // Add current date to state
         }
       });
     }
