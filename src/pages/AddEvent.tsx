@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -123,6 +122,7 @@ const AddEvent = () => {
         variant: "destructive",
         title: "Error",
         description: "Please fill in all required fields.",
+        className: "bg-red-50/90 text-red-900 border-none"
       });
       return;
     }
@@ -136,7 +136,7 @@ const AddEvent = () => {
         category: category,
         hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
         coworkers: formData.coworkers ? formData.coworkers.split(",").map((c) => c.trim()) : null,
-        total_earnings: totalEarnings // Add total earnings to the event data
+        total_earnings: totalEarnings
       };
 
       if (isEditing && state?.id) {
@@ -150,6 +150,7 @@ const AddEvent = () => {
         toast({
           title: "Success!",
           description: "Event has been updated successfully.",
+          className: "bg-[#F2FCE2]/90 text-green-800 border-none"
         });
       } else {
         const { error } = await supabase
@@ -161,6 +162,7 @@ const AddEvent = () => {
         toast({
           title: "Success!",
           description: "Event has been created successfully.",
+          className: "bg-[#F2FCE2]/90 text-green-800 border-none"
         });
       }
 
@@ -171,6 +173,7 @@ const AddEvent = () => {
         variant: "destructive",
         title: "Error",
         description: "Failed to save event. Please try again.",
+        className: "bg-red-50/90 text-red-900 border-none"
       });
     }
   };
@@ -189,6 +192,7 @@ const AddEvent = () => {
       toast({
         title: "Success!",
         description: "Event has been deleted successfully.",
+        className: "bg-[#F2FCE2]/90 text-green-800 border-none"
       });
 
       navigate("/");
@@ -198,6 +202,7 @@ const AddEvent = () => {
         variant: "destructive",
         title: "Error",
         description: "Failed to delete event. Please try again.",
+        className: "bg-red-50/90 text-red-900 border-none"
       });
     }
   };
@@ -210,7 +215,6 @@ const AddEvent = () => {
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4">
       <div className="w-full max-w-[480px] mx-auto space-y-4">
-        {/* Header */}
         <div className="bg-white/70 backdrop-blur-lg rounded-[500px] min-h-[60px] w-full px-2 py-3 flex items-center gap-2">
           <button
             onClick={handleBack}
@@ -223,7 +227,6 @@ const AddEvent = () => {
           </span>
         </div>
 
-        {/* Event/Transaction Toggle */}
         <div className="flex gap-3 px-2">
           <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-3.5 px-6">
             <div className="flex items-center justify-center gap-2">
@@ -239,9 +242,7 @@ const AddEvent = () => {
           </button>
         </div>
 
-        {/* Main Form */}
         <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
-          {/* Category Buttons */}
           <div className="flex flex-wrap gap-2 text-xs font-medium mb-8">
             {[
               { name: "Work", icon: <Briefcase className="w-4 h-4" /> },
@@ -264,7 +265,6 @@ const AddEvent = () => {
           </div>
 
           <div className="space-y-6">
-            {/* Title Input */}
             <div>
               <Label htmlFor="title" className="text-xs text-[#374151] font-medium mb-1.5 block">
                 Title *
@@ -281,7 +281,6 @@ const AddEvent = () => {
               {errors.title && <span className="text-xs text-red-500 mt-1">{errors.title}</span>}
             </div>
 
-            {/* Date Input */}
             <div>
               <Label htmlFor="date" className="text-xs text-[#374151] font-medium mb-1.5 block">
                 Date *
@@ -301,7 +300,6 @@ const AddEvent = () => {
               {errors.date && <span className="text-xs text-red-500 mt-1">{errors.date}</span>}
             </div>
 
-            {/* Time Inputs */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="startTime" className="text-xs text-[#374151] font-medium mb-1.5 block">
@@ -335,7 +333,6 @@ const AddEvent = () => {
               </div>
             </div>
 
-            {/* Hourly Wage Input */}
             <div>
               <div className="flex items-center gap-1.5 mb-1.5">
                 <DollarSign className="w-4 h-4 text-[#374151]" />
@@ -352,7 +349,6 @@ const AddEvent = () => {
               />
             </div>
 
-            {/* Co-workers Input */}
             <div>
               <div className="flex items-center gap-1.5 mb-1.5">
                 <Users className="w-4 h-4 text-[#374151]" />
@@ -369,7 +365,6 @@ const AddEvent = () => {
               />
             </div>
 
-            {/* Earnings Calculator */}
             <div className="bg-[#F8FAFF] border border-[#E8F1FF] rounded-2xl p-6 space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-[#4B5563] font-semibold text-sm">Estimated earnings</span>
@@ -394,7 +389,6 @@ const AddEvent = () => {
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-3 mt-6">
           {isEditing && (
             <Button
