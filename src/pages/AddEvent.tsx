@@ -220,46 +220,46 @@ const AddEvent = () => {
   };
 
   return (
-    <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4">
-      <div className="w-full max-w-[480px] mx-auto space-y-4">
+    <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4 md:p-6 lg:p-8">
+      <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6">
         <div className="bg-white/70 backdrop-blur-lg rounded-[500px] min-h-[60px] w-full px-2 py-3 flex items-center gap-2">
           <button
             onClick={handleBack}
-            className="rounded-xl p-2 hover:bg-black/5 w-[36px] h-[36px] flex items-center justify-center"
+            className="rounded-xl p-2 hover:bg-black/5 w-[36px] h-[36px] md:w-[42px] md:h-[42px] flex items-center justify-center"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" />
           </button>
-          <span className="text-[17px] text-[#111827] font-medium">
+          <span className="text-[17px] md:text-xl lg:text-2xl text-[#111827] font-medium">
             {isEditing ? "Edit Event" : "Add New"}
           </span>
         </div>
 
         {!isEditing && (
           <div className="flex gap-3 px-2">
-            <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-3.5 px-6">
+            <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-3.5 md:py-4 px-6">
               <div className="flex items-center justify-center gap-2">
-                <Calendar className="w-4 h-4" />
-                Event
+                <Calendar className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="text-sm md:text-base">Event</span>
               </div>
             </button>
             <button 
               onClick={() => navigate('/add-transaction')} 
-              className="flex-1 bg-black/5 text-black rounded-[500px] py-3.5 px-6"
+              className="flex-1 bg-black/5 text-black rounded-[500px] py-3.5 md:py-4 px-6"
             >
               <div className="flex items-center justify-center gap-2">
-                <CreditCard className="w-4 h-4" />
-                Transaction
+                <CreditCard className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="text-sm md:text-base">Transaction</span>
               </div>
             </button>
           </div>
         )}
 
-        <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
-          <div className="flex flex-wrap gap-2 text-xs font-medium mb-8">
+        <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6 md:p-8">
+          <div className="flex flex-wrap gap-2 text-xs md:text-sm font-medium mb-8">
             {[
-              { name: "Work", icon: <Briefcase className="w-4 h-4" /> },
-              { name: "School", icon: <GraduationCap className="w-4 h-4" /> },
-              { name: "Other", icon: <Star className="w-4 h-4" /> }
+              { name: "Work", icon: <Briefcase className="w-4 h-4 md:w-5 md:h-5" /> },
+              { name: "School", icon: <GraduationCap className="w-4 h-4 md:w-5 md:h-5" /> },
+              { name: "Other", icon: <Star className="w-4 h-4 md:w-5 md:h-5" /> }
             ].map(({ name, icon }) => (
               <button
                 key={name}
@@ -268,7 +268,7 @@ const AddEvent = () => {
                   category === name
                     ? "bg-[#2563EB] text-white"
                     : "bg-black/5"
-                } rounded-[500px] py-3.5 px-4 flex items-center justify-center gap-2`}
+                } rounded-[500px] py-3.5 md:py-4 px-4 flex items-center justify-center gap-2`}
               >
                 {icon}
                 {name}
@@ -276,9 +276,9 @@ const AddEvent = () => {
             ))}
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 md:space-y-8">
             <div>
-              <Label htmlFor="title" className="text-xs text-[#374151] font-medium mb-1.5 block">
+              <Label htmlFor="title" className="text-xs md:text-sm text-[#374151] font-medium mb-1.5 block">
                 Title *
               </Label>
               <Input
@@ -286,15 +286,15 @@ const AddEvent = () => {
                 value={formData.title}
                 onChange={handleInputChange}
                 placeholder="Event title"
-                className={`bg-[#EEEEEE]/60 h-[42px] rounded-xl text-sm placeholder:text-[#CCCCCC] ${
+                className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm md:text-base placeholder:text-[#CCCCCC] ${
                   errors.title ? "border-red-500" : ""
                 }`}
               />
-              {errors.title && <span className="text-xs text-red-500 mt-1">{errors.title}</span>}
+              {errors.title && <span className="text-xs md:text-sm text-red-500 mt-1">{errors.title}</span>}
             </div>
 
             <div>
-              <Label htmlFor="date" className="text-xs text-[#374151] font-medium mb-1.5 block">
+              <Label htmlFor="date" className="text-xs md:text-sm text-[#374151] font-medium mb-1.5 block">
                 Date *
               </Label>
               <div className="relative">
@@ -303,18 +303,18 @@ const AddEvent = () => {
                   type="date"
                   value={formData.date}
                   onChange={handleInputChange}
-                  className={`bg-[#EEEEEE]/60 h-[42px] rounded-xl text-sm cursor-pointer ${
+                  className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm cursor-pointer ${
                     errors.date ? "border-red-500" : ""
                   }`}
                 />
                 <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
-              {errors.date && <span className="text-xs text-red-500 mt-1">{errors.date}</span>}
+              {errors.date && <span className="text-xs md:text-sm text-red-500 mt-1">{errors.date}</span>}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="startTime" className="text-xs text-[#374151] font-medium mb-1.5 block">
+                <Label htmlFor="startTime" className="text-xs md:text-sm text-[#374151] font-medium mb-1.5 block">
                   Start Time *
                 </Label>
                 <Input
@@ -322,14 +322,14 @@ const AddEvent = () => {
                   type="time"
                   value={formData.startTime}
                   onChange={handleInputChange}
-                  className={`bg-[#EEEEEE]/60 h-[42px] rounded-xl text-sm ${
+                  className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm ${
                     errors.startTime ? "border-red-500" : ""
                   }`}
                 />
-                {errors.startTime && <span className="text-xs text-red-500 mt-1">{errors.startTime}</span>}
+                {errors.startTime && <span className="text-xs md:text-sm text-red-500 mt-1">{errors.startTime}</span>}
               </div>
               <div>
-                <Label htmlFor="endTime" className="text-xs text-[#374151] font-medium mb-1.5 block">
+                <Label htmlFor="endTime" className="text-xs md:text-sm text-[#374151] font-medium mb-1.5 block">
                   End Time *
                 </Label>
                 <Input
@@ -337,18 +337,18 @@ const AddEvent = () => {
                   type="time"
                   value={formData.endTime}
                   onChange={handleInputChange}
-                  className={`bg-[#EEEEEE]/60 h-[42px] rounded-xl text-sm ${
+                  className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm ${
                     errors.endTime ? "border-red-500" : ""
                   }`}
                 />
-                {errors.endTime && <span className="text-xs text-red-500 mt-1">{errors.endTime}</span>}
+                {errors.endTime && <span className="text-xs md:text-sm text-red-500 mt-1">{errors.endTime}</span>}
               </div>
             </div>
 
             <div>
               <div className="flex items-center gap-1.5 mb-1.5">
                 <DollarSign className="w-4 h-4 text-[#374151]" />
-                <Label htmlFor="hourlyWage" className="text-xs text-[#374151] font-medium">
+                <Label htmlFor="hourlyWage" className="text-xs md:text-sm text-[#374151] font-medium">
                   Hourly Wage
                 </Label>
               </div>
@@ -357,14 +357,14 @@ const AddEvent = () => {
                 value={formData.hourlyWage}
                 onChange={handleInputChange}
                 placeholder="15.00"
-                className="bg-[#EEEEEE]/60 h-[42px] rounded-xl text-sm placeholder:text-[#CCCCCC]"
+                className="bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm placeholder:text-[#CCCCCC]"
               />
             </div>
 
             <div>
               <div className="flex items-center gap-1.5 mb-1.5">
                 <Users className="w-4 h-4 text-[#374151]" />
-                <Label htmlFor="coworkers" className="text-xs text-[#374151] font-medium">
+                <Label htmlFor="coworkers" className="text-xs md:text-sm text-[#374151] font-medium">
                   Co-workers
                 </Label>
               </div>
@@ -373,7 +373,7 @@ const AddEvent = () => {
                 value={formData.coworkers}
                 onChange={handleInputChange}
                 placeholder="Add co-workers (comma separated)"
-                className="bg-white/60 border border-black/10 h-[42px] rounded-xl text-sm placeholder:text-[#CCCCCC]"
+                className="bg-white/60 border border-black/10 h-[42px] md:h-[48px] rounded-xl text-sm placeholder:text-[#CCCCCC]"
               />
             </div>
 
@@ -405,17 +405,17 @@ const AddEvent = () => {
           {isEditing && (
             <Button
               onClick={handleDelete}
-              className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-[500px] h-[48px] text-sm font-medium"
+              className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-[500px] h-[48px] md:h-[52px] text-sm md:text-base font-medium"
             >
-              <Trash className="w-4 h-4 mr-2" />
+              <Trash className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               Delete Event
             </Button>
           )}
           <Button
             onClick={handleSubmit}
-            className={`${isEditing ? 'flex-1' : 'w-full'} bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-[500px] h-[48px] text-sm font-medium`}
+            className={`${isEditing ? 'flex-1' : 'w-full'} bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-[500px] h-[48px] md:h-[52px] text-sm md:text-base font-medium`}
           >
-            <Save className="w-4 h-4 mr-2" />
+            <Save className="w-4 h-4 md:w-5 md:h-5 mr-2" />
             {isEditing ? "Save Changes" : "Add Event"}
           </Button>
         </div>

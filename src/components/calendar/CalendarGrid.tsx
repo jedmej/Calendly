@@ -72,7 +72,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
     return (
       <div className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid">
         <WeekHeader />
-        <div className="flex min-h-[60px] w-full items-stretch gap-px">
+        <div className="flex min-h-[60px] md:min-h-[80px] lg:min-h-[100px] w-full items-stretch gap-px">
           {weekDays.map((date, index) => (
             <Day
               key={index}
@@ -97,7 +97,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
     <div className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid">
       <WeekHeader />
       {weeks.map((week, weekIndex) => (
-        <div key={weekIndex} className="flex min-h-[50px] w-full items-stretch gap-px">
+        <div key={weekIndex} className="flex min-h-[50px] md:min-h-[70px] lg:min-h-[90px] w-full items-stretch gap-px">
           {week.map((date, dayIndex) => (
             <Day
               key={dayIndex}

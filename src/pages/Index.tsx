@@ -61,41 +61,41 @@ const Index = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 8 }}
         transition={{ duration: 0.2 }}
-        className="flex max-w-[480px] w-full flex-col min-h-screen items-stretch mx-auto p-4 pb-24"
+        className="flex max-w-[480px] md:max-w-[640px] lg:max-w-[800px] w-full flex-col min-h-screen items-stretch mx-auto p-4 md:p-6 lg:p-8 pb-24"
       >
         <div className="flex-1 w-full">
           <CalendarHeader title="Calendar" />
-          <div className="w-full mt-4">
-            <div className="bg-[rgba(255,255,255,0.7)] border w-full p-4 rounded-2xl border-[rgba(255,255,255,0.2)] border-solid">
-              <div className="flex w-full items-center gap-[40px_100px] text-[15px] text-gray-900 font-medium leading-loose justify-between">
+          <div className="w-full mt-4 md:mt-6">
+            <div className="bg-[rgba(255,255,255,0.7)] border w-full p-4 md:p-6 rounded-2xl border-[rgba(255,255,255,0.2)] border-solid">
+              <div className="flex w-full items-center gap-[40px_100px] text-[15px] md:text-base lg:text-lg text-gray-900 font-medium leading-loose justify-between">
                 <div className="self-stretch w-[122px] my-auto">
                   {format(currentDate, 'MMMM yyyy')}
                 </div>
-                <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                <div className="flex items-center gap-2 text-xs md:text-sm text-gray-600 font-medium">
                   <button 
                     onClick={handlePreviousMonth}
-                    className="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-gray-100"
+                    className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-gray-100"
                   >
-                    <ChevronLeft className="w-5 h-5 text-gray-600" />
+                    <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
                   </button>
                   <button
                     onClick={handleToday}
-                    className="px-4 py-1 rounded-full bg-[rgba(0,0,0,0.05)] hover:bg-[rgba(0,0,0,0.08)] transition-colors"
+                    className="px-4 py-1 md:px-6 md:py-2 rounded-full bg-[rgba(0,0,0,0.05)] hover:bg-[rgba(0,0,0,0.08)] transition-colors"
                   >
                     Today
                   </button>
                   <button 
                     onClick={handleNextMonth}
-                    className="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-gray-100"
+                    className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-gray-100"
                   >
-                    <ChevronRight className="w-5 h-5 text-gray-600" />
+                    <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
                   </button>
                 </div>
               </div>
-              <div className="flex w-full gap-2 text-xs font-medium whitespace-nowrap text-center leading-loose mt-4">
+              <div className="flex w-full gap-2 text-xs md:text-sm font-medium whitespace-nowrap text-center leading-loose mt-4">
                 <button
                   onClick={() => setView("week")}
-                  className={`self-stretch min-h-9 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${
+                  className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${
                     view === "week"
                       ? "bg-blue-600 text-white"
                       : "bg-[rgba(0,0,0,0.05)] text-gray-600"
@@ -105,7 +105,7 @@ const Index = () => {
                 </button>
                 <button
                   onClick={() => setView("month")}
-                  className={`self-stretch min-h-9 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${
+                  className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${
                     view === "month"
                       ? "bg-blue-600 text-white"
                       : "bg-[rgba(0,0,0,0.05)] text-gray-600"
@@ -143,7 +143,7 @@ const Index = () => {
           </div>
         </div>
       </motion.div>
-      <div className="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto">
         <ActionBar />
       </div>
     </>
