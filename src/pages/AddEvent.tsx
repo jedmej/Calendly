@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Calendar, CreditCard, DollarSign, Users, Save, Trash, Briefcase, GraduationCap, Balloon } from "lucide-react";
+import { ArrowLeft, Calendar, CreditCard, DollarSign, Users, Save, Trash, Briefcase, GraduationCap, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -221,7 +221,7 @@ const AddEvent = () => {
             {[
               { name: "Work", icon: <Briefcase className="w-4 h-4" /> },
               { name: "School", icon: <GraduationCap className="w-4 h-4" /> },
-              { name: "Other", icon: <Balloon className="w-4 h-4" /> }
+              { name: "Other", icon: <Star className="w-4 h-4" /> }
             ].map(({ name, icon }) => (
               <button
                 key={name}
