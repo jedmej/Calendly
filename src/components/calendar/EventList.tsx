@@ -14,7 +14,7 @@ interface EventListProps {
     amount?: {
       value: number;
       type: "income" | "expense";
-    };
+    } | number;
     category?: string;
     event_date?: string;
     transaction_date?: string;
@@ -33,7 +33,13 @@ export const EventList: React.FC<EventListProps> = ({ date, events }) => {
         Events for <span className="font-bold">{date}</span>
       </div>
       {events.map((event, index) => (
-        <CalendarEvent key={index} {...event} />
+        <CalendarEvent 
+          key={index} 
+          {...event}
+          amount={event.amount}
+          type={event.type}
+          transaction_date={event.transaction_date}
+        />
       ))}
     </div>
   );

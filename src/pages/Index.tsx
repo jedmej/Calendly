@@ -16,6 +16,9 @@ interface Event {
   coworkers?: string[] | null;
   hourly_wage?: number | null;
   total_earnings?: number | null;
+  transaction_date?: string;
+  amount?: number;
+  type?: 'income' | 'expense';
 }
 
 const Index = () => {
@@ -27,7 +30,6 @@ const Index = () => {
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   
-  // Add useEffect to update selectedDate when currentDate changes from navigation
   useEffect(() => {
     setSelectedDate(currentDate);
   }, [currentDate]);
@@ -47,7 +49,7 @@ const Index = () => {
   const handleDateSelect = (date: Date, events: Event[]) => {
     setSelectedDate(date);
     setSelectedEvents(events);
-    setCurrentDate(date); // Also update currentDate when a date is selected
+    setCurrentDate(date);
   };
 
   return (
@@ -129,10 +131,13 @@ const Index = () => {
                 withPeople: event.coworkers || undefined,
                 category: event.category,
                 event_date: event.event_date,
+                transaction_date: event.transaction_date,
                 start_time: event.start_time,
                 end_time: event.end_time,
-                hourly_wage: event.hourly_wage,
-                total_earnings: event.total_earnings
+                hourly_wage: event.hourly_wage || undefined,
+                total_earnings: event.total_earnings || undefined,
+                amount: event.amount,
+                type: event.type
               }))} 
             />
           )}
