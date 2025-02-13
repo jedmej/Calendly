@@ -18,11 +18,11 @@ export const EarningsCalculator = ({
   return (
     <div className="bg-[#F8FAFF] border border-[#E8F1FF] rounded-2xl p-6 space-y-4">
       <div className="flex justify-between items-center">
-        <span className="text-[#4B5563] font-semibold text-sm">Estimated earnings</span>
+        <span className="text-[#4B5563] font-semibold text-sm">Szacowane zarobki</span>
         <span className="text-[#2463EB] font-bold">${(estimatedEarnings || 0).toFixed(2)}</span>
       </div>
       <div className="flex justify-between items-center">
-        <span className="text-[#4B5563] font-semibold text-sm">Tips</span>
+        <span className="text-[#4B5563] font-semibold text-sm">Napiwki</span>
         <Input
           type="number"
           value={tips}
@@ -33,7 +33,7 @@ export const EarningsCalculator = ({
       </div>
       <div className="h-[1px] bg-[#E8F1FF]" />
       <div className="flex justify-between items-center">
-        <span className="text-[#4B5563] font-semibold">Total Earnings</span>
+        <span className="text-[#4B5563] font-semibold">Całkowite zarobki</span>
         <span className="text-[#2463EB] font-bold">${(totalEarnings || 0).toFixed(2)}</span>
       </div>
     </div>
