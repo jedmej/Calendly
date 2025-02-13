@@ -44,22 +44,28 @@ const AddEvent = () => {
 
   const [estimatedEarnings, setEstimatedEarnings] = useState(0);
   const [tips, setTips] = useState("0");
-  const [totalEarnings, setTotalEarnings] = useState(state?.totalEarnings || 0);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [totalEarnings, setTotalEarnings] = useState(0);
+
+  useEffect(() => {
+    if (isEditing && state?.totalEarnings !== undefined && state?.totalEarnings !== null) {
+      setTotalEarnings(Number(state.totalEarnings));
+    }
+  }, [isEditing, state?.totalEarnings]);
 
   useEffect(() => {
     calculateEarnings();
   }, [formData.startTime, formData.endTime, formData.hourlyWage]);
 
   useEffect(() => {
-    if (isEditing && state?.totalEarnings !== undefined && formData.hourlyWage) {
+    if (isEditing && state?.totalEarnings !== undefined && state?.totalEarnings !== null && formData.hourlyWage) {
       const start = new Date(`2000/01/01 ${formData.startTime}`);
       const end = new Date(`2000/01/01 ${formData.endTime}`);
       const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-      const baseEarnings = hours * parseFloat(formData.hourlyWage);
-      const calculatedTips = (state.totalEarnings - baseEarnings).toFixed(2);
-      setTips(calculatedTips);
-      setTotalEarnings(state.totalEarnings); // Set initial total earnings from state
+      const baseEarnings = hours * parseFloat(formData.hourlyWage || "0");
+      const calculatedTips = Math.max(0, state.totalEarnings - baseEarnings);
+      setTips(calculatedTips.toFixed(2));
+      setEstimatedEarnings(baseEarnings);
+      setTotalEarnings(state.totalEarnings);
     }
   }, [isEditing, state?.totalEarnings, formData.startTime, formData.endTime, formData.hourlyWage]);
 
@@ -68,10 +74,10 @@ const AddEvent = () => {
       const start = new Date(`2000/01/01 ${formData.startTime}`);
       const end = new Date(`2000/01/01 ${formData.endTime}`);
       const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-      const earnings = hours * parseFloat(formData.hourlyWage);
+      const earnings = hours * parseFloat(formData.hourlyWage || "0");
       setEstimatedEarnings(earnings);
-      // Always include tips in total earnings calculation
-      setTotalEarnings(earnings + parseFloat(tips || "0"));
+      const tipsValue = parseFloat(tips || "0");
+      setTotalEarnings(earnings + tipsValue);
     }
   };
 
@@ -90,10 +96,10 @@ const AddEvent = () => {
   };
 
   const handleTipsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value || "0";
     setTips(value);
-    // Update total earnings immediately when tips change
-    setTotalEarnings(estimatedEarnings + parseFloat(value || "0"));
+    const tipsValue = parseFloat(value || "0");
+    setTotalEarnings(estimatedEarnings + tipsValue);
   };
 
   const validateForm = () => {
@@ -368,7 +374,7 @@ const AddEvent = () => {
             <div className="bg-[#F8FAFF] border border-[#E8F1FF] rounded-2xl p-6 space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-[#4B5563] font-semibold text-sm">Estimated earnings</span>
-                <span className="text-[#2463EB] font-bold">${estimatedEarnings.toFixed(2)}</span>
+                <span className="text-[#2463EB] font-bold">${(estimatedEarnings || 0).toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-[#4B5563] font-semibold text-sm">Tips</span>
@@ -383,7 +389,7 @@ const AddEvent = () => {
               <div className="h-[1px] bg-[#E8F1FF]" />
               <div className="flex justify-between items-center">
                 <span className="text-[#4B5563] font-semibold">Total Earnings</span>
-                <span className="text-[#2463EB] font-bold">${totalEarnings.toFixed(2)}</span>
+                <span className="text-[#2463EB] font-bold">${(totalEarnings || 0).toFixed(2)}</span>
               </div>
             </div>
           </div>
