@@ -11,6 +11,7 @@ export const ActionBar: React.FC = () => {
   
   const isAddRoute = location.pathname === '/add';
   const isTransactionRoute = location.pathname === '/add-transaction';
+  const isHomeRoute = location.pathname === '/';
   
   return (
     <div className={`
@@ -20,9 +21,14 @@ export const ActionBar: React.FC = () => {
       ${isMobile ? 'fixed bottom-8 left-1/2 -translate-x-1/2 h-[70px]' : ''}
     `}>
       <div className="flex w-full items-stretch px-[7px] py-2 gap-3.5">
-        <div className="flex flex-1 flex-col items-center justify-center px-6 py-2">
+        <div 
+          onClick={() => navigate('/')}
+          className={`flex flex-1 flex-col items-center justify-center px-6 py-2 cursor-pointer
+            ${isHomeRoute ? 'bg-[rgba(37,99,235,0.05)] rounded-[500px]' : ''}
+          `}
+        >
           <Calendar 
-            className={`w-6 h-6 ${isAddRoute ? 'text-blue-600' : 'text-gray-600'}`} 
+            className={`w-6 h-6 ${isHomeRoute ? 'text-blue-600' : 'text-gray-600'}`} 
           />
         </div>
         
@@ -34,7 +40,7 @@ export const ActionBar: React.FC = () => {
               } else if (isTransactionRoute) {
                 navigate('/add');
               } else {
-                navigate(location.pathname === '/add-transaction' ? '/add' : '/add');
+                navigate('/add');
               }
             }}
             className="w-[38px] h-[38px] rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition-colors"
@@ -43,7 +49,12 @@ export const ActionBar: React.FC = () => {
           </button>
         </div>
 
-        <div className="flex flex-1 flex-col items-center justify-center px-6 py-2">
+        <div 
+          onClick={() => navigate('/add-transaction')}
+          className={`flex flex-1 flex-col items-center justify-center px-6 py-2 cursor-pointer
+            ${isTransactionRoute ? 'bg-[rgba(37,99,235,0.05)] rounded-[500px]' : ''}
+          `}
+        >
           <DollarSign 
             className={`w-6 h-6 ${isTransactionRoute ? 'text-blue-600' : 'text-gray-600'}`} 
           />
