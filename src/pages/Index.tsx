@@ -55,94 +55,98 @@ const Index = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 8 }}
-      transition={{ duration: 0.2 }}
-      className="bg-[rgba(246,247,249,1)] flex max-w-[480px] w-full flex-col min-h-screen items-stretch mx-auto p-4"
-    >
-      <div className="flex-1 w-full">
-        <CalendarHeader title="Calendar" />
-        <div className="w-full mt-4">
-          <div className="bg-[rgba(255,255,255,0.7)] border w-full p-4 rounded-2xl border-[rgba(255,255,255,0.2)] border-solid">
-            <div className="flex w-full items-center gap-[40px_100px] text-[15px] text-gray-900 font-medium leading-loose justify-between">
-              <div className="self-stretch w-[122px] my-auto">
-                {format(currentDate, 'MMMM yyyy')}
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 8 }}
+        transition={{ duration: 0.2 }}
+        className="bg-[rgba(246,247,249,1)] flex max-w-[480px] w-full flex-col min-h-screen items-stretch mx-auto p-4 pb-24"
+      >
+        <div className="flex-1 w-full">
+          <CalendarHeader title="Calendar" />
+          <div className="w-full mt-4">
+            <div className="bg-[rgba(255,255,255,0.7)] border w-full p-4 rounded-2xl border-[rgba(255,255,255,0.2)] border-solid">
+              <div className="flex w-full items-center gap-[40px_100px] text-[15px] text-gray-900 font-medium leading-loose justify-between">
+                <div className="self-stretch w-[122px] my-auto">
+                  {format(currentDate, 'MMMM yyyy')}
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                  <button 
+                    onClick={handlePreviousMonth}
+                    className="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-gray-100"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-gray-600" />
+                  </button>
+                  <button
+                    onClick={handleToday}
+                    className="px-4 py-1 rounded-full bg-[rgba(0,0,0,0.05)] hover:bg-[rgba(0,0,0,0.08)] transition-colors"
+                  >
+                    Today
+                  </button>
+                  <button 
+                    onClick={handleNextMonth}
+                    className="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-gray-100"
+                  >
+                    <ChevronRight className="w-5 h-5 text-gray-600" />
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
-                <button 
-                  onClick={handlePreviousMonth}
-                  className="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-gray-100"
+              <div className="flex w-full gap-2 text-xs font-medium whitespace-nowrap text-center leading-loose mt-4">
+                <button
+                  onClick={() => setView("week")}
+                  className={`self-stretch min-h-9 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${
+                    view === "week"
+                      ? "bg-blue-600 text-white"
+                      : "bg-[rgba(0,0,0,0.05)] text-gray-600"
+                  }`}
                 >
-                  <ChevronLeft className="w-5 h-5 text-gray-600" />
+                  Week
                 </button>
                 <button
-                  onClick={handleToday}
-                  className="px-4 py-1 rounded-full bg-[rgba(0,0,0,0.05)] hover:bg-[rgba(0,0,0,0.08)] transition-colors"
+                  onClick={() => setView("month")}
+                  className={`self-stretch min-h-9 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${
+                    view === "month"
+                      ? "bg-blue-600 text-white"
+                      : "bg-[rgba(0,0,0,0.05)] text-gray-600"
+                  }`}
                 >
-                  Today
-                </button>
-                <button 
-                  onClick={handleNextMonth}
-                  className="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-gray-100"
-                >
-                  <ChevronRight className="w-5 h-5 text-gray-600" />
+                  Month
                 </button>
               </div>
+              <CalendarGrid 
+                view={view} 
+                currentDate={currentDate}
+                onSelectDate={handleDateSelect}
+              />
             </div>
-            <div className="flex w-full gap-2 text-xs font-medium whitespace-nowrap text-center leading-loose mt-4">
-              <button
-                onClick={() => setView("week")}
-                className={`self-stretch min-h-9 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${
-                  view === "week"
-                    ? "bg-blue-600 text-white"
-                    : "bg-[rgba(0,0,0,0.05)] text-gray-600"
-                }`}
-              >
-                Week
-              </button>
-              <button
-                onClick={() => setView("month")}
-                className={`self-stretch min-h-9 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${
-                  view === "month"
-                    ? "bg-blue-600 text-white"
-                    : "bg-[rgba(0,0,0,0.05)] text-gray-600"
-                }`}
-              >
-                Month
-              </button>
-            </div>
-            <CalendarGrid 
-              view={view} 
-              currentDate={currentDate}
-              onSelectDate={handleDateSelect}
-            />
+            {selectedDate && (
+              <EventList 
+                date={format(selectedDate, 'MMM dd, yyyy')} 
+                events={selectedEvents.map(event => ({
+                  id: event.id,
+                  title: event.title,
+                  time: event.start_time && event.end_time ? `${event.start_time} - ${event.end_time}` : undefined,
+                  withPeople: event.coworkers || undefined,
+                  category: event.category,
+                  event_date: event.event_date,
+                  transaction_date: event.transaction_date,
+                  start_time: event.start_time,
+                  end_time: event.end_time,
+                  hourly_wage: event.hourly_wage || undefined,
+                  total_earnings: event.total_earnings || undefined,
+                  amount: event.amount,
+                  type: event.type
+                }))} 
+              />
+            )}
           </div>
-          {selectedDate && (
-            <EventList 
-              date={format(selectedDate, 'MMM dd, yyyy')} 
-              events={selectedEvents.map(event => ({
-                id: event.id,
-                title: event.title,
-                time: event.start_time && event.end_time ? `${event.start_time} - ${event.end_time}` : undefined,
-                withPeople: event.coworkers || undefined,
-                category: event.category,
-                event_date: event.event_date,
-                transaction_date: event.transaction_date,
-                start_time: event.start_time,
-                end_time: event.end_time,
-                hourly_wage: event.hourly_wage || undefined,
-                total_earnings: event.total_earnings || undefined,
-                amount: event.amount,
-                type: event.type
-              }))} 
-            />
-          )}
         </div>
+      </motion.div>
+      <div className="fixed bottom-0 left-0 right-0 max-w-[480px] mx-auto">
+        <ActionBar />
       </div>
-      <ActionBar />
-    </motion.div>
+    </>
   );
 };
 
