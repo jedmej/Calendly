@@ -1,4 +1,6 @@
+
 import React from "react";
+import { Briefcase } from "lucide-react";
 
 interface CalendarEventProps {
   icon?: string;
@@ -10,6 +12,7 @@ interface CalendarEventProps {
     value: number;
     type: "income" | "expense";
   };
+  category?: string;
 }
 
 export const CalendarEvent: React.FC<CalendarEventProps> = ({
@@ -19,10 +22,18 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   location,
   withPeople,
   amount,
+  category,
 }) => {
+  const showWorkIcon = category?.toLowerCase() === "work";
+
   return (
     <div className="bg-[rgba(255,255,255,0.5)] border flex w-full items-center gap-4 mt-2.5 p-4 rounded-xl border-[rgba(0,0,0,0.05)] border-solid">
-      {icon && (
+      {showWorkIcon && (
+        <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+          <Briefcase className="w-5 h-5 text-gray-600" />
+        </div>
+      )}
+      {icon && !showWorkIcon && (
         <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
           <img
             loading="lazy"
