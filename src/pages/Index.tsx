@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarGrid } from "@/components/calendar/CalendarGrid";
@@ -16,6 +15,10 @@ const Index = () => {
 
   const handleNextMonth = () => {
     setCurrentDate(prev => addMonths(prev, 1));
+  };
+
+  const handleToday = () => {
+    setCurrentDate(new Date());
   };
 
   const events = [
@@ -54,26 +57,32 @@ const Index = () => {
               <div className="self-stretch w-[122px] my-auto">
                 {format(currentDate, 'MMMM yyyy')}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
                 <button 
                   onClick={handlePreviousMonth}
-                  className="p-2 hover:bg-gray-100 rounded-full"
+                  className="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-gray-100"
                 >
                   <img
                     loading="lazy"
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/152312aa8d49520e1dcf138697063cc5d50a3728dd082875446466a099aa6bc4"
-                    className="aspect-[2.22] object-contain w-5 rotate-180"
+                    className="w-5 h-5 rotate-180"
                     alt="Previous month"
                   />
                 </button>
+                <button
+                  onClick={handleToday}
+                  className="px-4 py-1 rounded-full bg-[rgba(0,0,0,0.05)] hover:bg-[rgba(0,0,0,0.08)] transition-colors"
+                >
+                  Today
+                </button>
                 <button 
                   onClick={handleNextMonth}
-                  className="p-2 hover:bg-gray-100 rounded-full"
+                  className="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-gray-100"
                 >
                   <img
                     loading="lazy"
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/152312aa8d49520e1dcf138697063cc5d50a3728dd082875446466a099aa6bc4"
-                    className="aspect-[2.22] object-contain w-5"
+                    className="w-5 h-5"
                     alt="Next month"
                   />
                 </button>
