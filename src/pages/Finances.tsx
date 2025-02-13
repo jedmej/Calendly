@@ -1,3 +1,4 @@
+
 import React from "react";
 import { ActionBar } from "@/components/calendar/ActionBar";
 import { useQuery } from "@tanstack/react-query";
@@ -44,7 +45,7 @@ const SummaryCard = ({
     onClick={onClick}
     className={`flex-1 border rounded-2xl p-4 space-y-3 cursor-pointer transition-all
       ${isActive 
-        ? 'bg-blue-600 border-blue-600' 
+        ? 'bg-[#F5F7FF] border-[#F5F7FF]' 
         : 'bg-white/70 border-white/20 hover:bg-white/90'
       }`}
   >
@@ -59,13 +60,13 @@ const SummaryCard = ({
         )}
       </div>
       <span className={`text-xs font-medium ${
-        isActive ? 'text-white' : 'text-gray-600'
+        isActive ? 'text-gray-900' : 'text-gray-600'
       }`}>
         {type === "income" ? "Income" : "Expenses"}
       </span>
     </div>
     <div className={`text-xl font-medium ${
-      isActive ? 'text-white' : 'text-gray-900'
+      isActive ? 'text-gray-900' : 'text-gray-900'
     }`}>
       ${amount.toFixed(2)}
     </div>
