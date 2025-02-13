@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AddEvent from "./pages/AddEvent";
 import AddTransaction from "./pages/AddTransaction";
+import { Finances } from "./pages/Finances";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/add" element={<AddEvent />} />
           <Route path="/add-transaction" element={<AddTransaction />} />
+          <Route path="/finances" element={<Finances />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
