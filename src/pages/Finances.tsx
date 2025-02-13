@@ -1,4 +1,3 @@
-
 import React from "react";
 import { ActionBar } from "@/components/calendar/ActionBar";
 import { useQuery } from "@tanstack/react-query";
@@ -68,7 +67,7 @@ const SummaryCard = ({
     <div className={`text-xl font-medium ${
       isActive ? 'text-white' : 'text-gray-900'
     }`}>
-      ${amount.toFixed(2)}
+      {Math.round(amount)} zł
     </div>
   </div>
 );
@@ -101,7 +100,7 @@ const TransactionItem = ({ item, onEdit }: {
     <div className={`text-sm font-medium ${
       item.type === "income" ? "text-green-600" : "text-red-600"
     }`}>
-      {item.type === "income" ? "+" : "-"}${item.amount.toFixed(2)}
+      {item.type === "income" ? "+" : "-"}{Math.round(item.amount)} zł
     </div>
   </div>
 );
