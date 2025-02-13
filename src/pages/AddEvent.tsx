@@ -1,13 +1,63 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Calendar, CreditCard, DollarSign, Users } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 const AddEvent = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [category, setCategory] = useState<"Work" | "School" | "Other">("Work");
+  const [formData, setFormData] = useState({
+    title: "",
+    date: "",
+    startTime: "",
+    endTime: "",
+    hourlyWage: "",
+    coworkers: ""
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const { error } = await supabase.from('events').insert({
+        title: formData.title,
+        event_date: formData.date,
+        start_time: formData.startTime,
+        end_time: formData.endTime,
+        category: category,
+        hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
+        coworkers: formData.coworkers ? formData.coworkers.split(',').map(c => c.trim()) : null
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Event has been created successfully.",
+      });
+
+      navigate('/');
+    } catch (error) {
+      console.error('Error adding event:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to create event. Please try again.",
+      });
+    }
+  };
 
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4">
@@ -43,9 +93,19 @@ const AddEvent = () => {
         <div className="bg-white/70 border border-white/20 rounded-2xl p-4 sm:p-6 mt-4 w-full">
           {/* Category Buttons */}
           <div className="flex flex-wrap gap-2 text-xs font-medium mb-6">
-            <button className="flex-1 sm:flex-none bg-[#2563EB] text-white rounded-[500px] px-4 sm:px-8 py-3.5">Work</button>
-            <button className="flex-1 sm:flex-none bg-black/5 rounded-[500px] px-4 sm:px-7 py-3.5">School</button>
-            <button className="flex-1 sm:flex-none bg-black/5 rounded-[500px] px-4 sm:px-8 py-3.5">Other</button>
+            {["Work", "School", "Other"].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategory(cat as "Work" | "School" | "Other")}
+                className={`flex-1 sm:flex-none ${
+                  category === cat
+                    ? "bg-[#2563EB] text-white"
+                    : "bg-black/5"
+                } rounded-[500px] px-4 sm:px-8 py-3.5`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
 
           <div className="space-y-4 w-full sm:max-w-[291px]">
@@ -54,6 +114,8 @@ const AddEvent = () => {
               <Label htmlFor="title" className="text-xs text-[#374151] font-medium">Title</Label>
               <Input 
                 id="title" 
+                value={formData.title}
+                onChange={handleInputChange}
                 placeholder="Event title" 
                 className="mt-1.5 bg-[#EEEEEE]/60 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC]" 
               />
@@ -66,6 +128,8 @@ const AddEvent = () => {
                 <Input 
                   id="date" 
                   type="date"
+                  value={formData.date}
+                  onChange={handleInputChange}
                   inputMode="none"
                   className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm pr-10 [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer w-full" 
                 />
@@ -80,6 +144,8 @@ const AddEvent = () => {
                 <Input 
                   id="startTime" 
                   type="time"
+                  value={formData.startTime}
+                  onChange={handleInputChange}
                   inputMode="none"
                   className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer w-full" 
                 />
@@ -89,6 +155,8 @@ const AddEvent = () => {
                 <Input 
                   id="endTime" 
                   type="time"
+                  value={formData.endTime}
+                  onChange={handleInputChange}
                   inputMode="none"
                   className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer w-full" 
                 />
@@ -99,10 +167,12 @@ const AddEvent = () => {
             <div>
               <div className="flex items-center gap-1">
                 <DollarSign className="w-4 h-4 text-[#374151]" />
-                <Label htmlFor="wage" className="text-xs text-[#374151] font-medium">Hourly Wage</Label>
+                <Label htmlFor="hourlyWage" className="text-xs text-[#374151] font-medium">Hourly Wage</Label>
               </div>
               <Input 
-                id="wage" 
+                id="hourlyWage" 
+                value={formData.hourlyWage}
+                onChange={handleInputChange}
                 placeholder="15.00"
                 className="mt-1.5 bg-[#EEEEEE]/60 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full" 
               />
@@ -116,6 +186,8 @@ const AddEvent = () => {
               </div>
               <Input 
                 id="coworkers" 
+                value={formData.coworkers}
+                onChange={handleInputChange}
                 placeholder="Add co-workers (comma separated)"
                 className="mt-1.5 bg-white/60 border border-black/10 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full" 
               />
@@ -125,6 +197,7 @@ const AddEvent = () => {
 
         {/* Submit Button */}
         <Button 
+          onClick={handleSubmit}
           className="w-full mt-4 bg-[#2563EB] text-white rounded-xl h-[52px] text-xs font-medium shadow-sm hover:bg-[#2563EB]/90"
         >
           Add Event

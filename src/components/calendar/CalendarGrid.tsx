@@ -1,28 +1,39 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { startOfMonth, endOfMonth, eachDayOfInterval, format, addDays, startOfWeek, isSameMonth, isSameDay, isToday } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Event {
+  id: string;
+  title: string;
+  event_date: string;
+  category: string;
+}
 
 interface DayProps {
   date: Date;
-  events: {
-    type: "blue" | "green" | "orange";
-  }[];
+  events: Event[];
   isWeekView?: boolean;
 }
 
 const Day: React.FC<DayProps> = ({ date, events, isWeekView = false }) => {
-  const getEventColor = (type: "blue" | "green" | "orange") => {
-    switch (type) {
-      case "blue":
+  const getEventColor = (category: string) => {
+    switch (category.toLowerCase()) {
+      case "work":
         return "bg-[rgba(59,130,246,0.7)]";
-      case "green":
+      case "school":
         return "bg-green-600";
-      case "orange":
+      case "other":
         return "bg-[rgba(222,159,34,1)]";
+      default:
+        return "bg-gray-400";
     }
   };
 
   const isCurrentDay = isToday(date);
+  const dayEvents = events.filter(event => 
+    isSameDay(new Date(event.event_date), date)
+  );
 
   return (
     <div 
@@ -37,12 +48,12 @@ const Day: React.FC<DayProps> = ({ date, events, isWeekView = false }) => {
       <div className="text-gray-900 text-xs font-medium leading-loose">
         {format(date, 'd')}
       </div>
-      {events.length > 0 && (
+      {dayEvents.length > 0 && (
         <div className="flex gap-1 mt-1">
-          {events.map((event, index) => (
+          {dayEvents.map((event, index) => (
             <div
-              key={index}
-              className={`flex min-h-1.5 w-1.5 h-1.5 rounded-full ${getEventColor(event.type)}`}
+              key={event.id}
+              className={`flex min-h-1.5 w-1.5 h-1.5 rounded-full ${getEventColor(event.category)}`}
             />
           ))}
         </div>
@@ -78,29 +89,37 @@ interface CalendarGridProps {
 }
 
 export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate }) => {
+  const [events, setEvents] = useState<Event[]>([]);
   const isWeekView = view === "week";
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('events')
+          .select('id, title, event_date, category');
+        
+        if (error) throw error;
+        setEvents(data || []);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const getMonthDays = () => {
     const start = startOfMonth(currentDate);
     const end = endOfMonth(currentDate);
-    // Use weekStartsOn: 1 to start weeks on Monday
     const firstWeek = startOfWeek(start, { weekStartsOn: 1 });
     const totalDays = eachDayOfInterval({ start: firstWeek, end });
     return totalDays;
   };
 
   const getWeekDays = () => {
-    // Use weekStartsOn: 1 to start weeks on Monday
     const start = startOfWeek(currentDate, { weekStartsOn: 1 });
     return Array.from({ length: 7 }, (_, i) => addDays(start, i));
-  };
-
-  const getDayEvents = (date: Date) => {
-    // Mock events - you can replace this with real event data
-    const day = parseInt(format(date, 'd'));
-    if (day % 3 === 0) return [{ type: "blue" as const }];
-    if (day % 3 === 1) return [{ type: "green" as const }, { type: "orange" as const }];
-    return [{ type: "orange" as const }];
   };
 
   if (isWeekView) {
@@ -113,7 +132,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate })
             <Day
               key={index}
               date={date}
-              events={getDayEvents(date)}
+              events={events}
               isWeekView={true}
             />
           ))}
@@ -136,7 +155,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate })
             <Day
               key={dayIndex}
               date={date}
-              events={getDayEvents(date)}
+              events={events}
             />
           ))}
         </div>
