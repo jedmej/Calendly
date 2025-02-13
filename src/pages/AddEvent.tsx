@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -241,7 +242,10 @@ const AddEvent = () => {
               Event
             </div>
           </button>
-          <button className="flex-1 bg-black/5 text-black rounded-[500px] py-3.5 px-6">
+          <button 
+            onClick={() => navigate('/add-transaction')} 
+            className="flex-1 bg-black/5 text-black rounded-[500px] py-3.5 px-6"
+          >
             <div className="flex items-center justify-center gap-2">
               <CreditCard className="w-4 h-4" />
               Transaction
