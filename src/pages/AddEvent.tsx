@@ -39,15 +39,15 @@ const AddEvent = () => {
           </button>
         </div>
 
-        {/* Category Buttons */}
-        <div className="mt-4 flex gap-2 text-xs font-medium px-4">
-          <button className="bg-[#2563EB] text-white rounded-[500px] px-8 py-3.5">Work</button>
-          <button className="bg-black/5 rounded-[500px] px-7 py-3.5">School</button>
-          <button className="bg-black/5 rounded-[500px] px-8 py-3.5">Other</button>
-        </div>
-
         {/* Form Container */}
         <div className="bg-white/70 border border-white/20 rounded-2xl p-6 mt-4">
+          {/* Category Buttons */}
+          <div className="flex gap-2 text-xs font-medium mb-6">
+            <button className="bg-[#2563EB] text-white rounded-[500px] px-8 py-3.5">Work</button>
+            <button className="bg-black/5 rounded-[500px] px-7 py-3.5">School</button>
+            <button className="bg-black/5 rounded-[500px] px-8 py-3.5">Other</button>
+          </div>
+
           <div className="space-y-4 max-w-[291px]">
             {/* Title Input */}
             <div>
