@@ -4,6 +4,7 @@ import { ActionBar } from "@/components/calendar/ActionBar";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Transaction {
   id: string;
@@ -57,8 +58,14 @@ const SummaryCard = ({
   </div>
 );
 
-const TransactionItem = ({ item }: { item: FinancialItem }) => (
-  <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl">
+const TransactionItem = ({ item, onEdit }: { 
+  item: FinancialItem;
+  onEdit: (item: FinancialItem) => void;
+}) => (
+  <div 
+    onClick={() => onEdit(item)}
+    className="flex items-center justify-between p-4 border border-gray-100 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
+  >
     <div className="flex items-center gap-3">
       <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
         item.type === "income" ? "bg-[#F2FCE2]" : "bg-[#FFDEE2]"
@@ -85,6 +92,7 @@ const TransactionItem = ({ item }: { item: FinancialItem }) => (
 );
 
 export const Finances = () => {
+  const navigate = useNavigate();
   const { data: transactions } = useQuery({
     queryKey: ["transactions"],
     queryFn: async () => {
@@ -115,7 +123,6 @@ export const Finances = () => {
   const allItems = React.useMemo(() => {
     const items: FinancialItem[] = [];
 
-    // Add transactions with explicit type casting
     transactions?.forEach(t => {
       items.push({
         id: t.id,
@@ -126,7 +133,6 @@ export const Finances = () => {
       });
     });
 
-    // Add work events
     workEvents?.forEach(e => {
       if (e.total_earnings) {
         items.push({
@@ -149,6 +155,20 @@ export const Finances = () => {
       item.type === "expense" ? sum + item.amount : sum, 0),
   }), [allItems]);
 
+  const handleEditTransaction = (item: FinancialItem) => {
+    navigate('/add-transaction', {
+      state: {
+        id: item.id,
+        title: item.title,
+        amount: item.amount,
+        date: item.date,
+        type: item.type,
+        isEditing: true,
+        returnDate: item.date
+      }
+    });
+  };
+
   return (
     <main className="bg-[#F6F7F9] min-h-screen p-4">
       <div className="w-full max-w-[480px] mx-auto space-y-4">
@@ -167,7 +187,11 @@ export const Finances = () => {
           </h2>
           <div className="space-y-2">
             {allItems.map(item => (
-              <TransactionItem key={item.id} item={item} />
+              <TransactionItem 
+                key={item.id} 
+                item={item}
+                onEdit={handleEditTransaction}
+              />
             ))}
           </div>
         </section>
