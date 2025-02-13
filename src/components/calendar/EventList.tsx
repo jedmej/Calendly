@@ -5,6 +5,7 @@ import { CalendarEvent } from "./CalendarEvent";
 interface EventListProps {
   date: string;
   events: Array<{
+    id?: string;
     icon?: string;
     title: string;
     time?: string;
@@ -14,7 +15,11 @@ interface EventListProps {
       value: number;
       type: "income" | "expense";
     };
-    category?: string;  // Add this line to include category in the type
+    category?: string;
+    event_date?: string;
+    start_time?: string;
+    end_time?: string;
+    hourly_wage?: number;
   }>;
 }
 

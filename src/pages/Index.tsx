@@ -113,6 +113,7 @@ const Index = () => {
             <EventList 
               date={format(selectedDate, 'MMM dd, yyyy')} 
               events={selectedEvents.map(event => ({
+                id: event.id,
                 title: event.title,
                 time: event.start_time && event.end_time ? `${event.start_time} - ${event.end_time}` : undefined,
                 withPeople: event.coworkers || undefined,
@@ -120,7 +121,11 @@ const Index = () => {
                   value: event.hourly_wage,
                   type: "income" as const
                 } : undefined,
-                category: event.category // Add this line to pass the category
+                category: event.category,
+                event_date: event.event_date,
+                start_time: event.start_time,
+                end_time: event.end_time,
+                hourly_wage: event.hourly_wage
               }))} 
             />
           )}
