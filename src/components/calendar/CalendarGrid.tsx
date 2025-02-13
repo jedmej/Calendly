@@ -83,13 +83,15 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate })
   const getMonthDays = () => {
     const start = startOfMonth(currentDate);
     const end = endOfMonth(currentDate);
-    const firstWeek = startOfWeek(start);
+    // Use weekStartsOn: 1 to start weeks on Monday
+    const firstWeek = startOfWeek(start, { weekStartsOn: 1 });
     const totalDays = eachDayOfInterval({ start: firstWeek, end });
     return totalDays;
   };
 
   const getWeekDays = () => {
-    const start = startOfWeek(currentDate);
+    // Use weekStartsOn: 1 to start weeks on Monday
+    const start = startOfWeek(currentDate, { weekStartsOn: 1 });
     return Array.from({ length: 7 }, (_, i) => addDays(start, i));
   };
 
