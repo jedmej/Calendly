@@ -113,22 +113,31 @@ export const Finances = () => {
   });
 
   const allItems = React.useMemo(() => {
-    const items: FinancialItem[] = [
-      ...(transactions?.map(t => ({
+    const items: FinancialItem[] = [];
+
+    // Add transactions with explicit type casting
+    transactions?.forEach(t => {
+      items.push({
         id: t.id,
         title: t.title,
         amount: t.amount,
         date: t.transaction_date,
-        type: t.type === "expense" ? "expense" : "income",
-      })) || []),
-      ...(workEvents?.filter(e => e.total_earnings).map(e => ({
-        id: e.id,
-        title: e.title,
-        amount: e.total_earnings,
-        date: e.event_date,
-        type: "income" as const,
-      })) || []),
-    ];
+        type: t.type === "expense" ? "expense" : "income"
+      });
+    });
+
+    // Add work events
+    workEvents?.forEach(e => {
+      if (e.total_earnings) {
+        items.push({
+          id: e.id,
+          title: e.title,
+          amount: e.total_earnings,
+          date: e.event_date,
+          type: "income"
+        });
+      }
+    });
 
     return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [transactions, workEvents]);
