@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, Calendar, CreditCard, DollarSign, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LocationState {
   id?: string;
@@ -26,31 +27,58 @@ const AddEvent = () => {
   const location = useLocation();
   const state = location.state as LocationState;
   const isEditing = state?.isEditing || false;
+  const isMobile = useIsMobile();
 
-  const [category, setCategory] = useState<"Work" | "School" | "Other">(state?.category as "Work" | "School" | "Other" || "Work");
+  const [category, setCategory] = useState<"Work" | "School" | "Other">(
+    state?.category as "Work" | "School" | "Other" || "Work"
+  );
   const [formData, setFormData] = useState({
     title: state?.title || "",
     date: state?.date || "",
     startTime: state?.startTime || "",
     endTime: state?.endTime || "",
     hourlyWage: state?.hourlyWage || "",
-    coworkers: state?.coworkers || ""
+    coworkers: state?.coworkers || "",
   });
+
+  const [estimatedEarnings, setEstimatedEarnings] = useState(0);
+  const [tips, setTips] = useState("0");
+  const [totalEarnings, setTotalEarnings] = useState(0);
+
+  useEffect(() => {
+    calculateEarnings();
+  }, [formData.startTime, formData.endTime, formData.hourlyWage]);
+
+  const calculateEarnings = () => {
+    if (formData.startTime && formData.endTime && formData.hourlyWage) {
+      const start = new Date(`2000/01/01 ${formData.startTime}`);
+      const end = new Date(`2000/01/01 ${formData.endTime}`);
+      const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+      const earnings = hours * parseFloat(formData.hourlyWage);
+      setEstimatedEarnings(earnings);
+      setTotalEarnings(earnings + parseFloat(tips || "0"));
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [id]: value
+      [id]: value,
     }));
+  };
+
+  const handleTipsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTips(value);
+    setTotalEarnings(estimatedEarnings + parseFloat(value || "0"));
   };
 
   const handleSubmit = async () => {
     try {
       if (isEditing && state?.id) {
-        // Update existing event
         const { error } = await supabase
-          .from('events')
+          .from("events")
           .update({
             title: formData.title,
             event_date: formData.date,
@@ -58,9 +86,9 @@ const AddEvent = () => {
             end_time: formData.endTime,
             category: category,
             hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
-            coworkers: formData.coworkers ? formData.coworkers.split(',').map(c => c.trim()) : null
+            coworkers: formData.coworkers ? formData.coworkers.split(",").map((c) => c.trim()) : null,
           })
-          .eq('id', state.id);
+          .eq("id", state.id);
 
         if (error) throw error;
 
@@ -69,15 +97,14 @@ const AddEvent = () => {
           description: "Event has been updated successfully.",
         });
       } else {
-        // Create new event
-        const { error } = await supabase.from('events').insert({
+        const { error } = await supabase.from("events").insert({
           title: formData.title,
           event_date: formData.date,
           start_time: formData.startTime,
           end_time: formData.endTime,
           category: category,
           hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
-          coworkers: formData.coworkers ? formData.coworkers.split(',').map(c => c.trim()) : null
+          coworkers: formData.coworkers ? formData.coworkers.split(",").map((c) => c.trim()) : null,
         });
 
         if (error) throw error;
@@ -88,9 +115,9 @@ const AddEvent = () => {
         });
       }
 
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      console.error('Error saving event:', error);
+      console.error("Error saving event:", error);
       toast({
         variant: "destructive",
         title: "Error",
@@ -103,14 +130,16 @@ const AddEvent = () => {
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4">
       <div className="w-full max-w-[480px] mx-auto">
         {/* Header */}
-        <div className="bg-white/70 rounded-[500px] min-h-[60px] w-full px-2 py-3 flex items-center gap-2">
-          <button 
+        <div className="bg-white/70 backdrop-blur-lg rounded-[500px] min-h-[60px] w-full px-2 py-3 flex items-center gap-2">
+          <button
             onClick={() => navigate(-1)}
             className="rounded-xl p-2 hover:bg-black/5 w-[36px] h-[36px] flex items-center justify-center"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <span className="text-[17px] text-[#111827] font-medium">{isEditing ? "Edit Event" : "Add New"}</span>
+          <span className="text-[17px] text-[#111827] font-medium">
+            {isEditing ? "Edit Event" : "Add New"}
+          </span>
         </div>
 
         {/* Event/Transaction Toggle */}
@@ -130,48 +159,51 @@ const AddEvent = () => {
         </div>
 
         {/* Form Container */}
-        <div className="bg-white/70 border border-white/20 rounded-2xl p-4 sm:p-6 mt-4 w-full">
+        <div className="bg-white/70 border border-white/20 rounded-2xl p-6 mt-4">
           {/* Category Buttons */}
           <div className="flex flex-wrap gap-2 text-xs font-medium mb-6">
             {["Work", "School", "Other"].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setCategory(cat as "Work" | "School" | "Other")}
-                className={`flex-1 sm:flex-none ${
+                className={`flex-1 ${
                   category === cat
                     ? "bg-[#2563EB] text-white"
                     : "bg-black/5"
-                } rounded-[500px] px-4 sm:px-8 py-3.5`}
+                } rounded-[500px] py-3.5 px-4`}
               >
                 {cat}
               </button>
             ))}
           </div>
 
-          <div className="space-y-4 w-full sm:max-w-[291px]">
+          <div className="space-y-4">
             {/* Title Input */}
             <div>
-              <Label htmlFor="title" className="text-xs text-[#374151] font-medium">Title</Label>
-              <Input 
-                id="title" 
+              <Label htmlFor="title" className="text-xs text-[#374151] font-medium">
+                Title
+              </Label>
+              <Input
+                id="title"
                 value={formData.title}
                 onChange={handleInputChange}
-                placeholder="Event title" 
-                className="mt-1.5 bg-[#EEEEEE]/60 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC]" 
+                placeholder="Event title"
+                className="mt-1.5 bg-[#EEEEEE]/60 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC]"
               />
             </div>
 
             {/* Date Input */}
             <div>
-              <Label htmlFor="date" className="text-xs text-[#374151] font-medium">Date</Label>
+              <Label htmlFor="date" className="text-xs text-[#374151] font-medium">
+                Date
+              </Label>
               <div className="relative">
-                <Input 
-                  id="date" 
+                <Input
+                  id="date"
                   type="date"
                   value={formData.date}
                   onChange={handleInputChange}
-                  inputMode="none"
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm pr-10 [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer w-full" 
+                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm cursor-pointer"
                 />
                 <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
               </div>
@@ -180,25 +212,27 @@ const AddEvent = () => {
             {/* Time Inputs */}
             <div className="flex gap-4">
               <div className="flex-1">
-                <Label htmlFor="startTime" className="text-xs text-[#374151] font-medium">Start Time</Label>
-                <Input 
-                  id="startTime" 
+                <Label htmlFor="startTime" className="text-xs text-[#374151] font-medium">
+                  Start Time
+                </Label>
+                <Input
+                  id="startTime"
                   type="time"
                   value={formData.startTime}
                   onChange={handleInputChange}
-                  inputMode="none"
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer w-full" 
+                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm"
                 />
               </div>
               <div className="flex-1">
-                <Label htmlFor="endTime" className="text-xs text-[#374151] font-medium">End Time</Label>
-                <Input 
-                  id="endTime" 
+                <Label htmlFor="endTime" className="text-xs text-[#374151] font-medium">
+                  End Time
+                </Label>
+                <Input
+                  id="endTime"
                   type="time"
                   value={formData.endTime}
                   onChange={handleInputChange}
-                  inputMode="none"
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer w-full" 
+                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm"
                 />
               </div>
             </div>
@@ -207,14 +241,16 @@ const AddEvent = () => {
             <div>
               <div className="flex items-center gap-1">
                 <DollarSign className="w-4 h-4 text-[#374151]" />
-                <Label htmlFor="hourlyWage" className="text-xs text-[#374151] font-medium">Hourly Wage</Label>
+                <Label htmlFor="hourlyWage" className="text-xs text-[#374151] font-medium">
+                  Hourly Wage
+                </Label>
               </div>
-              <Input 
-                id="hourlyWage" 
+              <Input
+                id="hourlyWage"
                 value={formData.hourlyWage}
                 onChange={handleInputChange}
                 placeholder="15.00"
-                className="mt-1.5 bg-[#EEEEEE]/60 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full" 
+                className="mt-1.5 bg-[#EEEEEE]/60 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC]"
               />
             </div>
 
@@ -222,25 +258,50 @@ const AddEvent = () => {
             <div>
               <div className="flex items-center gap-1">
                 <Users className="w-4 h-4 text-[#374151]" />
-                <Label htmlFor="coworkers" className="text-xs text-[#374151] font-medium">Co-workers</Label>
+                <Label htmlFor="coworkers" className="text-xs text-[#374151] font-medium">
+                  Co-workers
+                </Label>
               </div>
-              <Input 
-                id="coworkers" 
+              <Input
+                id="coworkers"
                 value={formData.coworkers}
                 onChange={handleInputChange}
                 placeholder="Add co-workers (comma separated)"
-                className="mt-1.5 bg-white/60 border border-black/10 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full" 
+                className="mt-1.5 bg-white/60 border border-black/10 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC]"
               />
+            </div>
+
+            {/* Earnings Calculator */}
+            <div className="bg-[#F8FAFF] border border-[#E8F1FF] rounded-2xl p-6 mt-4">
+              <div className="flex justify-between items-center">
+                <span className="text-[#4B5563] font-semibold text-sm">Estimated earnings</span>
+                <span className="text-[#2463EB] font-bold">${estimatedEarnings.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-[#4B5563] font-semibold text-sm">Tips</span>
+                <Input
+                  type="number"
+                  value={tips}
+                  onChange={handleTipsChange}
+                  placeholder="0.00"
+                  className="w-[75px] h-[38px] bg-[#EEEEEE]/60 rounded-xl text-sm text-center"
+                />
+              </div>
+              <div className="h-[1px] bg-[#E8F1FF] my-2" />
+              <div className="flex justify-between items-center">
+                <span className="text-[#4B5563] font-semibold">Total Earnings</span>
+                <span className="text-[#2463EB] font-bold">${totalEarnings.toFixed(2)}</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Submit Button */}
-        <Button 
+        <Button
           onClick={handleSubmit}
-          className="w-full mt-4 bg-[#2563EB] text-white rounded-xl h-[52px] text-xs font-medium shadow-sm hover:bg-[#2563EB]/90"
+          className="w-full mt-4 bg-[#2563EB] text-white rounded-[500px] h-[44px] text-xs font-medium"
         >
-          {isEditing ? "Save" : "Add Event"}
+          {isEditing ? "Save Changes" : "Add Event"}
         </Button>
       </div>
     </div>
