@@ -20,6 +20,7 @@ interface EventListProps {
     start_time?: string;
     end_time?: string;
     hourly_wage?: number;
+    total_earnings?: number;
   }>;
 }
 

@@ -15,6 +15,7 @@ interface Event {
   category: string;
   coworkers?: string[] | null;
   hourly_wage?: number | null;
+  total_earnings?: number | null;
 }
 
 const Index = () => {
@@ -117,15 +118,12 @@ const Index = () => {
                 title: event.title,
                 time: event.start_time && event.end_time ? `${event.start_time} - ${event.end_time}` : undefined,
                 withPeople: event.coworkers || undefined,
-                amount: event.hourly_wage ? {
-                  value: event.hourly_wage,
-                  type: "income" as const
-                } : undefined,
                 category: event.category,
                 event_date: event.event_date,
                 start_time: event.start_time,
                 end_time: event.end_time,
-                hourly_wage: event.hourly_wage
+                hourly_wage: event.hourly_wage,
+                total_earnings: event.total_earnings // Add this line to pass total_earnings
               }))} 
             />
           )}
