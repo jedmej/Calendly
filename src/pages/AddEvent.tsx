@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Calendar, CreditCard, DollarSign, Users } from "lucide-react";
+import { ArrowLeft, Calendar, CreditCard, DollarSign, Users, Save, Trash, Briefcase, GraduationCap, Balloon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -160,10 +159,36 @@ const AddEvent = () => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!state?.id) return;
+
+    try {
+      const { error } = await supabase
+        .from("events")
+        .delete()
+        .eq("id", state.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Event has been deleted successfully.",
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to delete event. Please try again.",
+      });
+    }
+  };
+
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4">
       <div className="w-full max-w-[480px] mx-auto">
-        {/* Header */}
         <div className="bg-white/70 backdrop-blur-lg rounded-[500px] min-h-[60px] w-full px-2 py-3 flex items-center gap-2">
           <button
             onClick={() => navigate(-1)}
@@ -176,7 +201,6 @@ const AddEvent = () => {
           </span>
         </div>
 
-        {/* Event/Transaction Toggle */}
         <div className="mt-4 flex gap-4 px-4">
           <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-[15px] px-[30px] text-sm font-medium">
             <div className="flex items-center justify-center gap-2">
@@ -192,27 +216,29 @@ const AddEvent = () => {
           </button>
         </div>
 
-        {/* Form Container */}
         <div className="bg-white/70 border border-white/20 rounded-2xl p-6 mt-4">
-          {/* Category Buttons */}
           <div className="flex flex-wrap gap-2 text-xs font-medium mb-6">
-            {["Work", "School", "Other"].map((cat) => (
+            {[
+              { name: "Work", icon: <Briefcase className="w-4 h-4" /> },
+              { name: "School", icon: <GraduationCap className="w-4 h-4" /> },
+              { name: "Other", icon: <Balloon className="w-4 h-4" /> }
+            ].map(({ name, icon }) => (
               <button
-                key={cat}
-                onClick={() => setCategory(cat as "Work" | "School" | "Other")}
+                key={name}
+                onClick={() => setCategory(name as "Work" | "School" | "Other")}
                 className={`flex-1 ${
-                  category === cat
+                  category === name
                     ? "bg-[#2563EB] text-white"
                     : "bg-black/5"
-                } rounded-[500px] py-3.5 px-4`}
+                } rounded-[500px] py-3.5 px-4 flex items-center justify-center gap-2`}
               >
-                {cat}
+                {icon}
+                {name}
               </button>
             ))}
           </div>
 
           <div className="space-y-4">
-            {/* Title Input */}
             <div>
               <Label htmlFor="title" className="text-xs text-[#374151] font-medium">
                 Title *
@@ -229,7 +255,6 @@ const AddEvent = () => {
               {errors.title && <span className="text-xs text-red-500">{errors.title}</span>}
             </div>
 
-            {/* Date Input */}
             <div>
               <Label htmlFor="date" className="text-xs text-[#374151] font-medium">
                 Date *
@@ -249,7 +274,6 @@ const AddEvent = () => {
               {errors.date && <span className="text-xs text-red-500">{errors.date}</span>}
             </div>
 
-            {/* Time Inputs */}
             <div className="flex gap-4">
               <div className="flex-1">
                 <Label htmlFor="startTime" className="text-xs text-[#374151] font-medium">
@@ -285,7 +309,6 @@ const AddEvent = () => {
               </div>
             </div>
 
-            {/* Hourly Wage */}
             <div>
               <div className="flex items-center gap-1">
                 <DollarSign className="w-4 h-4 text-[#374151]" />
@@ -302,7 +325,6 @@ const AddEvent = () => {
               />
             </div>
 
-            {/* Co-workers */}
             <div>
               <div className="flex items-center gap-1">
                 <Users className="w-4 h-4 text-[#374151]" />
@@ -319,7 +341,6 @@ const AddEvent = () => {
               />
             </div>
 
-            {/* Earnings Calculator */}
             <div className="bg-[#F8FAFF] border border-[#E8F1FF] rounded-2xl p-6 mt-4">
               <div className="flex justify-between items-center">
                 <span className="text-[#4B5563] font-semibold text-sm">Estimated earnings</span>
@@ -344,13 +365,24 @@ const AddEvent = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
-        <Button
-          onClick={handleSubmit}
-          className="w-full mt-4 bg-[#2563EB] text-white rounded-[500px] h-[44px] text-xs font-medium"
-        >
-          {isEditing ? "Save Changes" : "Add Event"}
-        </Button>
+        <div className="flex gap-4 mt-4">
+          {isEditing && (
+            <Button
+              onClick={handleDelete}
+              className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-[500px] h-[44px] text-xs font-medium"
+            >
+              <Trash className="w-4 h-4 mr-2" />
+              Delete Event
+            </Button>
+          )}
+          <Button
+            onClick={handleSubmit}
+            className={`${isEditing ? 'flex-1' : 'w-full'} bg-[#2563EB] text-white rounded-[500px] h-[44px] text-xs font-medium`}
+          >
+            <Save className="w-4 h-4 mr-2" />
+            {isEditing ? "Save Changes" : "Add Event"}
+          </Button>
+        </div>
       </div>
     </div>
   );
