@@ -1,4 +1,3 @@
-
 import React from "react";
 import { ActionBar } from "@/components/calendar/ActionBar";
 import { useQuery } from "@tanstack/react-query";
@@ -32,12 +31,23 @@ interface FinancialItem {
 
 const SummaryCard = ({ 
   type, 
-  amount 
+  amount,
+  isActive,
+  onClick
 }: { 
   type: "income" | "expense";
   amount: number;
+  isActive: boolean;
+  onClick: () => void;
 }) => (
-  <div className="flex-1 bg-white/70 border border-white/20 rounded-2xl p-4 space-y-3">
+  <div 
+    onClick={onClick}
+    className={`flex-1 border rounded-2xl p-4 space-y-3 cursor-pointer transition-all
+      ${isActive 
+        ? 'bg-blue-600 border-blue-600' 
+        : 'bg-white/70 border-white/20 hover:bg-white/90'
+      }`}
+  >
     <div className="flex items-center gap-3">
       <div className={`w-8 h-8 rounded-xl ${
         type === "income" ? "bg-[#F2FCE2]" : "bg-[#FFDEE2]"
@@ -48,11 +58,15 @@ const SummaryCard = ({
           <ArrowDownIcon className="w-4 h-4 text-red-600" />
         )}
       </div>
-      <span className="text-xs text-gray-600 font-medium">
+      <span className={`text-xs font-medium ${
+        isActive ? 'text-white' : 'text-gray-600'
+      }`}>
         {type === "income" ? "Income" : "Expenses"}
       </span>
     </div>
-    <div className="text-xl font-medium">
+    <div className={`text-xl font-medium ${
+      isActive ? 'text-white' : 'text-gray-900'
+    }`}>
       ${amount.toFixed(2)}
     </div>
   </div>
@@ -93,6 +107,8 @@ const TransactionItem = ({ item, onEdit }: {
 
 export const Finances = () => {
   const navigate = useNavigate();
+  const [activeFilter, setActiveFilter] = React.useState<"income" | "expense" | null>(null);
+
   const { data: transactions } = useQuery({
     queryKey: ["transactions"],
     queryFn: async () => {
@@ -169,6 +185,15 @@ export const Finances = () => {
     });
   };
 
+  const filteredItems = React.useMemo(() => {
+    if (!activeFilter) return allItems;
+    return allItems.filter(item => item.type === activeFilter);
+  }, [allItems, activeFilter]);
+
+  const handleFilterClick = (type: "income" | "expense") => {
+    setActiveFilter(current => current === type ? null : type);
+  };
+
   return (
     <main className="bg-[#F6F7F9] min-h-screen p-4">
       <div className="w-full max-w-[480px] mx-auto space-y-4">
@@ -177,8 +202,18 @@ export const Finances = () => {
         </header>
 
         <section className="flex gap-4">
-          <SummaryCard type="income" amount={totals.income} />
-          <SummaryCard type="expense" amount={totals.expenses} />
+          <SummaryCard 
+            type="income" 
+            amount={totals.income} 
+            isActive={activeFilter === "income"}
+            onClick={() => handleFilterClick("income")}
+          />
+          <SummaryCard 
+            type="expense" 
+            amount={totals.expenses} 
+            isActive={activeFilter === "expense"}
+            onClick={() => handleFilterClick("expense")}
+          />
         </section>
 
         <section className="bg-white/70 border border-white/20 rounded-2xl p-4">
@@ -186,7 +221,7 @@ export const Finances = () => {
             Transactions
           </h2>
           <div className="space-y-2">
-            {allItems.map(item => (
+            {filteredItems.map(item => (
               <TransactionItem 
                 key={item.id} 
                 item={item}
