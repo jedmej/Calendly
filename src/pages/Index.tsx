@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarGrid } from "@/components/calendar/CalendarGrid";
 import { EventList } from "@/components/calendar/EventList";
 import { ActionBar } from "@/components/calendar/ActionBar";
 import { addMonths, format } from "date-fns";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Event {
   id: string;
@@ -67,12 +67,7 @@ const Index = () => {
                   onClick={handlePreviousMonth}
                   className="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-gray-100"
                 >
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/152312aa8d49520e1dcf138697063cc5d50a3728dd082875446466a099aa6bc4"
-                    className="w-5 h-5 rotate-180"
-                    alt="Previous month"
-                  />
+                  <ChevronLeft className="w-5 h-5 text-gray-600" />
                 </button>
                 <button
                   onClick={handleToday}
@@ -84,12 +79,7 @@ const Index = () => {
                   onClick={handleNextMonth}
                   className="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-gray-100"
                 >
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/152312aa8d49520e1dcf138697063cc5d50a3728dd082875446466a099aa6bc4"
-                    className="w-5 h-5"
-                    alt="Next month"
-                  />
+                  <ChevronRight className="w-5 h-5 text-gray-600" />
                 </button>
               </div>
             </div>
