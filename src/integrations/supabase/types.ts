@@ -20,6 +20,7 @@ export type Database = {
           id: string
           start_time: string
           title: string
+          total_earnings: number | null
         }
         Insert: {
           category: string
@@ -31,6 +32,7 @@ export type Database = {
           id?: string
           start_time: string
           title: string
+          total_earnings?: number | null
         }
         Update: {
           category?: string
@@ -42,6 +44,7 @@ export type Database = {
           id?: string
           start_time?: string
           title?: string
+          total_earnings?: number | null
         }
         Relationships: []
       }
