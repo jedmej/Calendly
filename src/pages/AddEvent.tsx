@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -235,23 +234,25 @@ const AddEvent = () => {
           </span>
         </div>
 
-        <div className="flex gap-3 px-2">
-          <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-3.5 px-6">
-            <div className="flex items-center justify-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Event
-            </div>
-          </button>
-          <button 
-            onClick={() => navigate('/add-transaction')} 
-            className="flex-1 bg-black/5 text-black rounded-[500px] py-3.5 px-6"
-          >
-            <div className="flex items-center justify-center gap-2">
-              <CreditCard className="w-4 h-4" />
-              Transaction
-            </div>
-          </button>
-        </div>
+        {!isEditing && (
+          <div className="flex gap-3 px-2">
+            <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-3.5 px-6">
+              <div className="flex items-center justify-center gap-2">
+                <Calendar className="w-4 h-4" />
+                Event
+              </div>
+            </button>
+            <button 
+              onClick={() => navigate('/add-transaction')} 
+              className="flex-1 bg-black/5 text-black rounded-[500px] py-3.5 px-6"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <CreditCard className="w-4 h-4" />
+                Transaction
+              </div>
+            </button>
+          </div>
+        )}
 
         <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
           <div className="flex flex-wrap gap-2 text-xs font-medium mb-8">
