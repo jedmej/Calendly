@@ -1,6 +1,6 @@
+
 import React from "react";
-import { Briefcase } from "lucide-react";
-import { CreditCard } from "lucide-react";
+import { Briefcase, DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface CalendarEventProps {
@@ -13,7 +13,7 @@ interface CalendarEventProps {
   amount?: {
     value: number;
     type: "income" | "expense";
-  };
+  } | number;  // Allow direct number for transactions
   category?: string;
   event_date?: string;
   transaction_date?: string;
@@ -52,7 +52,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
             id,
             title,
             date: transaction_date,
-            amount: amount?.value,
+            amount: typeof amount === 'number' ? amount : amount?.value,
             type,
             category,
             isEditing: true,
@@ -83,7 +83,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
     if (total_earnings !== undefined && total_earnings !== null) {
       return "text-green-600";
     }
-    if (type === 'income' || amount?.type === "income") {
+    if (type === 'income' || (typeof amount === 'object' && amount?.type === "income")) {
       return "text-green-600";
     }
     return "text-red-600";
@@ -94,11 +94,9 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
     return timeString.split(":").slice(0, 2).join(":");
   };
 
-  const displayAmount = type !== undefined ? amount?.value : (
-    total_earnings !== undefined && total_earnings !== null 
-      ? total_earnings 
-      : amount?.value
-  );
+  const displayAmount = isTransaction ? 
+    (typeof amount === 'number' ? amount : amount?.value) : 
+    (total_earnings !== undefined && total_earnings !== null ? total_earnings : amount?.value);
 
   return (
     <div 
@@ -112,7 +110,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
       )}
       {isTransaction && (
         <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
-          <CreditCard className="w-5 h-5 text-gray-600" />
+          <DollarSign className="w-5 h-5 text-gray-600" />
         </div>
       )}
       {icon && !showWorkIcon && !isTransaction && (
