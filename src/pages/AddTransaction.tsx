@@ -123,7 +123,7 @@ const AddTransaction = () => {
     }
   };
 
-  const isEditing = state?.isEditing || location.pathname === '/add';
+  const isEditing = state?.isEditing;
 
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4">
