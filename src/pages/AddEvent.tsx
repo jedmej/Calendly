@@ -44,6 +44,7 @@ const AddEvent = () => {
   const [estimatedEarnings, setEstimatedEarnings] = useState(0);
   const [tips, setTips] = useState("0");
   const [totalEarnings, setTotalEarnings] = useState(0);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     calculateEarnings();
@@ -66,6 +67,13 @@ const AddEvent = () => {
       ...prev,
       [id]: value,
     }));
+    // Clear error when user starts typing
+    if (errors[id]) {
+      setErrors((prev) => ({
+        ...prev,
+        [id]: "",
+      }));
+    }
   };
 
   const handleTipsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,20 +82,51 @@ const AddEvent = () => {
     setTotalEarnings(estimatedEarnings + parseFloat(value || "0"));
   };
 
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.title.trim()) {
+      newErrors.title = "Title is required";
+    }
+    if (!formData.date) {
+      newErrors.date = "Date is required";
+    }
+    if (!formData.startTime) {
+      newErrors.startTime = "Start time is required";
+    }
+    if (!formData.endTime) {
+      newErrors.endTime = "End time is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async () => {
+    if (!validateForm()) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please fill in all required fields.",
+      });
+      return;
+    }
+
     try {
+      const eventData = {
+        title: formData.title,
+        event_date: formData.date,
+        start_time: formData.startTime,
+        end_time: formData.endTime,
+        category: category,
+        hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
+        coworkers: formData.coworkers ? formData.coworkers.split(",").map((c) => c.trim()) : null,
+      };
+
       if (isEditing && state?.id) {
         const { error } = await supabase
           .from("events")
-          .update({
-            title: formData.title,
-            event_date: formData.date,
-            start_time: formData.startTime,
-            end_time: formData.endTime,
-            category: category,
-            hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
-            coworkers: formData.coworkers ? formData.coworkers.split(",").map((c) => c.trim()) : null,
-          })
+          .update(eventData)
           .eq("id", state.id);
 
         if (error) throw error;
@@ -97,15 +136,9 @@ const AddEvent = () => {
           description: "Event has been updated successfully.",
         });
       } else {
-        const { error } = await supabase.from("events").insert({
-          title: formData.title,
-          event_date: formData.date,
-          start_time: formData.startTime,
-          end_time: formData.endTime,
-          category: category,
-          hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
-          coworkers: formData.coworkers ? formData.coworkers.split(",").map((c) => c.trim()) : null,
-        });
+        const { error } = await supabase
+          .from("events")
+          .insert(eventData);
 
         if (error) throw error;
 
@@ -181,21 +214,24 @@ const AddEvent = () => {
             {/* Title Input */}
             <div>
               <Label htmlFor="title" className="text-xs text-[#374151] font-medium">
-                Title
+                Title *
               </Label>
               <Input
                 id="title"
                 value={formData.title}
                 onChange={handleInputChange}
                 placeholder="Event title"
-                className="mt-1.5 bg-[#EEEEEE]/60 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC]"
+                className={`mt-1.5 bg-[#EEEEEE]/60 h-[38px] rounded-xl text-sm placeholder:text-[#CCCCCC] ${
+                  errors.title ? "border-red-500" : ""
+                }`}
               />
+              {errors.title && <span className="text-xs text-red-500">{errors.title}</span>}
             </div>
 
             {/* Date Input */}
             <div>
               <Label htmlFor="date" className="text-xs text-[#374151] font-medium">
-                Date
+                Date *
               </Label>
               <div className="relative">
                 <Input
@@ -203,37 +239,48 @@ const AddEvent = () => {
                   type="date"
                   value={formData.date}
                   onChange={handleInputChange}
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm cursor-pointer"
+                  className={`mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm cursor-pointer ${
+                    errors.date ? "border-red-500" : ""
+                  }`}
                 />
                 <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
               </div>
+              {errors.date && <span className="text-xs text-red-500">{errors.date}</span>}
             </div>
 
             {/* Time Inputs */}
             <div className="flex gap-4">
               <div className="flex-1">
                 <Label htmlFor="startTime" className="text-xs text-[#374151] font-medium">
-                  Start Time
+                  Start Time *
                 </Label>
                 <Input
                   id="startTime"
                   type="time"
                   value={formData.startTime}
                   onChange={handleInputChange}
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm"
+                  className={`mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm ${
+                    errors.startTime ? "border-red-500" : ""
+                  }`}
                 />
+                {errors.startTime && (
+                  <span className="text-xs text-red-500">{errors.startTime}</span>
+                )}
               </div>
               <div className="flex-1">
                 <Label htmlFor="endTime" className="text-xs text-[#374151] font-medium">
-                  End Time
+                  End Time *
                 </Label>
                 <Input
                   id="endTime"
                   type="time"
                   value={formData.endTime}
                   onChange={handleInputChange}
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm"
+                  className={`mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm ${
+                    errors.endTime ? "border-red-500" : ""
+                  }`}
                 />
+                {errors.endTime && <span className="text-xs text-red-500">{errors.endTime}</span>}
               </div>
             </div>
 
