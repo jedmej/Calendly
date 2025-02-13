@@ -121,6 +121,7 @@ const AddEvent = () => {
         category: category,
         hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
         coworkers: formData.coworkers ? formData.coworkers.split(",").map((c) => c.trim()) : null,
+        total_earnings: totalEarnings // Add total earnings to the event data
       };
 
       if (isEditing && state?.id) {

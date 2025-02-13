@@ -19,6 +19,7 @@ interface CalendarEventProps {
   start_time?: string;
   end_time?: string;
   hourly_wage?: number;
+  total_earnings?: number;
 }
 
 export const CalendarEvent: React.FC<CalendarEventProps> = ({
@@ -34,6 +35,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   start_time,
   end_time,
   hourly_wage,
+  total_earnings,
 }) => {
   const navigate = useNavigate();
   const showWorkIcon = category?.toLowerCase() === "work";
@@ -91,15 +93,17 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           </div>
         )}
       </div>
-      {amount && (
+      {(total_earnings !== undefined || amount) && (
         <div
-          className={`self-stretch flex items-center text-sm ${amount.type === "income" ? "text-green-600" : "text-red-600"} font-medium whitespace-nowrap text-right leading-loose my-auto`}
+          className={`self-stretch flex items-center text-sm ${
+            (total_earnings !== undefined || amount?.type === "income") ? "text-green-600" : "text-red-600"
+          } font-medium whitespace-nowrap text-right leading-loose my-auto`}
         >
-          <div className="self-stretch w-2.5 my-auto">
-            {amount.type === "income" ? "+" : "-"}
-          </div>
+          <div className="self-stretch w-2.5 my-auto">+</div>
           <div className="self-stretch w-2.5 my-auto">$</div>
-          <div className="leading-6 self-stretch my-auto">{amount.value}</div>
+          <div className="leading-6 self-stretch my-auto">
+            {total_earnings !== undefined ? total_earnings.toFixed(2) : amount?.value.toFixed(2)}
+          </div>
         </div>
       )}
     </div>
