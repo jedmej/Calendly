@@ -1,6 +1,6 @@
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,17 +8,42 @@ import { ArrowLeft, Calendar, CreditCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
+interface LocationState {
+  id?: string;
+  title?: string;
+  amount?: number;
+  category?: string;
+  date?: string;
+  type?: 'income' | 'expense';
+  isEditing?: boolean;
+  returnDate?: string;
+}
+
 const AddTransaction = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
-  const [isIncome, setIsIncome] = useState(true);
+  const state = location.state as LocationState;
   
+  const [isIncome, setIsIncome] = useState(state?.type === 'income' || true);
   const [formData, setFormData] = useState({
     title: "",
     amount: "",
     category: "Work",
     date: ""
   });
+
+  useEffect(() => {
+    if (state?.isEditing) {
+      setFormData({
+        title: state.title || "",
+        amount: state.amount?.toString() || "",
+        category: state.category || "Work",
+        date: state.date || ""
+      });
+      setIsIncome(state.type === 'income');
+    }
+  }, [state]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -40,22 +65,46 @@ const AddTransaction = () => {
     }
 
     try {
-      // @ts-ignore - Temporarily ignore type checking for the transactions table
-      const { error } = await supabase.from('transactions').insert({
-        title: formData.title,
-        amount: parseFloat(formData.amount),
-        category: formData.category,
-        transaction_date: formData.date,
-        type: isIncome ? 'income' : 'expense'
-      });
+      if (state?.isEditing && state.id) {
+        // Update existing transaction
+        const { error } = await supabase
+          .from('transactions')
+          .update({
+            title: formData.title,
+            amount: parseFloat(formData.amount),
+            category: formData.category,
+            transaction_date: formData.date,
+            type: isIncome ? 'income' : 'expense'
+          })
+          .eq('id', state.id);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: "Success!",
-        description: "Transaction has been added successfully.",
-        className: "bg-[#F2FCE2]/90 text-green-800 border-none"
-      });
+        toast({
+          title: "Success!",
+          description: "Transaction has been updated successfully.",
+          className: "bg-[#F2FCE2]/90 text-green-800 border-none"
+        });
+      } else {
+        // Create new transaction
+        const { error } = await supabase
+          .from('transactions')
+          .insert({
+            title: formData.title,
+            amount: parseFloat(formData.amount),
+            category: formData.category,
+            transaction_date: formData.date,
+            type: isIncome ? 'income' : 'expense'
+          });
+
+        if (error) throw error;
+
+        toast({
+          title: "Success!",
+          description: "Transaction has been added successfully.",
+          className: "bg-[#F2FCE2]/90 text-green-800 border-none"
+        });
+      }
 
       navigate("/");
     } catch (error) {
@@ -80,7 +129,7 @@ const AddTransaction = () => {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <span className="text-[17px] text-[#111827] font-medium">
-            Add New
+            {state?.isEditing ? 'Edit Transaction' : 'Add New'}
           </span>
         </div>
 
@@ -195,7 +244,7 @@ const AddTransaction = () => {
             onClick={handleSubmit}
             className="w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-[500px] h-[48px] text-sm font-medium mt-6"
           >
-            Add Transaction
+            {state?.isEditing ? 'Update Transaction' : 'Add Transaction'}
           </Button>
         </div>
       </div>
