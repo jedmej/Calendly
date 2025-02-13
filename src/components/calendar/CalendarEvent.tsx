@@ -26,7 +26,6 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   id,
   icon,
   title,
-  time,
   location,
   withPeople,
   amount,
@@ -96,7 +95,6 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
         <div className="text-gray-900 text-sm font-medium leading-6">
           {title}
         </div>
-        {time && <div>{time}</div>}
         {(start_time && end_time) && (
           <div>{formatTime(start_time)} - {formatTime(end_time)}</div>
         )}
