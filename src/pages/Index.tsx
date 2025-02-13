@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarGrid } from "@/components/calendar/CalendarGrid";
@@ -5,9 +6,22 @@ import { EventList } from "@/components/calendar/EventList";
 import { ActionBar } from "@/components/calendar/ActionBar";
 import { addMonths, format } from "date-fns";
 
+interface Event {
+  id: string;
+  title: string;
+  event_date: string;
+  start_time?: string;
+  end_time?: string;
+  category: string;
+  coworkers?: string[] | null;
+  hourly_wage?: number | null;
+}
+
 const Index = () => {
   const [view, setView] = useState<"week" | "month">("week");
-  const [currentDate, setCurrentDate] = useState(new Date(2025, 1, 13)); // February 13, 2025
+  const [currentDate, setCurrentDate] = useState(new Date(2025, 1, 13));
+  const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   
   const handlePreviousMonth = () => {
     setCurrentDate(prev => addMonths(prev, -1));
@@ -21,31 +35,10 @@ const Index = () => {
     setCurrentDate(new Date());
   };
 
-  const events = [
-    {
-      icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/5576966015d8b62dfac43aef83af7ed921e00a905a5d084a7871b2b6f745987d",
-      title: "Cucina",
-      time: "10:30 - 21:00",
-      withPeople: ["Alice", "Bob"],
-      amount: {
-        value: 120,
-        type: "income" as const,
-      },
-    },
-    {
-      icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/e20d23ee5ca9c4ead20524cdd4503cf6094fc9538d1ad4a8d2bc6b683196c372",
-      title: "Reumatologia",
-      time: "9:00 - 10:00",
-      location: "Room 101",
-    },
-    {
-      title: "Rzesy",
-      amount: {
-        value: 35,
-        type: "expense" as const,
-      },
-    },
-  ];
+  const handleDateSelect = (date: Date, events: Event[]) => {
+    setSelectedDate(date);
+    setSelectedEvents(events);
+  };
 
   return (
     <div className="bg-[rgba(246,247,249,1)] flex max-w-[480px] w-full flex-col overflow-hidden items-stretch justify-between mx-auto p-4">
@@ -110,9 +103,26 @@ const Index = () => {
                 Month
               </button>
             </div>
-            <CalendarGrid view={view} currentDate={currentDate} />
+            <CalendarGrid 
+              view={view} 
+              currentDate={currentDate}
+              onSelectDate={handleDateSelect}
+            />
           </div>
-          <EventList date={format(currentDate, 'MMM dd, yyyy')} events={events} />
+          {selectedDate && (
+            <EventList 
+              date={format(selectedDate, 'MMM dd, yyyy')} 
+              events={selectedEvents.map(event => ({
+                title: event.title,
+                time: event.start_time && event.end_time ? `${event.start_time} - ${event.end_time}` : undefined,
+                withPeople: event.coworkers || undefined,
+                amount: event.hourly_wage ? {
+                  value: event.hourly_wage,
+                  type: "income" as const
+                } : undefined
+              }))} 
+            />
+          )}
         </div>
       </div>
       <ActionBar />

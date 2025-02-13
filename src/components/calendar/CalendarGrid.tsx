@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { startOfMonth, endOfMonth, eachDayOfInterval, format, addDays, startOfWeek, isSameMonth, isSameDay, isToday } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,15 +7,21 @@ interface Event {
   title: string;
   event_date: string;
   category: string;
+  start_time?: string;
+  end_time?: string;
+  coworkers?: string[] | null;
+  hourly_wage?: number | null;
 }
 
 interface DayProps {
   date: Date;
   events: Event[];
   isWeekView?: boolean;
+  isSelected?: boolean;
+  onSelect: (date: Date) => void;
 }
 
-const Day: React.FC<DayProps> = ({ date, events, isWeekView = false }) => {
+const Day: React.FC<DayProps> = ({ date, events, isWeekView = false, isSelected = false, onSelect }) => {
   const getEventColor = (category: string) => {
     switch (category.toLowerCase()) {
       case "work":
@@ -37,12 +42,14 @@ const Day: React.FC<DayProps> = ({ date, events, isWeekView = false }) => {
 
   return (
     <div 
+      onClick={() => onSelect(date)}
       className={`
-        flex flex-col items-center 
+        flex flex-col items-center cursor-pointer
         ${isWeekView ? 'min-h-[60px]' : 'w-[49px] h-[49px]'} 
         flex-1 shrink basis-[0%] px-2 py-3 
         ${!isSameMonth(date, startOfMonth(date)) ? 'opacity-50' : ''}
-        ${isCurrentDay ? 'bg-[rgba(235,241,254,1)]' : 'bg-[rgba(255,255,255,0.5)]'}
+        ${isSelected ? 'bg-blue-100' : isCurrentDay ? 'bg-[rgba(235,241,254,1)]' : 'bg-[rgba(255,255,255,0.5)]'}
+        hover:bg-blue-50 transition-colors
       `}
     >
       <div className="text-gray-900 text-xs font-medium leading-loose">
@@ -86,10 +93,12 @@ const WeekHeader: React.FC = () => {
 interface CalendarGridProps {
   view: "week" | "month";
   currentDate: Date;
+  onSelectDate: (date: Date, events: Event[]) => void;
 }
 
-export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate }) => {
+export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, onSelectDate }) => {
   const [events, setEvents] = useState<Event[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const isWeekView = view === "week";
 
   useEffect(() => {
@@ -97,7 +106,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate })
       try {
         const { data, error } = await supabase
           .from('events')
-          .select('id, title, event_date, category');
+          .select('*');
         
         if (error) throw error;
         setEvents(data || []);
@@ -108,6 +117,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate })
 
     fetchEvents();
   }, []);
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+    const dayEvents = events.filter(event => 
+      isSameDay(new Date(event.event_date), date)
+    );
+    onSelectDate(date, dayEvents);
+  };
 
   const getMonthDays = () => {
     const start = startOfMonth(currentDate);
@@ -134,6 +151,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate })
               date={date}
               events={events}
               isWeekView={true}
+              isSelected={selectedDate ? isSameDay(date, selectedDate) : false}
+              onSelect={handleDateSelect}
             />
           ))}
         </div>
@@ -156,6 +175,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate })
               key={dayIndex}
               date={date}
               events={events}
+              isSelected={selectedDate ? isSameDay(date, selectedDate) : false}
+              onSelect={handleDateSelect}
             />
           ))}
         </div>
