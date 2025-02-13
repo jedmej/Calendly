@@ -11,7 +11,7 @@ export const EventTypeSelector = () => {
       <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-3.5 md:py-4 px-6">
         <div className="flex items-center justify-center gap-2">
           <Calendar className="w-4 h-4 md:w-5 md:h-5" />
-          <span className="text-sm md:text-base">Event</span>
+          <span className="text-sm md:text-base">Wydarzenie</span>
         </div>
       </button>
       <button 
@@ -20,7 +20,7 @@ export const EventTypeSelector = () => {
       >
         <div className="flex items-center justify-center gap-2">
           <CreditCard className="w-4 h-4 md:w-5 md:h-5" />
-          <span className="text-sm md:text-base">Transaction</span>
+          <span className="text-sm md:text-base">Transakcja</span>
         </div>
       </button>
     </div>

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -27,7 +26,7 @@ interface FormData {
   date: string;
 }
 
-const AddTransaction = () => {
+export default function AddTransaction() {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
@@ -142,12 +141,12 @@ const AddTransaction = () => {
             {state?.isEditing ? (
               <div className="flex items-center gap-2">
                 <Edit className="w-5 h-5" />
-                Edit Transaction
+                Edytuj transakcję
               </div>
             ) : (
               <div className="flex items-center gap-2">
                 <Plus className="w-5 h-5" />
-                Add New
+                Dodaj nową
               </div>
             )}
           </span>
@@ -161,7 +160,7 @@ const AddTransaction = () => {
             >
               <div className="flex items-center justify-center gap-2">
                 <Calendar className="w-4 h-4 md:w-5 md:h-5" />
-                <span className="text-sm md:text-base">Event</span>
+                <span className="text-sm md:text-base">Wydarzenie</span>
               </div>
             </button>
             <button 
@@ -169,7 +168,7 @@ const AddTransaction = () => {
             >
               <div className="flex items-center justify-center gap-2">
                 <CreditCard className="w-4 h-4 md:w-5 md:h-5" />
-                <span className="text-sm md:text-base">Transaction</span>
+                <span className="text-sm md:text-base">Transakcja</span>
               </div>
             </button>
           </div>
@@ -186,7 +185,7 @@ const AddTransaction = () => {
               } rounded-[500px] py-3.5 md:py-4 px-4 flex items-center justify-center gap-2`}
             >
               <Plus className="w-4 h-4 md:w-5 md:h-5" />
-              Income
+              Przychód
             </button>
             <button
               onClick={() => setIsIncome(false)}
@@ -197,31 +196,31 @@ const AddTransaction = () => {
               } rounded-[500px] py-3.5 md:py-4 px-4 flex items-center justify-center gap-2`}
             >
               <Minus className="w-4 h-4 md:w-5 md:h-5" />
-              Expense
+              Wydatek
             </button>
           </div>
 
           <div className="space-y-6 md:space-y-8">
             <div>
               <Label htmlFor="title" className="text-xs md:text-sm text-[#374151] font-medium mb-1.5 block">
-                Title
+                Tytuł
               </Label>
               <Input
                 id="title"
                 value={formData.title}
                 onChange={handleInputChange}
-                placeholder="Add a description"
+                placeholder="Dodaj opis"
                 className="bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm md:text-base placeholder:text-[#CCCCCC]"
               />
             </div>
 
             <div>
               <Label htmlFor="amount" className="text-xs md:text-sm text-[#374151] font-medium mb-1.5 block">
-                Amount
+                Kwota
               </Label>
               <div className="relative">
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm md:text-base">
-                  $
+                  zł
                 </div>
                 <Input
                   id="amount"
@@ -236,20 +235,20 @@ const AddTransaction = () => {
 
             <div>
               <Label htmlFor="category" className="text-xs md:text-sm text-[#374151] font-medium mb-1.5 block">
-                Category
+                Kategoria
               </Label>
               <Input
                 id="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                placeholder="Select category"
+                placeholder="Wybierz kategorię"
                 className="bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm md:text-base placeholder:text-[#CCCCCC]"
               />
             </div>
 
             <div>
               <Label htmlFor="date" className="text-xs md:text-sm text-[#374151] font-medium mb-1.5 block">
-                Date
+                Data
               </Label>
               <div className="relative">
                 <Input
@@ -271,12 +270,12 @@ const AddTransaction = () => {
             {state?.isEditing ? (
               <>
                 <Edit className="w-4 h-4 md:w-5 md:h-5" />
-                Update Transaction
+                Zaktualizuj transakcję
               </>
             ) : (
               <>
                 <Plus className="w-4 h-4 md:w-5 md:h-5" />
-                Add Transaction
+                Dodaj transakcję
               </>
             )}
           </Button>
@@ -284,6 +283,4 @@ const AddTransaction = () => {
       </div>
     </div>
   );
-};
-
-export default AddTransaction;
+}

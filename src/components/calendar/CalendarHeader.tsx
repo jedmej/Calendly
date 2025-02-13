@@ -1,3 +1,4 @@
+
 import React from "react";
 
 interface CalendarHeaderProps {
@@ -15,7 +16,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({ title }) => {
           loading="lazy"
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a1301cc2f91bb3e96ec9662bb00029f6e5dbd147f41329aa51a5ab3b2983179"
           className="aspect-[1] object-contain w-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)] self-stretch my-auto rounded-full"
-          alt="Profile"
+          alt="Profil"
         />
       </div>
     </div>
