@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ interface LocationState {
   hourlyWage?: string;
   coworkers?: string;
   isEditing?: boolean;
+  totalEarnings?: number;
 }
 
 const AddEvent = () => {
@@ -42,12 +44,23 @@ const AddEvent = () => {
 
   const [estimatedEarnings, setEstimatedEarnings] = useState(0);
   const [tips, setTips] = useState("0");
-  const [totalEarnings, setTotalEarnings] = useState(0);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [totalEarnings, setTotalEarnings] = useState(state?.totalEarnings || 0);
 
   useEffect(() => {
     calculateEarnings();
   }, [formData.startTime, formData.endTime, formData.hourlyWage]);
+
+  // Initialize tips when editing
+  useEffect(() => {
+    if (isEditing && state?.totalEarnings !== undefined && formData.hourlyWage) {
+      const start = new Date(`2000/01/01 ${formData.startTime}`);
+      const end = new Date(`2000/01/01 ${formData.endTime}`);
+      const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
+      const baseEarnings = hours * parseFloat(formData.hourlyWage);
+      const calculatedTips = (state.totalEarnings - baseEarnings).toFixed(2);
+      setTips(calculatedTips);
+    }
+  }, [isEditing, state?.totalEarnings, formData.startTime, formData.endTime, formData.hourlyWage]);
 
   const calculateEarnings = () => {
     if (formData.startTime && formData.endTime && formData.hourlyWage) {
