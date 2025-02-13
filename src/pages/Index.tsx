@@ -57,7 +57,7 @@ const Index = () => {
       y: 8
     }} transition={{
       duration: 0.2
-    }} className="section-container flex flex-col min-h-screen items-stretch pb-24">
+    }} className="section-container flex flex-col min-h-screen items-stretch pb-24 my-[16px]">
         <div className="flex-1 w-full">
           <CalendarHeader title="Calendar" />
           <div className="w-full mt-4 md:mt-6">
