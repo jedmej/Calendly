@@ -1,3 +1,4 @@
+
 import React from "react";
 import { CalendarEvent } from "./CalendarEvent";
 
@@ -13,6 +14,7 @@ interface EventListProps {
       value: number;
       type: "income" | "expense";
     };
+    category?: string;  // Add this line to include category in the type
   }>;
 }
 

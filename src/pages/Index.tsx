@@ -119,7 +119,8 @@ const Index = () => {
                 amount: event.hourly_wage ? {
                   value: event.hourly_wage,
                   type: "income" as const
-                } : undefined
+                } : undefined,
+                category: event.category // Add this line to pass the category
               }))} 
             />
           )}
