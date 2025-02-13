@@ -78,16 +78,18 @@ const AddEvent = () => {
                 <Label htmlFor="startTime" className="text-xs text-[#374151] font-medium">Start Time</Label>
                 <Input 
                   id="startTime" 
-                  type="time" 
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm" 
+                  type="time"
+                  inputMode="none"
+                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer" 
                 />
               </div>
               <div className="flex-1">
                 <Label htmlFor="endTime" className="text-xs text-[#374151] font-medium">End Time</Label>
                 <Input 
                   id="endTime" 
-                  type="time" 
-                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm" 
+                  type="time"
+                  inputMode="none"
+                  className="mt-1.5 bg-[#EEEEEE]/60 h-[40px] rounded-xl text-sm [&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:hover:bg-transparent cursor-pointer" 
                 />
               </div>
             </div>
