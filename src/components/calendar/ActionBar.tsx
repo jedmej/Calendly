@@ -9,6 +9,9 @@ export const ActionBar: React.FC = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
   
+  const isAddRoute = location.pathname === '/add';
+  const isTransactionRoute = location.pathname === '/add-transaction';
+  
   return (
     <div className={`
       bg-white shadow-[0px_0px_20px_rgba(0,0,0,0.05)] border self-center
@@ -18,12 +21,22 @@ export const ActionBar: React.FC = () => {
     `}>
       <div className="flex w-full items-stretch px-[7px] py-2 gap-3.5">
         <div className="flex flex-1 flex-col items-center justify-center px-6 py-2">
-          <Calendar className="w-6 h-6 text-gray-600" />
+          <Calendar 
+            className={`w-6 h-6 ${isAddRoute ? 'text-blue-600' : 'text-gray-600'}`} 
+          />
         </div>
         
         <div className="flex flex-1 items-center justify-center px-4 py-4">
           <button 
-            onClick={() => navigate('/add')}
+            onClick={() => {
+              if (isAddRoute) {
+                navigate('/add-transaction');
+              } else if (isTransactionRoute) {
+                navigate('/add');
+              } else {
+                navigate(location.pathname === '/add-transaction' ? '/add' : '/add');
+              }
+            }}
             className="w-[38px] h-[38px] rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition-colors"
           >
             <PlusCircle className="w-6 h-6 text-white" />
@@ -31,7 +44,9 @@ export const ActionBar: React.FC = () => {
         </div>
 
         <div className="flex flex-1 flex-col items-center justify-center px-6 py-2">
-          <DollarSign className="w-6 h-6 text-gray-600" />
+          <DollarSign 
+            className={`w-6 h-6 ${isTransactionRoute ? 'text-blue-600' : 'text-gray-600'}`} 
+          />
         </div>
       </div>
     </div>
