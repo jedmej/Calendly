@@ -12,6 +12,7 @@ export const ActionBar: React.FC = () => {
   const isAddRoute = location.pathname === '/add';
   const isTransactionRoute = location.pathname === '/add-transaction';
   const isHomeRoute = location.pathname === '/';
+  const isFinancesRoute = location.pathname === '/finances';
   
   return (
     <div className={`
@@ -50,13 +51,13 @@ export const ActionBar: React.FC = () => {
         </div>
 
         <div 
-          onClick={() => navigate('/add-transaction')}
+          onClick={() => navigate('/finances')}
           className={`flex flex-1 flex-col items-center justify-center px-6 py-2 cursor-pointer
-            ${isTransactionRoute ? 'bg-[rgba(37,99,235,0.05)] rounded-[500px]' : ''}
+            ${isFinancesRoute ? 'bg-[rgba(37,99,235,0.05)] rounded-[500px]' : ''}
           `}
         >
           <DollarSign 
-            className={`w-6 h-6 ${isTransactionRoute ? 'text-blue-600' : 'text-gray-600'}`} 
+            className={`w-6 h-6 ${isFinancesRoute ? 'text-blue-600' : 'text-gray-600'}`} 
           />
         </div>
       </div>
