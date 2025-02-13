@@ -17,15 +17,17 @@ const AnimatedRoutes = () => {
   const location = useLocation();
   
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Index />} />
-        <Route path="/add" element={<AddEvent />} />
-        <Route path="/add-transaction" element={<AddTransaction />} />
-        <Route path="/finances" element={<Finances />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AnimatePresence>
+    <div className="bg-[#F6F7F9] min-h-screen">
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Index />} />
+          <Route path="/add" element={<AddEvent />} />
+          <Route path="/add-transaction" element={<AddTransaction />} />
+          <Route path="/finances" element={<Finances />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AnimatePresence>
+    </div>
   );
 };
 

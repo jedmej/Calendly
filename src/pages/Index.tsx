@@ -61,7 +61,7 @@ const Index = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 8 }}
         transition={{ duration: 0.2 }}
-        className="bg-[rgba(246,247,249,1)] flex max-w-[480px] w-full flex-col min-h-screen items-stretch mx-auto p-4 pb-24"
+        className="flex max-w-[480px] w-full flex-col min-h-screen items-stretch mx-auto p-4 pb-24"
       >
         <div className="flex-1 w-full">
           <CalendarHeader title="Calendar" />
