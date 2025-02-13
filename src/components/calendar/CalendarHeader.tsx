@@ -1,6 +1,4 @@
-
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface CalendarHeaderProps {
   title: string;
@@ -13,10 +11,12 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({ title }) => {
         {title}
       </div>
       <div className="self-stretch flex items-center gap-2.5 w-12 my-auto p-2 rounded-xl">
-        <Avatar className="w-8 h-8">
-          <AvatarImage src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a1301cc2f91bb3e96ec9662bb00029f6e5dbd147f41329aa51a5ab3b2983179" />
-          <AvatarFallback>PF</AvatarFallback>
-        </Avatar>
+        <img
+          loading="lazy"
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a1301cc2f91bb3e96ec9662bb00029f6e5dbd147f41329aa51a5ab3b2983179"
+          className="aspect-[1] object-contain w-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)] self-stretch my-auto rounded-full"
+          alt="Profile"
+        />
       </div>
     </div>
   );
