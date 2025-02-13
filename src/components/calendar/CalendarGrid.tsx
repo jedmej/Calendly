@@ -1,6 +1,6 @@
 
 import React from "react";
-import { startOfMonth, endOfMonth, eachDayOfInterval, format, addDays, startOfWeek, isSameMonth } from "date-fns";
+import { startOfMonth, endOfMonth, eachDayOfInterval, format, addDays, startOfWeek, isSameMonth, isSameDay, isToday } from "date-fns";
 
 interface DayProps {
   date: Date;
@@ -22,8 +22,18 @@ const Day: React.FC<DayProps> = ({ date, events, isWeekView = false }) => {
     }
   };
 
+  const isCurrentDay = isToday(date);
+
   return (
-    <div className={`bg-[rgba(255,255,255,0.5)] flex flex-col items-center ${isWeekView ? 'min-h-[60px]' : 'w-[49px] h-[49px]'} flex-1 shrink basis-[0%] px-2 py-3 ${!isSameMonth(date, startOfMonth(date)) ? 'opacity-50' : ''}`}>
+    <div 
+      className={`
+        flex flex-col items-center 
+        ${isWeekView ? 'min-h-[60px]' : 'w-[49px] h-[49px]'} 
+        flex-1 shrink basis-[0%] px-2 py-3 
+        ${!isSameMonth(date, startOfMonth(date)) ? 'opacity-50' : ''}
+        ${isCurrentDay ? 'bg-[rgba(235,241,254,1)]' : 'bg-[rgba(255,255,255,0.5)]'}
+      `}
+    >
       <div className="text-gray-900 text-xs font-medium leading-loose">
         {format(date, 'd')}
       </div>
