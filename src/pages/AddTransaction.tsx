@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, Calendar, CreditCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { StarBorder } from "@/components/ui/star-border";
 
 interface LocationState {
   id?: string;
@@ -136,30 +136,32 @@ const AddTransaction = () => {
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <span className="text-[17px] text-[#111827] font-medium">
-            {state?.isEditing ? 'Edit Transaction' : 'Add New'}
-          </span>
+          <StarBorder as="div" className="flex-1">
+            <span className="text-[17px] text-[#111827] font-medium">
+              {state?.isEditing ? 'Edit Transaction' : 'Add New'}
+            </span>
+          </StarBorder>
         </div>
 
         {!state?.isEditing && (
           <div className="flex gap-3 px-2">
-            <button 
+            <StarBorder 
               onClick={() => navigate('/add')}
-              className="flex-1 bg-black/5 text-black rounded-[500px] py-3.5 px-6"
+              className="flex-1"
             >
               <div className="flex items-center justify-center gap-2">
                 <Calendar className="w-4 h-4" />
                 Event
               </div>
-            </button>
-            <button 
-              className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-3.5 px-6"
+            </StarBorder>
+            <StarBorder 
+              className="flex-1"
             >
               <div className="flex items-center justify-center gap-2">
                 <CreditCard className="w-4 h-4" />
                 Transaction
               </div>
-            </button>
+            </StarBorder>
           </div>
         )}
 
