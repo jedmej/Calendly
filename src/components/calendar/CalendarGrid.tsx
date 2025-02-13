@@ -7,9 +7,10 @@ interface DayProps {
     type: "blue" | "green" | "orange";
   }[];
   isCurrentMonth?: boolean;
+  isWeekView?: boolean;
 }
 
-const Day: React.FC<DayProps> = ({ day, events, isCurrentMonth = true }) => {
+const Day: React.FC<DayProps> = ({ day, events, isCurrentMonth = true, isWeekView = false }) => {
   const getEventColor = (type: "blue" | "green" | "orange") => {
     switch (type) {
       case "blue":
@@ -22,7 +23,7 @@ const Day: React.FC<DayProps> = ({ day, events, isCurrentMonth = true }) => {
   };
 
   return (
-    <div className={`bg-[rgba(255,255,255,0.5)] flex flex-col items-center w-[49px] h-[49px] flex-1 shrink basis-[0%] px-2 py-3 ${!isCurrentMonth ? 'opacity-50' : ''}`}>
+    <div className={`bg-[rgba(255,255,255,0.5)] flex flex-col items-center ${isWeekView ? 'min-h-[60px]' : 'w-[49px] h-[49px]'} flex-1 shrink basis-[0%] px-2 py-3 ${!isCurrentMonth ? 'opacity-50' : ''}`}>
       <div className="text-gray-900 text-xs font-medium leading-loose">
         {day}
       </div>
@@ -48,7 +49,7 @@ const WeekHeader: React.FC = () => {
       {days.map((day, index) => (
         <div
           key={index}
-          className={`min-h-[30px] flex-1 shrink px-[17px] py-[5px] ${
+          className={`min-h-[48px] flex-1 shrink px-[17px] py-[5px] flex items-center justify-center ${
             day === "F" ? "bg-blue-600 text-white" : "bg-[rgba(0,0,0,0.02)]"
           }`}
         >
@@ -59,7 +60,41 @@ const WeekHeader: React.FC = () => {
   );
 };
 
-export const CalendarGrid: React.FC = () => {
+interface CalendarGridProps {
+  view: "week" | "month";
+}
+
+export const CalendarGrid: React.FC<CalendarGridProps> = ({ view }) => {
+  const isWeekView = view === "week";
+
+  const weekEvents = [
+    { day: 9, events: [{ type: "blue" as const }] },
+    { day: 10, events: [{ type: "green" as const }, { type: "orange" as const }] },
+    { day: 11, events: [{ type: "blue" as const }] },
+    { day: 12, events: [{ type: "green" as const }] },
+    { day: 13, events: [{ type: "blue" as const }, { type: "green" as const }, { type: "orange" as const }] },
+    { day: 14, events: [{ type: "blue" as const }, { type: "green" as const }] },
+    { day: 15, events: [{ type: "orange" as const }] },
+  ];
+
+  if (isWeekView) {
+    return (
+      <div className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid">
+        <WeekHeader />
+        <div className="flex min-h-[60px] w-full items-stretch gap-px">
+          {weekEvents.map((dayData, index) => (
+            <Day
+              key={index}
+              day={dayData.day}
+              events={dayData.events}
+              isWeekView={true}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid">
       <WeekHeader />
