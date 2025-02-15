@@ -131,12 +131,14 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
       </div>
       <motion.div 
         drag="x"
+        dragDirectionLock
         dragConstraints={{ left: -100, right: 0 }}
         dragElastic={0.1}
+        dragMomentum={false}
         onDragEnd={handleDragEnd}
         onClick={handleClick}
         style={{ x, background }}
-        className="flex w-full items-center gap-4 p-4 rounded-xl border border-[rgba(0,0,0,0.05)] border-solid cursor-pointer"
+        className="flex w-full items-center gap-4 p-4 rounded-xl border border-[rgba(0,0,0,0.05)] border-solid cursor-pointer touch-pan-x"
       >
         {showWorkIcon && !isTransaction && (
           <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
