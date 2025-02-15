@@ -29,7 +29,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
           value={formData.title}
           onChange={handleInputChange}
           placeholder="Event title"
-          className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm md:text-base placeholder:text-[#CCCCCC] ${
+          className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm md:text-base placeholder:text-[#CCCCCC] w-full ${
             errors.title ? "border-red-500" : ""
           }`}
         />
@@ -45,7 +45,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
           type="date"
           value={formData.date}
           onChange={handleInputChange}
-          className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm cursor-pointer ${
+          className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm cursor-pointer w-full ${
             errors.date ? "border-red-500" : ""
           }`}
         />
@@ -62,7 +62,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
             type="time"
             value={formData.startTime}
             onChange={handleInputChange}
-            className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm ${
+            className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm w-full ${
               errors.startTime ? "border-red-500" : ""
             }`}
           />
@@ -77,7 +77,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
             type="time"
             value={formData.endTime}
             onChange={handleInputChange}
-            className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm ${
+            className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm w-full ${
               errors.endTime ? "border-red-500" : ""
             }`}
           />
@@ -97,7 +97,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
           value={formData.hourlyWage}
           onChange={handleInputChange}
           placeholder="15.00"
-          className="bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm placeholder:text-[#CCCCCC]"
+          className="bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full"
         />
       </div>
 
@@ -113,7 +113,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
           value={formData.coworkers}
           onChange={handleInputChange}
           placeholder="Add co-workers (comma separated)"
-          className="bg-white/60 border border-black/10 h-[42px] md:h-[48px] rounded-xl text-sm placeholder:text-[#CCCCCC]"
+          className="bg-white/60 border border-black/10 h-[42px] md:h-[48px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full"
         />
       </div>
     </div>
