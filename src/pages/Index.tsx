@@ -7,21 +7,7 @@ import { ActionBar } from "@/components/calendar/ActionBar";
 import { addMonths, format } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
-
-interface Event {
-  id: string;
-  title: string;
-  event_date: string;
-  start_time?: string;
-  end_time?: string;
-  category: string;
-  coworkers?: string[] | null;
-  hourly_wage?: number | null;
-  total_earnings?: number | null;
-  transaction_date?: string;
-  amount?: number;
-  type?: 'income' | 'expense';
-}
+import { Event } from "@/components/calendar/types"; // Import Event type from types.ts
 
 const Index = () => {
   const [view, setView] = useState<"week" | "month">("week");
@@ -36,7 +22,6 @@ const Index = () => {
     setSelectedDate(currentDate);
   }, [currentDate]);
 
-  // Add this new useEffect to trigger initial event loading
   useEffect(() => {
     if (selectedDate === null) {
       setSelectedDate(currentDate);
@@ -95,7 +80,7 @@ const Index = () => {
               view={view} 
               currentDate={currentDate} 
               onSelectDate={handleDateSelect} 
-              onInitialLoad={(events) => setSelectedEvents(events)}  // Pass the initial events
+              onInitialLoad={setSelectedEvents}
             />
           </div>
           {selectedDate && <EventList 
