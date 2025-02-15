@@ -129,60 +129,61 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           <PencilIcon className="w-5 h-5 text-white" />
         </motion.div>
       </div>
-      <motion.div 
-        drag="x"
-        dragDirectionLock
-        dragConstraints={{ left: -100, right: 0 }}
-        dragElastic={0.1}
-        dragMomentum={false}
-        onDragEnd={handleDragEnd}
-        onClick={handleClick}
-        style={{ x, background }}
-        className="flex w-full items-center gap-4 p-4 rounded-xl border border-[rgba(0,0,0,0.05)] border-solid cursor-pointer touch-pan-x"
-      >
-        {showWorkIcon && !isTransaction && (
-          <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
-            <Briefcase className="w-5 h-5 text-gray-600" />
-          </div>
-        )}
-        {isTransaction && (
-          <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
-            <DollarSign className="w-5 h-5 text-gray-600" />
-          </div>
-        )}
-        {icon && !showWorkIcon && !isTransaction && (
-          <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
-            <img
-              loading="lazy"
-              src={icon}
-              className="aspect-[1] object-contain w-5 self-stretch my-auto"
-              alt={title}
-            />
-          </div>
-        )}
-        <div className="self-stretch text-xs text-gray-500 font-normal leading-loose flex-1 shrink basis-5 my-auto">
-          <div className="text-gray-900 text-sm font-medium leading-6">
-            {title}
-          </div>
-          {(start_time && end_time) && (
-            <div>{formatTime(start_time)} - {formatTime(end_time)}</div>
-          )}
-          {location && <div>{location}</div>}
-          {withPeople && withPeople.length > 0 && (
-            <div className="flex w-full items-center">
-              <div className="self-stretch w-[38px] my-auto">With: </div>
-              <div className="self-stretch w-[65px] my-auto">
-                {withPeople.join(", ")}
-              </div>
+      <div onClick={handleClick}>
+        <motion.div 
+          drag="x"
+          dragDirectionLock
+          dragConstraints={{ left: -100, right: 0 }}
+          dragElastic={0.1}
+          dragMomentum={false}
+          onDragEnd={handleDragEnd}
+          style={{ x, background }}
+          className="flex w-full items-center gap-4 p-4 rounded-xl border border-[rgba(0,0,0,0.05)] border-solid touch-pan-x"
+        >
+          {showWorkIcon && !isTransaction && (
+            <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+              <Briefcase className="w-5 h-5 text-gray-600" />
             </div>
           )}
-        </div>
-        {displayAmount !== undefined && (
-          <div className={`text-sm ${getAmountClass()} font-medium`}>
-            {type === 'expense' ? '-' : '+'}{typeof displayAmount === 'number' ? Math.round(displayAmount) : displayAmount} zł
+          {isTransaction && (
+            <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+              <DollarSign className="w-5 h-5 text-gray-600" />
+            </div>
+          )}
+          {icon && !showWorkIcon && !isTransaction && (
+            <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+              <img
+                loading="lazy"
+                src={icon}
+                className="aspect-[1] object-contain w-5 self-stretch my-auto"
+                alt={title}
+              />
+            </div>
+          )}
+          <div className="self-stretch text-xs text-gray-500 font-normal leading-loose flex-1 shrink basis-5 my-auto">
+            <div className="text-gray-900 text-sm font-medium leading-6">
+              {title}
+            </div>
+            {(start_time && end_time) && (
+              <div>{formatTime(start_time)} - {formatTime(end_time)}</div>
+            )}
+            {location && <div>{location}</div>}
+            {withPeople && withPeople.length > 0 && (
+              <div className="flex w-full items-center">
+                <div className="self-stretch w-[38px] my-auto">With: </div>
+                <div className="self-stretch w-[65px] my-auto">
+                  {withPeople.join(", ")}
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </motion.div>
+          {displayAmount !== undefined && (
+            <div className={`text-sm ${getAmountClass()} font-medium`}>
+              {type === 'expense' ? '-' : '+'}{typeof displayAmount === 'number' ? Math.round(displayAmount) : displayAmount} zł
+            </div>
+          )}
+        </motion.div>
+      </div>
     </div>
   );
 };
