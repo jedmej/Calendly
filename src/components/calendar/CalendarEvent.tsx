@@ -156,7 +156,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           className={`self-stretch flex items-center text-sm ${getAmountClass()} font-medium whitespace-nowrap text-right leading-loose my-auto`}
         >
           <div className="self-stretch w-2.5 my-auto">{type === 'expense' ? '-' : '+'}</div>
-          <div className="self-stretch w-2.5 my-auto">$</div>
+          <div className="self-stretch w-2.5 my-auto">zł</div>
           <div className="leading-6 self-stretch my-auto">
             {typeof displayAmount === 'number' ? displayAmount.toFixed(2) : displayAmount}
           </div>
