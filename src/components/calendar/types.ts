@@ -18,4 +18,5 @@ export interface CalendarGridProps {
   view: "week" | "month";
   currentDate: Date;
   onSelectDate: (date: Date, events: Event[]) => void;
+  onInitialLoad?: (events: Event[]) => void;
 }
