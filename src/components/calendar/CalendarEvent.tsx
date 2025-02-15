@@ -1,8 +1,7 @@
 
 import React from "react";
-import { Briefcase, DollarSign, PencilIcon } from "lucide-react";
+import { Briefcase, DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { motion, PanInfo, useMotionValue, useTransform } from "framer-motion";
 
 interface CalendarEventProps {
   id?: string;
@@ -44,15 +43,6 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   const navigate = useNavigate();
   const showWorkIcon = category?.toLowerCase() === "work";
   const isTransaction = type !== undefined;
-  const x = useMotionValue(0);
-  const background = useTransform(x, [-100, 0], ["rgb(59, 130, 246)", "rgba(255, 255, 255, 0.5)"]);
-  const opacity = useTransform(x, [-100, -50, 0], [1, 0.5, 0]);
-
-  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (info.offset.x < -50) {
-      handleClick();
-    }
-  };
 
   const handleClick = () => {
     if (id) {
@@ -120,70 +110,52 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   const displayAmount = getDisplayAmount();
 
   return (
-    <div className="relative mt-2.5">
-      <div className="absolute inset-0 flex items-center justify-end px-4">
-        <motion.div
-          style={{ opacity }}
-          className="flex items-center justify-center"
-        >
-          <PencilIcon className="w-5 h-5 text-white" />
-        </motion.div>
-      </div>
-      <div onClick={handleClick}>
-        <motion.div 
-          drag="x"
-          dragDirectionLock
-          dragConstraints={{ left: -100, right: 0 }}
-          dragElastic={0.1}
-          dragMomentum={false}
-          onDragEnd={handleDragEnd}
-          style={{ x, background }}
-          className="flex w-full items-center gap-4 p-4 rounded-xl border border-[rgba(0,0,0,0.05)] border-solid touch-pan-x"
-        >
-          {showWorkIcon && !isTransaction && (
-            <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
-              <Briefcase className="w-5 h-5 text-gray-600" />
+    <div 
+      onClick={handleClick}
+      className="bg-[rgba(255,255,255,0.5)] border flex w-full items-center gap-4 mt-2.5 p-4 rounded-xl border-[rgba(0,0,0,0.05)] border-solid cursor-pointer hover:bg-[rgba(255,255,255,0.7)] transition-colors"
+    >
+      {showWorkIcon && !isTransaction && (
+        <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+          <Briefcase className="w-5 h-5 text-gray-600" />
+        </div>
+      )}
+      {isTransaction && (
+        <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+          <DollarSign className="w-5 h-5 text-gray-600" />
+        </div>
+      )}
+      {icon && !showWorkIcon && !isTransaction && (
+        <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+          <img
+            loading="lazy"
+            src={icon}
+            className="aspect-[1] object-contain w-5 self-stretch my-auto"
+            alt={title}
+          />
+        </div>
+      )}
+      <div className="self-stretch text-xs text-gray-500 font-normal leading-loose flex-1 shrink basis-5 my-auto">
+        <div className="text-gray-900 text-sm font-medium leading-6">
+          {title}
+        </div>
+        {(start_time && end_time) && (
+          <div>{formatTime(start_time)} - {formatTime(end_time)}</div>
+        )}
+        {location && <div>{location}</div>}
+        {withPeople && withPeople.length > 0 && (
+          <div className="flex w-full items-center">
+            <div className="self-stretch w-[38px] my-auto">With: </div>
+            <div className="self-stretch w-[65px] my-auto">
+              {withPeople.join(", ")}
             </div>
-          )}
-          {isTransaction && (
-            <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
-              <DollarSign className="w-5 h-5 text-gray-600" />
-            </div>
-          )}
-          {icon && !showWorkIcon && !isTransaction && (
-            <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
-              <img
-                loading="lazy"
-                src={icon}
-                className="aspect-[1] object-contain w-5 self-stretch my-auto"
-                alt={title}
-              />
-            </div>
-          )}
-          <div className="self-stretch text-xs text-gray-500 font-normal leading-loose flex-1 shrink basis-5 my-auto">
-            <div className="text-gray-900 text-sm font-medium leading-6">
-              {title}
-            </div>
-            {(start_time && end_time) && (
-              <div>{formatTime(start_time)} - {formatTime(end_time)}</div>
-            )}
-            {location && <div>{location}</div>}
-            {withPeople && withPeople.length > 0 && (
-              <div className="flex w-full items-center">
-                <div className="self-stretch w-[38px] my-auto">With: </div>
-                <div className="self-stretch w-[65px] my-auto">
-                  {withPeople.join(", ")}
-                </div>
-              </div>
-            )}
           </div>
-          {displayAmount !== undefined && (
-            <div className={`text-sm ${getAmountClass()} font-medium`}>
-              {type === 'expense' ? '-' : '+'}{typeof displayAmount === 'number' ? Math.round(displayAmount) : displayAmount} zł
-            </div>
-          )}
-        </motion.div>
+        )}
       </div>
+      {displayAmount !== undefined && (
+        <div className={`text-sm ${getAmountClass()} font-medium`}>
+          {type === 'expense' ? '-' : '+'}{typeof displayAmount === 'number' ? Math.round(displayAmount) : displayAmount} zł
+        </div>
+      )}
     </div>
   );
 };
