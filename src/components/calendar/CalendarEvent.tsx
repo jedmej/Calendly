@@ -48,7 +48,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   const background = useTransform(x, [-100, 0], ["rgb(59, 130, 246)", "rgba(255, 255, 255, 0.5)"]);
   const opacity = useTransform(x, [-100, -50, 0], [1, 0.5, 0]);
 
-  const handleDragEnd = (event: Event, info: PanInfo) => {
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (info.offset.x < -50) {
       handleClick();
     }
@@ -134,8 +134,9 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
         dragConstraints={{ left: -100, right: 0 }}
         dragElastic={0.1}
         onDragEnd={handleDragEnd}
+        onClick={handleClick}
         style={{ x, background }}
-        className="flex w-full items-center gap-4 p-4 rounded-xl border border-[rgba(0,0,0,0.05)] border-solid cursor-grab active:cursor-grabbing"
+        className="flex w-full items-center gap-4 p-4 rounded-xl border border-[rgba(0,0,0,0.05)] border-solid cursor-pointer"
       >
         {showWorkIcon && !isTransaction && (
           <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
