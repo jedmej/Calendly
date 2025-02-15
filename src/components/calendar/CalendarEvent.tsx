@@ -153,7 +153,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
       </div>
       {displayAmount !== undefined && (
         <div className={`text-sm ${getAmountClass()} font-medium`}>
-          {type === 'expense' ? '-' : '+'}zł {typeof displayAmount === 'number' ? Math.round(displayAmount) : displayAmount}
+          {type === 'expense' ? '-' : '+'}{typeof displayAmount === 'number' ? Math.round(displayAmount) : displayAmount} zł
         </div>
       )}
     </div>
