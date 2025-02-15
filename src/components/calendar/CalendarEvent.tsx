@@ -120,8 +120,8 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
         </div>
       )}
       {isTransaction && (
-        <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
-          <DollarSign className="w-5 h-5 text-gray-600" />
+        <div className="bg-[#FEF7CD] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+          <DollarSign className="w-5 h-5 text-[#F97316]" />
         </div>
       )}
       {icon && !showWorkIcon && !isTransaction && (
