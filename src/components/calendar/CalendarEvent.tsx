@@ -13,7 +13,7 @@ interface CalendarEventProps {
   amount?: {
     value: number;
     type: "income" | "expense";
-  } | number;  // Allow direct number for transactions
+  } | number;
   category?: string;
   event_date?: string;
   transaction_date?: string;
@@ -152,14 +152,8 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
         )}
       </div>
       {displayAmount !== undefined && (
-        <div
-          className={`self-stretch flex items-center text-sm ${getAmountClass()} font-medium whitespace-nowrap text-right leading-loose my-auto`}
-        >
-          <div className="self-stretch w-2.5 my-auto">{type === 'expense' ? '-' : '+'}</div>
-          <div className="self-stretch w-2.5 my-auto">zł</div>
-          <div className="leading-6 self-stretch my-auto">
-            {typeof displayAmount === 'number' ? displayAmount.toFixed(2) : displayAmount}
-          </div>
+        <div className={`text-sm ${getAmountClass()} font-medium`}>
+          {type === 'expense' ? '-' : '+'}zł {typeof displayAmount === 'number' ? Math.round(displayAmount) : displayAmount}
         </div>
       )}
     </div>

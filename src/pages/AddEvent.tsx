@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -39,9 +38,18 @@ const AddEvent = () => {
     date: state?.date || "",
     startTime: state?.startTime || "",
     endTime: state?.endTime || "",
-    hourlyWage: state?.hourlyWage || "",
+    hourlyWage: state?.hourlyWage || (category === "Work" ? "26" : ""),
     coworkers: state?.coworkers || "",
   });
+
+  useEffect(() => {
+    if (category === "Work" && !isEditing && !formData.hourlyWage) {
+      setFormData(prev => ({
+        ...prev,
+        hourlyWage: "26"
+      }));
+    }
+  }, [category, isEditing]);
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [estimatedEarnings, setEstimatedEarnings] = useState(0);
