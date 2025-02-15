@@ -6,7 +6,7 @@ import { Day } from "./Day";
 import { WeekHeader } from "./WeekHeader";
 import { Event, CalendarGridProps } from "./types";
 
-export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, onSelectDate }) => {
+export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, onSelectDate, onInitialLoad }) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const isWeekView = view === "week";
@@ -37,13 +37,23 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
         ];
 
         setEvents(allEvents);
+
+        // Filter events for the current date and call onInitialLoad
+        const currentDateEvents = allEvents.filter(event => {
+          const eventDate = event.event_date || event.transaction_date;
+          return eventDate && isSameDay(new Date(eventDate), currentDate);
+        });
+        
+        if (onInitialLoad) {
+          onInitialLoad(currentDateEvents);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchEventsAndTransactions();
-  }, []);
+  }, [currentDate]);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
