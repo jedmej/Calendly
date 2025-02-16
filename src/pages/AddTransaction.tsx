@@ -129,7 +129,7 @@ export default function AddTransaction() {
 
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4 md:p-6">
-      <div className="w-full max-w-[480px] md:max-w-[640px] mx-auto space-y-4 md:space-y-6">
+      <div className="w-full max-w-[480px] md:max-w-[640px] mx-auto space-y-4 md:space-y-6 pb-32">
         <TransactionHeader isEditing={state?.isEditing} />
         
         {!state?.isEditing && <TransactionTypeSelector />}
@@ -144,12 +144,12 @@ export default function AddTransaction() {
             formData={formData}
             handleInputChange={handleInputChange}
           />
-          
-          <SubmitButton 
-            isEditing={state?.isEditing}
-            onClick={handleSubmit}
-          />
         </div>
+
+        <SubmitButton 
+          isEditing={state?.isEditing}
+          onClick={handleSubmit}
+        />
       </div>
     </div>
   );

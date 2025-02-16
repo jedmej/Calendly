@@ -1,6 +1,6 @@
 
 import React from "react";
-import { ArrowLeft, Edit, Plus } from "lucide-react";
+import { ArrowLeft, Edit } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface TransactionHeaderProps {
@@ -25,10 +25,7 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({ isEditing 
             Edytuj transakcję
           </div>
         ) : (
-          <div className="flex items-center gap-2">
-            <Plus className="w-5 h-5" />
-            Dodaj nową
-          </div>
+          "Dodaj nową"
         )}
       </span>
     </div>
