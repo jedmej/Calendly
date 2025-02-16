@@ -66,15 +66,14 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
   };
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 50; // minimum distance for swipe
-    const velocity = 0.5; // minimum velocity for swipe
+    const threshold = 30; // Reduced threshold for more responsive swipes
+    const velocity = 0.3; // Reduced velocity threshold for easier triggering
 
-    if (Math.abs(info.velocity.x) < velocity || Math.abs(info.offset.x) < threshold) {
+    if (Math.abs(info.velocity.x) < velocity && Math.abs(info.offset.x) < threshold) {
       return;
     }
 
     if (info.offset.x > 0) {
-      // Swipe right - go to previous period
       setDragDirection("right");
       if (isWeekView) {
         onSelectDate(subWeeks(currentDate, 1), []);
@@ -82,7 +81,6 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
         onSelectDate(subMonths(currentDate, 1), []);
       }
     } else {
-      // Swipe left - go to next period
       setDragDirection("left");
       if (isWeekView) {
         onSelectDate(addWeeks(currentDate, 1), []);
@@ -107,7 +105,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
 
   const variants = {
     enter: (direction: "left" | "right") => ({
-      x: direction === "right" ? -1000 : 1000,
+      x: direction === "right" ? -300 : 300, // Reduced distance for faster transitions
       opacity: 0
     }),
     center: {
@@ -115,7 +113,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
       opacity: 1
     },
     exit: (direction: "left" | "right") => ({
-      x: direction === "right" ? 1000 : -1000,
+      x: direction === "right" ? 300 : -300, // Reduced distance for faster transitions
       opacity: 0
     })
   };
@@ -127,8 +125,9 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
         className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid"
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.2}
+        dragElastic={0.1} // Reduced elasticity for snappier feel
         onDragEnd={handleDragEnd}
+        dragMomentum={false} // Disabled momentum for more precise control
       >
         <WeekHeader />
         <AnimatePresence initial={false} mode="wait">
@@ -139,8 +138,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
             animate="center"
             exit="exit"
             transition={{
-              duration: 0.3,
-              ease: "easeInOut"
+              duration: 0.2, // Reduced duration
+              ease: "easeOut" // Changed easing for snappier transitions
             }}
             custom={dragDirection}
             className="flex min-h-[60px] md:min-h-[80px] lg:min-h-[100px] w-full items-stretch gap-px"
@@ -171,8 +170,9 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
       className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid"
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.2}
+      dragElastic={0.1} // Reduced elasticity for snappier feel
       onDragEnd={handleDragEnd}
+      dragMomentum={false} // Disabled momentum for more precise control
     >
       <WeekHeader />
       <AnimatePresence initial={false} mode="wait">
@@ -183,8 +183,8 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
           animate="center"
           exit="exit"
           transition={{
-            duration: 0.3,
-            ease: "easeInOut"
+            duration: 0.2, // Reduced duration
+            ease: "easeOut" // Changed easing for snappier transitions
           }}
           custom={dragDirection}
         >
