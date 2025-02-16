@@ -7,8 +7,8 @@ interface CalendarHeaderProps {
 
 export const CalendarHeader: React.FC<CalendarHeaderProps> = ({ title }) => {
   return (
-    <div className="calendar-header flex min-h-[60px] w-full items-center gap-[40px_100px] justify-between pl-6 pr-2 rounded-[500px]">
-      <div className="text-foreground text-[17px] font-medium leading-loose self-stretch w-[81px] my-auto">
+    <div className="bg-[rgba(255,255,255,0.7)] flex min-h-[60px] w-full items-center gap-[40px_100px] justify-between pl-6 pr-2 rounded-[500px]">
+      <div className="text-gray-900 text-[17px] font-medium leading-loose self-stretch w-[81px] my-auto">
         {title}
       </div>
       <div className="self-stretch flex items-center gap-2.5 w-12 my-auto p-2 rounded-xl">

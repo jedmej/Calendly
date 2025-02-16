@@ -161,13 +161,13 @@ export default function AddTransaction() {
   };
 
   return (
-    <div className="bg-background min-h-screen flex flex-col items-center p-4 md:p-6">
+    <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4 md:p-6">
       <div className="w-full max-w-[480px] md:max-w-[640px] mx-auto space-y-4 md:space-y-6 pb-32">
         <TransactionHeader isEditing={state?.isEditing} />
         
         {!state?.isEditing && <TransactionTypeSelector />}
         
-        <div className="form-container p-6 md:p-8">
+        <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6 md:p-8">
           <TransactionTypeToggle 
             isIncome={isIncome} 
             setIsIncome={setIsIncome} 
@@ -183,7 +183,7 @@ export default function AddTransaction() {
               <Button
                 onClick={handleDelete}
                 variant="ghost"
-                className="text-destructive hover:text-destructive hover:bg-destructive/10 gap-2"
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-2"
               >
                 <Trash2 className="w-4 h-4" />
                 Usuń transakcję

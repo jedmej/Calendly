@@ -61,11 +61,11 @@ export const Day: React.FC<DayProps> = ({
         ${isWeekView ? 'min-h-[60px]' : 'w-[49px] h-[49px]'} 
         flex-1 shrink basis-[0%] px-2 py-3 
         ${!isSameMonth(date, startOfMonth(date)) ? 'opacity-50' : ''}
-        ${isSelected ? 'bg-primary/10' : isCurrentDay ? 'bg-accent' : 'bg-[var(--calendar-event-bg)]'}
-        hover:bg-primary/5 transition-colors
+        ${isSelected ? 'bg-blue-100' : isCurrentDay ? 'bg-[rgba(235,241,254,1)]' : 'bg-[rgba(255,255,255,0.5)]'}
+        hover:bg-blue-50 transition-colors
       `}
     >
-      <div className="text-foreground text-xs font-medium leading-loose">
+      <div className="text-gray-900 text-xs font-medium leading-loose">
         {format(date, 'd')}
       </div>
       {dayEvents.length > 0 && (

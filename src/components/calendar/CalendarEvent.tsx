@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Briefcase, DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -111,15 +112,15 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   return (
     <div 
       onClick={handleClick}
-      className="calendar-event flex w-full items-center gap-4 mt-2.5 p-4 rounded-xl cursor-pointer hover:bg-[var(--calendar-event-bg)] transition-colors relative group"
+      className="bg-[rgba(255,255,255,0.5)] border flex w-full items-center gap-4 mt-2.5 p-4 rounded-xl border-[rgba(0,0,0,0.05)] border-solid cursor-pointer hover:bg-[rgba(255,255,255,0.7)] transition-colors"
     >
       {showWorkIcon && !isTransaction && (
-        <div className="bg-[var(--calendar-event-bg)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
-          <Briefcase className="w-5 h-5 text-muted-foreground" />
+        <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+          <Briefcase className="w-5 h-5 text-gray-600" />
         </div>
       )}
       {isTransaction && (
-        <div className="bg-[#FEF7CD] dark:bg-[#433B24] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+        <div className="bg-[#FEF7CD] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
           <DollarSign className="w-5 h-5 text-[#F97316]" />
         </div>
       )}
@@ -133,8 +134,8 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           />
         </div>
       )}
-      <div className="self-stretch text-xs text-muted-foreground font-normal leading-loose flex-1 shrink basis-5 my-auto">
-        <div className="text-foreground text-sm font-medium leading-6">
+      <div className="self-stretch text-xs text-gray-500 font-normal leading-loose flex-1 shrink basis-5 my-auto">
+        <div className="text-gray-900 text-sm font-medium leading-6">
           {title}
         </div>
         {(start_time && end_time) && (
