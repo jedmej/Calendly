@@ -21,7 +21,7 @@ export const Day: React.FC<DayProps> = ({
 }) => {
   const getEventColor = (event: Event) => {
     if (event.amount !== undefined && event.type !== undefined) {
-      return "bg-[#FEF7CD]";
+      return "bg-[#F97316]";
     }
     
     switch (event.category?.toLowerCase()) {
