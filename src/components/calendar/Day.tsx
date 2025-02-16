@@ -19,6 +19,11 @@ export const Day: React.FC<DayProps> = ({
   isSelected = false, 
   onSelect 
 }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onSelect(date);
+  };
+
   const getEventColor = (event: Event) => {
     if (event.amount !== undefined && event.type !== undefined) {
       return "bg-[#F97316]";
@@ -44,7 +49,7 @@ export const Day: React.FC<DayProps> = ({
 
   return (
     <div 
-      onClick={() => onSelect(date)}
+      onClick={handleClick}
       className={`
         flex flex-col items-center cursor-pointer
         ${isWeekView ? 'min-h-[60px]' : 'w-[49px] h-[49px]'} 

@@ -7,7 +7,7 @@ import { ActionBar } from "@/components/calendar/ActionBar";
 import { addMonths, format } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { Event } from "@/components/calendar/types"; // Import Event type from types.ts
+import { Event } from "@/components/calendar/types";
 
 const Index = () => {
   const [view, setView] = useState<"week" | "month">("week");
@@ -46,6 +46,21 @@ const Index = () => {
     setCurrentDate(date);
   };
 
+  const handleMonthYearClick = () => {
+    const input = document.createElement('input');
+    input.type = 'month';
+    input.value = format(currentDate, 'yyyy-MM');
+    
+    input.onchange = (e) => {
+      const value = (e.target as HTMLInputElement).value;
+      if (value) {
+        setCurrentDate(new Date(value));
+      }
+    };
+    
+    input.click();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -59,9 +74,12 @@ const Index = () => {
         <div className="w-full mt-4 md:mt-6">
           <div className="bg-[rgba(255,255,255,0.7)] border w-full card-padding rounded-2xl border-[rgba(255,255,255,0.2)] border-solid">
             <div className="flex w-full items-center gap-[40px_100px] text-[15px] md:text-base lg:text-lg text-gray-900 font-medium leading-loose justify-between">
-              <div className="self-stretch w-[122px] my-auto">
+              <button 
+                onClick={handleMonthYearClick}
+                className="self-stretch w-[122px] my-auto hover:text-blue-600 transition-colors"
+              >
                 {format(currentDate, 'MMMM yyyy')}
-              </div>
+              </button>
               <div className="flex items-center gap-2 text-xs md:text-sm lg:text-base text-gray-600 font-medium">
                 <button onClick={handlePreviousMonth} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-gray-100">
                   <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
@@ -85,21 +103,8 @@ const Index = () => {
           </div>
           {selectedDate && <EventList 
             date={format(selectedDate, 'MMM dd, yyyy')} 
-            events={selectedEvents.map(event => ({
-              id: event.id,
-              title: event.title,
-              time: event.start_time && event.end_time ? `${event.start_time} - ${event.end_time}` : undefined,
-              withPeople: event.coworkers || undefined,
-              category: event.category,
-              event_date: event.event_date,
-              transaction_date: event.transaction_date,
-              start_time: event.start_time,
-              end_time: event.end_time,
-              hourly_wage: event.hourly_wage || undefined,
-              total_earnings: event.total_earnings || undefined,
-              amount: event.amount,
-              type: event.type
-            }))} 
+            events={selectedEvents}
+            onDateChange={(date) => handleDateSelect(date, [])}
           />}
         </div>
       </div>
