@@ -74,6 +74,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
     const threshold = 50; // Increased threshold to prevent accidental triggers
     const velocity = 0.5; // Increased velocity threshold
 
+    // If movement is too small, treat it as a click and ignore the swipe
     if (Math.abs(info.velocity.x) < velocity || Math.abs(info.offset.x) < threshold) {
       return;
     }
@@ -129,11 +130,12 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
       <motion.div 
         className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid"
         drag="x"
-        dragDirectionLock // Lock drag to horizontal direction only
+        dragDirectionLock
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.1}
         onDragEnd={handleDragEnd}
         dragMomentum={false}
+        whileTap={{ cursor: "grabbing" }}
       >
         <WeekHeader />
         <AnimatePresence initial={false} mode="wait">
@@ -175,11 +177,12 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
     <motion.div 
       className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid"
       drag="x"
-      dragDirectionLock // Lock drag to horizontal direction only
+      dragDirectionLock
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.1}
       onDragEnd={handleDragEnd}
       dragMomentum={false}
+      whileTap={{ cursor: "grabbing" }}
     >
       <WeekHeader />
       <AnimatePresence initial={false} mode="wait">
