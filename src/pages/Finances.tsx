@@ -243,10 +243,17 @@ export const Finances = () => {
     setActiveFilter(current => current === type ? null : type);
   };
 
+  const handleSortChange = (value: string) => {
+    if (value === "date-desc" || value === "date-asc" || 
+        value === "amount-desc" || value === "amount-asc") {
+      setSortBy(value);
+    }
+  };
+
   const renderSortSelector = () => {
     if (isMobile) {
       return (
-        <Select value={sortBy} onValueChange={setSortBy}>
+        <Select value={sortBy} onValueChange={handleSortChange}>
           <SelectTrigger className="w-[40px] h-8 px-2">
             <SelectValue>
               <ArrowUpDown className="h-4 w-4" />
