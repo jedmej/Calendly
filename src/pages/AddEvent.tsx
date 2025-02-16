@@ -8,7 +8,7 @@ import { CategorySelector } from "@/components/events/CategorySelector";
 import { EarningsCalculator } from "@/components/events/EarningsCalculator";
 import { EventTypeSelector } from "@/components/events/EventTypeSelector";
 import { EventForm } from "@/components/events/EventForm";
-import { ActionButton } from "@/components/ui/action-button";
+import { ActionButton } from "@/components/shared/ActionButton";
 
 interface LocationState {
   id?: string;
