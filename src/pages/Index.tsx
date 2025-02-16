@@ -48,7 +48,6 @@ const Index = () => {
   const handleEventListDateChange = (date: Date) => {
     setSelectedDate(date);
     setCurrentDate(date);
-    // We pass empty events array initially, they will be loaded by the CalendarGrid component
     handleDateSelect(date, []);
   };
 
@@ -57,11 +56,9 @@ const Index = () => {
     input.type = 'month';
     input.value = format(currentDate, 'yyyy-MM');
     
-    const handleInputChange = (e: Event) => {
-      const value = (e.target as HTMLInputElement).value;
-      if (value) {
-        // Parse the value to get a date object set to the first of the selected month
-        const newDate = parse(value + '-01', 'yyyy-MM-dd', new Date());
+    const handleInputChange = function(this: HTMLInputElement, e: InputEvent) {
+      if (this.value) {
+        const newDate = parse(this.value + '-01', 'yyyy-MM-dd', new Date());
         setCurrentDate(newDate);
       }
       input.removeEventListener('change', handleInputChange);
@@ -74,7 +71,6 @@ const Index = () => {
     input.style.pointerEvents = 'none';
     document.body.appendChild(input);
     
-    // Trigger click after a short delay to ensure the input is in the DOM
     setTimeout(() => {
       input.showPicker();
       input.click();
