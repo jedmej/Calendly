@@ -1,9 +1,7 @@
 
 import React from "react";
-import { Briefcase, DollarSign, Trash2 } from "lucide-react";
+import { Briefcase, DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 interface CalendarEventProps {
   id?: string;
@@ -45,29 +43,6 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   const navigate = useNavigate();
   const showWorkIcon = category?.toLowerCase() === "work";
   const isTransaction = type !== undefined;
-
-  const handleDelete = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!id) return;
-
-    if (window.confirm('Are you sure you want to delete this transaction?')) {
-      try {
-        const { error } = await supabase
-          .from('transactions')
-          .delete()
-          .eq('id', id);
-
-        if (error) throw error;
-
-        toast.success('Transaction deleted successfully');
-        // Force a reload to refresh the events
-        window.location.reload();
-      } catch (error) {
-        console.error('Error deleting transaction:', error);
-        toast.error('Failed to delete transaction');
-      }
-    }
-  };
 
   const handleClick = () => {
     if (id) {
@@ -137,7 +112,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   return (
     <div 
       onClick={handleClick}
-      className="bg-[rgba(255,255,255,0.5)] border flex w-full items-center gap-4 mt-2.5 p-4 rounded-xl border-[rgba(0,0,0,0.05)] border-solid cursor-pointer hover:bg-[rgba(255,255,255,0.7)] transition-colors relative group"
+      className="bg-[rgba(255,255,255,0.5)] border flex w-full items-center gap-4 mt-2.5 p-4 rounded-xl border-[rgba(0,0,0,0.05)] border-solid cursor-pointer hover:bg-[rgba(255,255,255,0.7)] transition-colors"
     >
       {showWorkIcon && !isTransaction && (
         <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
@@ -176,22 +151,11 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           </div>
         )}
       </div>
-      <div className="flex items-center gap-4">
-        {displayAmount !== undefined && (
-          <div className={`text-sm ${getAmountClass()} font-medium`}>
-            {type === 'expense' ? '-' : '+'}{typeof displayAmount === 'number' ? Math.round(displayAmount) : displayAmount} zł
-          </div>
-        )}
-        {isTransaction && (
-          <button
-            onClick={handleDelete}
-            className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-red-50 rounded-full"
-            aria-label="Delete transaction"
-          >
-            <Trash2 className="w-4 h-4 text-red-600" />
-          </button>
-        )}
-      </div>
+      {displayAmount !== undefined && (
+        <div className={`text-sm ${getAmountClass()} font-medium`}>
+          {type === 'expense' ? '-' : '+'}{typeof displayAmount === 'number' ? Math.round(displayAmount) : displayAmount} zł
+        </div>
+      )}
     </div>
   );
 };
