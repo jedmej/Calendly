@@ -2,8 +2,15 @@ import React from "react";
 import { ActionBar } from "@/components/calendar/ActionBar";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, ArrowUpDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Transaction {
   id: string;
@@ -105,9 +112,22 @@ const TransactionItem = ({ item, onEdit }: {
   </div>
 );
 
+type SortOption = {
+  label: string;
+  value: "date-desc" | "date-asc" | "amount-desc" | "amount-asc";
+};
+
+const sortOptions: SortOption[] = [
+  { label: "Date: Newest → Oldest", value: "date-desc" },
+  { label: "Date: Oldest → Newest", value: "date-asc" },
+  { label: "Amount: Largest → Smallest", value: "amount-desc" },
+  { label: "Amount: Smallest → Largest", value: "amount-asc" },
+];
+
 export const Finances = () => {
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = React.useState<"income" | "expense" | null>(null);
+  const [sortBy, setSortBy] = React.useState<SortOption["value"]>("date-desc");
 
   const { data: transactions } = useQuery({
     queryKey: ["transactions"],
@@ -185,10 +205,30 @@ export const Finances = () => {
     });
   };
 
+  const sortItems = (items: FinancialItem[]) => {
+    return [...items].sort((a, b) => {
+      switch (sortBy) {
+        case "date-desc":
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case "date-asc":
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case "amount-desc":
+          return Math.abs(b.amount) - Math.abs(a.amount);
+        case "amount-asc":
+          return Math.abs(a.amount) - Math.abs(b.amount);
+        default:
+          return 0;
+      }
+    });
+  };
+
   const filteredItems = React.useMemo(() => {
-    if (!activeFilter) return allItems;
-    return allItems.filter(item => item.type === activeFilter);
-  }, [allItems, activeFilter]);
+    let items = allItems;
+    if (activeFilter) {
+      items = items.filter(item => item.type === activeFilter);
+    }
+    return sortItems(items);
+  }, [allItems, activeFilter, sortBy]);
 
   const handleFilterClick = (type: "income" | "expense") => {
     setActiveFilter(current => current === type ? null : type);
@@ -218,9 +258,29 @@ export const Finances = () => {
           </section>
 
           <section className="bg-white/70 border border-white/20 rounded-2xl p-4 md:p-6">
-            <h2 className="text-base md:text-lg lg:text-xl text-gray-900 font-medium mb-4 md:mb-6">
-              Transakcje
-            </h2>
+            <div className="flex items-center justify-between mb-4 md:mb-6">
+              <h2 className="text-base md:text-lg lg:text-xl text-gray-900 font-medium">
+                Transakcje
+              </h2>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <ArrowUpDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-[200px]">
+                  {sortOptions.map((option) => (
+                    <DropdownMenuItem
+                      key={option.value}
+                      onClick={() => setSortBy(option.value)}
+                      className="cursor-pointer"
+                    >
+                      {option.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
             <div className="space-y-2 md:space-y-3">
               {filteredItems.map(item => (
                 <TransactionItem 
