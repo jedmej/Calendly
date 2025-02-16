@@ -2,7 +2,7 @@
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { DollarSign, Users } from "lucide-react";
+import { DollarSign } from "lucide-react";
 
 interface EventFormProps {
   formData: {
@@ -11,7 +11,6 @@ interface EventFormProps {
     startTime: string;
     endTime: string;
     hourlyWage: string;
-    coworkers: string;
   };
   errors: { [key: string]: string };
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -98,22 +97,6 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
           onChange={handleInputChange}
           placeholder="15.00"
           className="bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full"
-        />
-      </div>
-
-      <div>
-        <div className="flex items-center gap-1.5 mb-1.5">
-          <Users className="w-4 h-4 text-[#374151]" />
-          <Label htmlFor="coworkers" className="text-xs md:text-sm text-[#374151] font-medium">
-            Co-workers
-          </Label>
-        </div>
-        <Input
-          id="coworkers"
-          value={formData.coworkers}
-          onChange={handleInputChange}
-          placeholder="Add co-workers (comma separated)"
-          className="bg-white/60 border border-black/10 h-[42px] md:h-[48px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full"
         />
       </div>
     </div>
