@@ -8,6 +8,8 @@ import { TransactionTypeSelector } from "@/components/transactions/TransactionTy
 import { TransactionTypeToggle } from "@/components/transactions/TransactionTypeToggle";
 import { TransactionForm } from "@/components/transactions/TransactionForm";
 import { SubmitButton } from "@/components/transactions/SubmitButton";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 
 interface LocationState {
   id?: string;
@@ -62,6 +64,37 @@ export default function AddTransaction() {
       ...prev,
       [id]: value
     }));
+  };
+
+  const handleDelete = async () => {
+    if (!state?.id) return;
+
+    if (window.confirm('Are you sure you want to delete this transaction?')) {
+      try {
+        const { error } = await supabase
+          .from('transactions')
+          .delete()
+          .eq('id', state.id);
+
+        if (error) throw error;
+
+        toast({
+          title: "Sukces!",
+          description: "Transakcja została usunięta.",
+          className: "bg-[#F2FCE2]/90 text-green-800 border-none"
+        });
+
+        navigate("/");
+      } catch (error) {
+        console.error("Error deleting transaction:", error);
+        toast({
+          variant: "destructive",
+          title: "Błąd",
+          description: "Nie udało się usunąć transakcji. Spróbuj ponownie.",
+          className: "bg-red-50/90 text-red-900 border-none"
+        });
+      }
+    }
   };
 
   const handleSubmit = async () => {
@@ -144,6 +177,19 @@ export default function AddTransaction() {
             formData={formData}
             handleInputChange={handleInputChange}
           />
+
+          {state?.isEditing && (
+            <div className="mt-6 md:mt-8 flex justify-center">
+              <Button
+                onClick={handleDelete}
+                variant="ghost"
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                Usuń transakcję
+              </Button>
+            </div>
+          )}
         </div>
 
         <SubmitButton 
