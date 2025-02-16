@@ -8,7 +8,6 @@ import { CategorySelector } from "@/components/events/CategorySelector";
 import { EarningsCalculator } from "@/components/events/EarningsCalculator";
 import { EventTypeSelector } from "@/components/events/EventTypeSelector";
 import { EventForm } from "@/components/events/EventForm";
-import { ActionButton } from "@/components/shared/ActionButton";
 
 interface LocationState {
   id?: string;
@@ -264,11 +263,28 @@ const AddEvent = () => {
         </div>
       </div>
 
-      <ActionButton 
-        isEditing={isEditing} 
-        onClick={handleSubmit} 
-        onDelete={isEditing ? handleDelete : undefined} 
-      />
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[373px]">
+        <div className="bg-white shadow-[0px_0px_20px_rgba(0,0,0,0.05)] border border-[rgba(255,255,255,0.2)] rounded-[500px]">
+          <div className="flex w-full items-stretch px-[7px] py-2 gap-3.5">
+            {isEditing && (
+              <Button
+                onClick={handleDelete}
+                className="flex-1 bg-red-500 text-white rounded-[500px] h-[70px] text-sm md:text-base font-medium"
+              >
+                <Trash className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                Delete Event
+              </Button>
+            )}
+            <Button
+              onClick={handleSubmit}
+              className={`${isEditing ? 'flex-1' : 'w-full'} bg-blue-600 text-white rounded-[500px] h-[70px] text-sm md:text-base font-medium`}
+            >
+              <Save className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              {isEditing ? "Save Changes" : "Add Event"}
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
