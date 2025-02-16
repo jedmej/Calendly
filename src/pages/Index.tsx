@@ -4,7 +4,7 @@ import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarGrid } from "@/components/calendar/CalendarGrid";
 import { EventList } from "@/components/calendar/EventList";
 import { ActionBar } from "@/components/calendar/ActionBar";
-import { addMonths, format } from "date-fns";
+import { addMonths, format, parse } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Event } from "@/components/calendar/types";
@@ -43,7 +43,13 @@ const Index = () => {
   const handleDateSelect = (date: Date, events: Event[]) => {
     setSelectedDate(date);
     setSelectedEvents(events);
+  };
+
+  const handleEventListDateChange = (date: Date) => {
+    setSelectedDate(date);
     setCurrentDate(date);
+    // We pass empty events array initially, they will be loaded by the CalendarGrid component
+    handleDateSelect(date, []);
   };
 
   const handleMonthYearClick = () => {
@@ -51,14 +57,28 @@ const Index = () => {
     input.type = 'month';
     input.value = format(currentDate, 'yyyy-MM');
     
-    input.onchange = (e) => {
+    const handleInputChange = (e: Event) => {
       const value = (e.target as HTMLInputElement).value;
       if (value) {
-        setCurrentDate(new Date(value));
+        // Parse the value to get a date object set to the first of the selected month
+        const newDate = parse(value + '-01', 'yyyy-MM-dd', new Date());
+        setCurrentDate(newDate);
       }
+      input.removeEventListener('change', handleInputChange);
+      document.body.removeChild(input);
     };
     
-    input.click();
+    input.addEventListener('change', handleInputChange);
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    input.style.pointerEvents = 'none';
+    document.body.appendChild(input);
+    
+    // Trigger click after a short delay to ensure the input is in the DOM
+    setTimeout(() => {
+      input.showPicker();
+      input.click();
+    }, 50);
   };
 
   return (
@@ -104,7 +124,7 @@ const Index = () => {
           {selectedDate && <EventList 
             date={format(selectedDate, 'MMM dd, yyyy')} 
             events={selectedEvents}
-            onDateChange={(date) => handleDateSelect(date, [])}
+            onDateChange={handleEventListDateChange}
           />}
         </div>
       </div>
