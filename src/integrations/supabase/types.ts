@@ -12,6 +12,7 @@ export type Database = {
       events: {
         Row: {
           category: string
+          coworkers: string[] | null
           created_at: string
           end_time: string
           event_date: string
@@ -23,6 +24,7 @@ export type Database = {
         }
         Insert: {
           category: string
+          coworkers?: string[] | null
           created_at?: string
           end_time: string
           event_date: string
@@ -34,6 +36,7 @@ export type Database = {
         }
         Update: {
           category?: string
+          coworkers?: string[] | null
           created_at?: string
           end_time?: string
           event_date?: string

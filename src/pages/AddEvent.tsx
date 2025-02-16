@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -151,7 +152,7 @@ const AddEvent = () => {
         end_time: formData.endTime,
         category: category,
         hourly_wage: formData.hourlyWage ? parseFloat(formData.hourlyWage) : null,
-        coworkers: formData.coworkers ? formData.coworkers.split(",").map((c) => c.trim()) : null,
+        coworkers: formData.coworkers ? formData.coworkers.split(",").map(c => c.trim()) : null,
         total_earnings: totalEarnings
       };
 
