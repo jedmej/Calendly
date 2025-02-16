@@ -32,10 +32,38 @@
           navigator.serviceWorker.register('/sw.js')
             .then(registration => {
               console.log('ServiceWorker registration successful');
+              
+              // Check for updates every time the page loads
+              registration.update();
+              
+              // Add listener for when a new service worker is waiting
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // New version available
+                    if (confirm('A new version of the app is available. Load it now?')) {
+                      // Post message to service worker to skip waiting
+                      newWorker.postMessage({ type: 'skipWaiting' });
+                      window.location.reload();
+                    }
+                  }
+                });
+              });
             })
             .catch(err => {
               console.log('ServiceWorker registration failed: ', err);
             });
+            
+          // Listen for controlling service worker changing
+          let refreshing = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+              refreshing = true;
+              window.location.reload();
+            }
+          });
         });
       }
     </script>
