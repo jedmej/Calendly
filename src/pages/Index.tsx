@@ -43,6 +43,7 @@ const Index = () => {
   const handleDateSelect = (date: Date, events: Event[]) => {
     setSelectedDate(date);
     setSelectedEvents(events);
+    setCurrentDate(date); // This ensures the calendar updates when a new date is selected
   };
 
   const handleMonthYearClick = () => {
