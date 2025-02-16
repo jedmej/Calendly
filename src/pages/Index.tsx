@@ -43,7 +43,7 @@ const Index = () => {
   const handleDateSelect = (date: Date, events: Event[]) => {
     setSelectedDate(date);
     setSelectedEvents(events);
-    setCurrentDate(date); // This ensures the calendar updates when a new date is selected
+    setCurrentDate(date);
   };
 
   const handleMonthYearClick = () => {
@@ -79,32 +79,50 @@ const Index = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}
       transition={{ duration: 0.2 }}
-      className="section-container flex flex-col min-h-screen items-stretch pb-24 my-[16px]"
+      className="min-h-screen bg-background flex flex-col items-center p-4 md:p-6"
     >
-      <div className="flex-1 w-full">
+      <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6 pb-32">
         <CalendarHeader title="Calendar" />
-        <div className="w-full mt-4 md:mt-6">
-          <div className="bg-[rgba(255,255,255,0.7)] border w-full card-padding rounded-2xl border-[rgba(255,255,255,0.2)] border-solid">
-            <div className="flex w-full items-center gap-[40px_100px] text-[15px] md:text-base lg:text-lg text-gray-900 font-medium leading-loose justify-between">
+        <div className="w-full">
+          <div className="glass-morphism w-full card-padding rounded-2xl">
+            <div className="flex w-full items-center gap-[40px_100px] text-[15px] md:text-base lg:text-lg text-foreground font-medium leading-loose justify-between">
               <button 
                 onClick={handleMonthYearClick}
-                className="self-stretch w-[122px] my-auto hover:text-blue-600 transition-colors"
+                className="self-stretch w-[122px] my-auto hover:text-primary transition-colors"
               >
                 {format(currentDate, 'MMMM yyyy')}
               </button>
-              <div className="flex items-center gap-2 text-xs md:text-sm lg:text-base text-gray-600 font-medium">
-                <button onClick={handlePreviousMonth} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-gray-100">
-                  <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
+              <div className="flex items-center gap-2 text-xs md:text-sm lg:text-base text-muted-foreground font-medium">
+                <button onClick={handlePreviousMonth} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-accent">
+                  <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
-                <button onClick={handleToday} className="px-4 py-1 md:px-6 md:py-2 rounded-full bg-[rgba(0,0,0,0.05)] hover:bg-[rgba(0,0,0,0.08)] transition-colors">Dzisaj</button>
-                <button onClick={handleNextMonth} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-gray-100">
-                  <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
+                <button onClick={handleToday} className="px-4 py-1 md:px-6 md:py-2 rounded-full bg-accent hover:bg-accent/80 transition-colors">Dzisaj</button>
+                <button onClick={handleNextMonth} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-accent">
+                  <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
                 </button>
               </div>
             </div>
             <div className="flex w-full gap-2 text-xs md:text-sm lg:text-base font-medium whitespace-nowrap text-center leading-loose mt-4">
-              <button onClick={() => setView("week")} className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${view === "week" ? "bg-blue-600 text-white" : "bg-[rgba(0,0,0,0.05)] text-gray-600"}`}>Tydzien</button>
-              <button onClick={() => setView("month")} className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] ${view === "month" ? "bg-blue-600 text-white" : "bg-[rgba(0,0,0,0.05)] text-gray-600"}`}>Miesiac</button>
+              <button 
+                onClick={() => setView("week")} 
+                className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] transition-colors ${
+                  view === "week" 
+                    ? "bg-primary text-primary-foreground" 
+                    : "bg-accent text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Tydzien
+              </button>
+              <button 
+                onClick={() => setView("month")} 
+                className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] transition-colors ${
+                  view === "month" 
+                    ? "bg-primary text-primary-foreground" 
+                    : "bg-accent text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Miesiac
+              </button>
             </div>
             <CalendarGrid 
               view={view} 
@@ -120,7 +138,7 @@ const Index = () => {
           />}
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 section-container">
+      <div className="fixed bottom-0 left-0 right-0 z-20">
         <ActionBar />
       </div>
     </motion.div>
