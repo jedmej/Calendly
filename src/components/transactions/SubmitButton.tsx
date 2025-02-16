@@ -1,7 +1,6 @@
 
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Edit, Plus } from "lucide-react";
+import { ActionButton } from "@/components/shared/ActionButton";
 
 interface SubmitButtonProps {
   isEditing?: boolean;
@@ -9,26 +8,5 @@ interface SubmitButtonProps {
 }
 
 export const SubmitButton: React.FC<SubmitButtonProps> = ({ isEditing, onClick }) => {
-  return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[373px]">
-      <div className="flex w-full items-stretch px-[7px] py-2">
-        <Button
-          onClick={onClick}
-          className="w-full bg-blue-600 text-white rounded-[500px] h-[70px] text-sm md:text-base font-medium flex items-center justify-center gap-2"
-        >
-          {isEditing ? (
-            <>
-              <Edit className="w-4 h-4 md:w-5 md:h-5" />
-              Zaktualizuj transakcję
-            </>
-          ) : (
-            <>
-              <Plus className="w-4 h-4 md:w-5 md:h-5" />
-              Dodaj transakcję
-            </>
-          )}
-        </Button>
-      </div>
-    </div>
-  );
+  return <ActionButton isEditing={isEditing} onClick={onClick} />;
 };
