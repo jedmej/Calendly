@@ -230,7 +230,7 @@ const AddEvent = () => {
 
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4 md:p-6 lg:p-8">
-      <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6">
+      <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6 pb-32">
         <div className="bg-white/70 backdrop-blur-lg rounded-[500px] min-h-[60px] w-full px-2 py-3 flex items-center gap-2">
           <button
             onClick={handleBack}
@@ -261,25 +261,25 @@ const AddEvent = () => {
             />
           </div>
         </div>
+      </div>
 
-        <div className="flex gap-3 mt-6">
-          {isEditing && (
-            <Button
-              onClick={handleDelete}
-              className="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-[500px] h-[48px] md:h-[52px] text-sm md:text-base font-medium"
-            >
-              <Trash className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-              Delete Event
-            </Button>
-          )}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[373px] flex gap-3">
+        {isEditing && (
           <Button
-            onClick={handleSubmit}
-            className={`${isEditing ? 'flex-1' : 'w-full'} bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-[500px] h-[48px] md:h-[52px] text-sm md:text-base font-medium`}
+            onClick={handleDelete}
+            className="flex-1 bg-white shadow-[0px_0px_20px_rgba(0,0,0,0.05)] border border-[rgba(255,255,255,0.2)] text-red 500 rounded-[500px] h-[70px] text-sm md:text-base font-medium"
           >
-            <Save className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-            {isEditing ? "Save Changes" : "Add Event"}
+            <Trash className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+            Delete Event
           </Button>
-        </div>
+        )}
+        <Button
+          onClick={handleSubmit}
+          className={`${isEditing ? 'flex-1' : 'w-full'} bg-white shadow-[0px_0px_20px_rgba(0,0,0,0.05)] border border-[rgba(255,255,255,0.2)] text-blue-600 rounded-[500px] h-[70px] text-sm md:text-base font-medium`}
+        >
+          <Save className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+          {isEditing ? "Save Changes" : "Add Event"}
+        </Button>
       </div>
     </div>
   );
