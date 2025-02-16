@@ -43,7 +43,6 @@ const Index = () => {
   const handleDateSelect = (date: Date, events: Event[]) => {
     setSelectedDate(date);
     setSelectedEvents(events);
-    setCurrentDate(date);
   };
 
   const handleMonthYearClick = () => {
@@ -51,13 +50,25 @@ const Index = () => {
     input.type = 'month';
     input.value = format(currentDate, 'yyyy-MM');
     
-    input.onchange = (e) => {
-      const value = (e.target as HTMLInputElement).value;
-      if (value) {
-        setCurrentDate(new Date(value));
+    const handleInputChange = () => {
+      if (input.value) {
+        const [year, month] = input.value.split('-').map(Number);
+        const newDate = new Date(year, month - 1, 1);
+        setCurrentDate(newDate);
       }
+      document.body.removeChild(input);
     };
     
+    input.addEventListener('change', handleInputChange);
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    input.style.top = '0';
+    input.style.left = '0';
+    input.style.width = '100%';
+    input.style.height = '100%';
+    input.style.cursor = 'pointer';
+    input.style.zIndex = '9999';
+    document.body.appendChild(input);
     input.click();
   };
 
