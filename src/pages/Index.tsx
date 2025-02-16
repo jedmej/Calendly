@@ -4,7 +4,7 @@ import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarGrid } from "@/components/calendar/CalendarGrid";
 import { EventList } from "@/components/calendar/EventList";
 import { ActionBar } from "@/components/calendar/ActionBar";
-import { addMonths, format, parse } from "date-fns";
+import { addMonths, format } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Event } from "@/components/calendar/types";
@@ -17,7 +17,6 @@ const Index = () => {
   });
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [isPickerVisible, setIsPickerVisible] = useState(false);
 
   useEffect(() => {
     setSelectedDate(currentDate);
@@ -44,12 +43,7 @@ const Index = () => {
   const handleDateSelect = (date: Date, events: Event[]) => {
     setSelectedDate(date);
     setSelectedEvents(events);
-  };
-
-  const handleEventListDateChange = (date: Date) => {
-    setSelectedDate(date);
     setCurrentDate(date);
-    handleDateSelect(date, []);
   };
 
   const handleMonthYearClick = () => {
@@ -57,25 +51,13 @@ const Index = () => {
     input.type = 'month';
     input.value = format(currentDate, 'yyyy-MM');
     
-    const handleInputChange = function(this: HTMLInputElement) {
-      if (this.value) {
-        const newDate = parse(this.value + '-01', 'yyyy-MM-dd', new Date());
-        setCurrentDate(newDate);
+    input.onchange = (e) => {
+      const value = (e.target as HTMLInputElement).value;
+      if (value) {
+        setCurrentDate(new Date(value));
       }
-      input.removeEventListener('change', handleInputChange);
-      document.body.removeChild(input);
     };
     
-    // Create and trigger input without showPicker
-    input.addEventListener('change', handleInputChange);
-    input.style.position = 'fixed';
-    input.style.opacity = '0';
-    input.style.top = '0';
-    input.style.left = '0';
-    input.style.width = '100%';
-    input.style.height = '100%';
-    input.style.zIndex = '9999';
-    document.body.appendChild(input);
     input.click();
   };
 
@@ -122,7 +104,7 @@ const Index = () => {
           {selectedDate && <EventList 
             date={format(selectedDate, 'MMM dd, yyyy')} 
             events={selectedEvents}
-            onDateChange={handleEventListDateChange}
+            onDateChange={(date) => handleDateSelect(date, [])}
           />}
         </div>
       </div>
