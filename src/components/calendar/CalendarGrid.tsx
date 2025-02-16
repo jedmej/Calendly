@@ -1,15 +1,17 @@
 
 import React, { useEffect, useState } from "react";
-import { startOfMonth, endOfMonth, eachDayOfInterval, addDays, startOfWeek, isSameDay } from "date-fns";
+import { startOfMonth, endOfMonth, eachDayOfInterval, addDays, startOfWeek, isSameDay, addMonths, subMonths, addWeeks, subWeeks } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { Day } from "./Day";
 import { WeekHeader } from "./WeekHeader";
 import { Event, CalendarGridProps } from "./types";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
 
 export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, onSelectDate, onInitialLoad }) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const isWeekView = view === "week";
+  const [dragDirection, setDragDirection] = useState<"left" | "right" | null>(null);
 
   useEffect(() => {
     const fetchEventsAndTransactions = async () => {
@@ -38,7 +40,6 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
 
         setEvents(allEvents);
 
-        // Filter events for the current date and call onInitialLoad
         const currentDateEvents = allEvents.filter(event => {
           const eventDate = event.event_date || event.transaction_date;
           return eventDate && isSameDay(new Date(eventDate), currentDate);
@@ -64,6 +65,33 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
     onSelectDate(date, dayEvents);
   };
 
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const threshold = 50; // minimum distance for swipe
+    const velocity = 0.5; // minimum velocity for swipe
+
+    if (Math.abs(info.velocity.x) < velocity || Math.abs(info.offset.x) < threshold) {
+      return;
+    }
+
+    if (info.offset.x > 0) {
+      // Swipe right - go to previous period
+      setDragDirection("right");
+      if (isWeekView) {
+        onSelectDate(subWeeks(currentDate, 1), []);
+      } else {
+        onSelectDate(subMonths(currentDate, 1), []);
+      }
+    } else {
+      // Swipe left - go to next period
+      setDragDirection("left");
+      if (isWeekView) {
+        onSelectDate(addWeeks(currentDate, 1), []);
+      } else {
+        onSelectDate(addMonths(currentDate, 1), []);
+      }
+    }
+  };
+
   const getMonthDays = () => {
     const start = startOfMonth(currentDate);
     const end = endOfMonth(currentDate);
@@ -77,24 +105,59 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
     return Array.from({ length: 7 }, (_, i) => addDays(start, i));
   };
 
+  const variants = {
+    enter: (direction: "left" | "right") => ({
+      x: direction === "right" ? -1000 : 1000,
+      opacity: 0
+    }),
+    center: {
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction: "left" | "right") => ({
+      x: direction === "right" ? 1000 : -1000,
+      opacity: 0
+    })
+  };
+
   if (isWeekView) {
     const weekDays = getWeekDays();
     return (
-      <div className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid">
+      <motion.div 
+        className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid"
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.2}
+        onDragEnd={handleDragEnd}
+      >
         <WeekHeader />
-        <div className="flex min-h-[60px] md:min-h-[80px] lg:min-h-[100px] w-full items-stretch gap-px">
-          {weekDays.map((date, index) => (
-            <Day
-              key={index}
-              date={date}
-              events={events}
-              isWeekView={true}
-              isSelected={selectedDate ? isSameDay(date, selectedDate) : false}
-              onSelect={handleDateSelect}
-            />
-          ))}
-        </div>
-      </div>
+        <AnimatePresence initial={false} mode="wait">
+          <motion.div
+            key={currentDate.toISOString()}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              duration: 0.3,
+              ease: "easeInOut"
+            }}
+            custom={dragDirection}
+            className="flex min-h-[60px] md:min-h-[80px] lg:min-h-[100px] w-full items-stretch gap-px"
+          >
+            {weekDays.map((date, index) => (
+              <Day
+                key={index}
+                date={date}
+                events={events}
+                isWeekView={true}
+                isSelected={selectedDate ? isSameDay(date, selectedDate) : false}
+                onSelect={handleDateSelect}
+              />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
     );
   }
 
@@ -104,21 +167,42 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({ view, currentDate, o
   );
 
   return (
-    <div className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid">
+    <motion.div 
+      className="border w-full overflow-hidden mt-4 rounded-2xl border-[rgba(238,238,238,1)] border-solid"
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.2}
+      onDragEnd={handleDragEnd}
+    >
       <WeekHeader />
-      {weeks.map((week, weekIndex) => (
-        <div key={weekIndex} className="flex min-h-[50px] md:min-h-[70px] lg:min-h-[90px] w-full items-stretch gap-px">
-          {week.map((date, dayIndex) => (
-            <Day
-              key={dayIndex}
-              date={date}
-              events={events}
-              isSelected={selectedDate ? isSameDay(date, selectedDate) : false}
-              onSelect={handleDateSelect}
-            />
+      <AnimatePresence initial={false} mode="wait">
+        <motion.div
+          key={currentDate.toISOString()}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            duration: 0.3,
+            ease: "easeInOut"
+          }}
+          custom={dragDirection}
+        >
+          {weeks.map((week, weekIndex) => (
+            <div key={weekIndex} className="flex min-h-[50px] md:min-h-[70px] lg:min-h-[90px] w-full items-stretch gap-px">
+              {week.map((date, dayIndex) => (
+                <Day
+                  key={dayIndex}
+                  date={date}
+                  events={events}
+                  isSelected={selectedDate ? isSameDay(date, selectedDate) : false}
+                  onSelect={handleDateSelect}
+                />
+              ))}
+            </div>
           ))}
-        </div>
-      ))}
-    </div>
+        </motion.div>
+      </AnimatePresence>
+    </motion.div>
   );
 };
