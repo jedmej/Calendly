@@ -235,11 +235,11 @@ export const Finances = () => {
   };
 
   return (
-    <main className="min-h-screen bg-[#F6F7F9] flex flex-col relative">
+    <main className="min-h-screen bg-background flex flex-col relative">
       <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 pb-[120px] md:pb-[140px]">
         <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6">
-          <header className="bg-white/70 backdrop-blur-lg rounded-[500px] min-h-[60px] px-6 py-3 flex items-center sticky top-0 z-10">
-            <h1 className="text-[17px] md:text-xl lg:text-2xl text-[#111827] font-medium">Finanse</h1>
+          <header className="calendar-header rounded-[500px] min-h-[60px] px-6 py-3 flex items-center sticky top-0 z-10">
+            <h1 className="text-[17px] md:text-xl lg:text-2xl text-foreground font-medium">Finanse</h1>
           </header>
 
           <section className="flex gap-4 md:gap-6">
