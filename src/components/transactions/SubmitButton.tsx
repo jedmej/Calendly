@@ -10,20 +10,20 @@ interface SubmitButtonProps {
 
 export const SubmitButton: React.FC<SubmitButtonProps> = ({ isEditing, onClick }) => {
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[373px]">
-      <div className="flex w-full items-stretch px-[7px] py-2">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[373px]">
+      <div className="bg-white/80 backdrop-blur-lg shadow-lg border border-gray-200/50 rounded-2xl p-3">
         <Button
           onClick={onClick}
-          className="w-full bg-blue-600 text-white rounded-[500px] h-[70px] text-sm md:text-base font-medium flex items-center justify-center gap-2"
+          className="w-full bg-primary text-white rounded-xl h-[52px] text-base font-medium flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
         >
           {isEditing ? (
             <>
-              <Edit className="w-4 h-4 md:w-5 md:h-5" />
+              <Edit className="icon-sm" />
               Zaktualizuj transakcję
             </>
           ) : (
             <>
-              <Plus className="w-4 h-4 md:w-5 md:h-5" />
+              <Plus className="icon-sm" />
               Dodaj transakcję
             </>
           )}
