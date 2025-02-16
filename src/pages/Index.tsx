@@ -17,6 +17,7 @@ const Index = () => {
   });
   const [selectedEvents, setSelectedEvents] = useState<Event[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [isPickerVisible, setIsPickerVisible] = useState(false);
 
   useEffect(() => {
     setSelectedDate(currentDate);
@@ -56,7 +57,7 @@ const Index = () => {
     input.type = 'month';
     input.value = format(currentDate, 'yyyy-MM');
     
-    const handleInputChange = function(this: HTMLInputElement, e: InputEvent) {
+    const handleInputChange = function(this: HTMLInputElement) {
       if (this.value) {
         const newDate = parse(this.value + '-01', 'yyyy-MM-dd', new Date());
         setCurrentDate(newDate);
@@ -65,16 +66,17 @@ const Index = () => {
       document.body.removeChild(input);
     };
     
+    // Create and trigger input without showPicker
     input.addEventListener('change', handleInputChange);
     input.style.position = 'fixed';
     input.style.opacity = '0';
-    input.style.pointerEvents = 'none';
+    input.style.top = '0';
+    input.style.left = '0';
+    input.style.width = '100%';
+    input.style.height = '100%';
+    input.style.zIndex = '9999';
     document.body.appendChild(input);
-    
-    setTimeout(() => {
-      input.showPicker();
-      input.click();
-    }, 50);
+    input.click();
   };
 
   return (
