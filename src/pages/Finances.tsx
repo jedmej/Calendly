@@ -11,6 +11,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Transaction {
   id: string;
@@ -126,6 +134,7 @@ const sortOptions: SortOption[] = [
 
 export const Finances = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [activeFilter, setActiveFilter] = React.useState<"income" | "expense" | null>(null);
   const [sortBy, setSortBy] = React.useState<SortOption["value"]>("date-desc");
 
@@ -234,6 +243,48 @@ export const Finances = () => {
     setActiveFilter(current => current === type ? null : type);
   };
 
+  const renderSortSelector = () => {
+    if (isMobile) {
+      return (
+        <Select value={sortBy} onValueChange={setSortBy}>
+          <SelectTrigger className="w-[40px] h-8 px-2">
+            <SelectValue>
+              <ArrowUpDown className="h-4 w-4" />
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {sortOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      );
+    }
+
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="h-8 w-8">
+            <ArrowUpDown className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-[200px]">
+          {sortOptions.map((option) => (
+            <DropdownMenuItem
+              key={option.value}
+              onClick={() => setSortBy(option.value)}
+              className="cursor-pointer"
+            >
+              {option.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
   return (
     <main className="min-h-screen bg-[#F6F7F9] flex flex-col relative">
       <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 pb-[120px] md:pb-[140px]">
@@ -262,24 +313,7 @@ export const Finances = () => {
               <h2 className="text-base md:text-lg lg:text-xl text-gray-900 font-medium">
                 Transakcje
               </h2>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <ArrowUpDown className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[200px]">
-                  {sortOptions.map((option) => (
-                    <DropdownMenuItem
-                      key={option.value}
-                      onClick={() => setSortBy(option.value)}
-                      className="cursor-pointer"
-                    >
-                      {option.label}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {renderSortSelector()}
             </div>
             <div className="space-y-2 md:space-y-3">
               {filteredItems.map(item => (
