@@ -1,11 +1,10 @@
 
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Day } from "./Day";
 import { WeekHeader } from "./WeekHeader";
 import { Event } from "./types";
 import { isSameDay } from "date-fns";
-import { calendarVariants } from "./utils/animations";
 
 interface WeekViewProps {
   weekDays: Date[];
@@ -38,32 +37,18 @@ export const WeekView: React.FC<WeekViewProps> = ({
       whileTap={{ cursor: "grabbing" }}
     >
       <WeekHeader />
-      <AnimatePresence initial={false} mode="wait">
-        <motion.div
-          key={currentDate.toISOString()}
-          variants={calendarVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{
-            duration: 0.2,
-            ease: "easeOut"
-          }}
-          custom={dragDirection}
-          className="flex min-h-[60px] md:min-h-[80px] lg:min-h-[100px] w-full items-stretch gap-px"
-        >
-          {weekDays.map((date, index) => (
-            <Day
-              key={index}
-              date={date}
-              events={events}
-              isWeekView={true}
-              isSelected={selectedDate ? isSameDay(date, selectedDate) : false}
-              onSelect={onSelect}
-            />
-          ))}
-        </motion.div>
-      </AnimatePresence>
+      <div className="flex min-h-[60px] md:min-h-[80px] lg:min-h-[100px] w-full items-stretch gap-px">
+        {weekDays.map((date, index) => (
+          <Day
+            key={index}
+            date={date}
+            events={events}
+            isWeekView={true}
+            isSelected={selectedDate ? isSameDay(date, selectedDate) : false}
+            onSelect={onSelect}
+          />
+        ))}
+      </div>
     </motion.div>
   );
 };

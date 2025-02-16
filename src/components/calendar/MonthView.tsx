@@ -1,11 +1,10 @@
 
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Day } from "./Day";
 import { WeekHeader } from "./WeekHeader";
 import { Event } from "./types";
 import { isSameDay } from "date-fns";
-import { calendarVariants } from "./utils/animations";
 
 interface MonthViewProps {
   weeks: Date[][];
@@ -38,34 +37,21 @@ export const MonthView: React.FC<MonthViewProps> = ({
       whileTap={{ cursor: "grabbing" }}
     >
       <WeekHeader />
-      <AnimatePresence initial={false} mode="wait">
-        <motion.div
-          key={currentDate.toISOString()}
-          variants={calendarVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{
-            duration: 0.2,
-            ease: "easeOut"
-          }}
-          custom={dragDirection}
-        >
-          {weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className="flex min-h-[50px] md:min-h-[70px] lg:min-h-[90px] w-full items-stretch gap-px">
-              {week.map((date, dayIndex) => (
-                <Day
-                  key={dayIndex}
-                  date={date}
-                  events={events}
-                  isSelected={selectedDate ? isSameDay(date, selectedDate) : false}
-                  onSelect={onSelect}
-                />
-              ))}
-            </div>
-          ))}
-        </motion.div>
-      </AnimatePresence>
+      <div>
+        {weeks.map((week, weekIndex) => (
+          <div key={weekIndex} className="flex min-h-[50px] md:min-h-[70px] lg:min-h-[90px] w-full items-stretch gap-px">
+            {week.map((date, dayIndex) => (
+              <Day
+                key={dayIndex}
+                date={date}
+                events={events}
+                isSelected={selectedDate ? isSameDay(date, selectedDate) : false}
+                onSelect={onSelect}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
     </motion.div>
   );
 };

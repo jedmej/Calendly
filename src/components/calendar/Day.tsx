@@ -20,8 +20,13 @@ export const Day: React.FC<DayProps> = ({
   onSelect 
 }) => {
   const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     onSelect(date);
+  };
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    e.stopPropagation();
   };
 
   const getEventColor = (event: Event) => {
@@ -50,6 +55,7 @@ export const Day: React.FC<DayProps> = ({
   return (
     <div 
       onClick={handleClick}
+      onPointerDown={handlePointerDown}
       className={`
         flex flex-col items-center cursor-pointer
         ${isWeekView ? 'min-h-[60px]' : 'w-[49px] h-[49px]'} 
