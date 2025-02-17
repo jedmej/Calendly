@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-import { EventCategory, EventFormData, EventFormErrors } from "../types/event";
+import { EventCategory, EventFormData } from "../types/event";
+import { useEarningsCalculation } from "./useEarningsCalculation";
+import { useFormValidation } from "./useFormValidation";
 
 interface InitialState {
   id?: string;
@@ -36,10 +38,19 @@ export const useEventForm = (initialState?: InitialState) => {
     coworkers: initialState?.coworkers || ""
   });
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [estimatedEarnings, setEstimatedEarnings] = useState(0);
-  const [tips, setTips] = useState("0");
-  const [totalEarnings, setTotalEarnings] = useState(0);
+  const { errors, validateForm, clearError } = useFormValidation();
+  
+  const { 
+    estimatedEarnings, 
+    tips, 
+    totalEarnings, 
+    handleTipsChange 
+  } = useEarningsCalculation({
+    startTime: formData.startTime,
+    endTime: formData.endTime,
+    hourlyWage: formData.hourlyWage,
+    initialEarnings: initialState?.totalEarnings
+  });
 
   useEffect(() => {
     if (category === "Work" && !isEditing && !formData.hourlyWage) {
@@ -50,82 +61,17 @@ export const useEventForm = (initialState?: InitialState) => {
     }
   }, [category, isEditing]);
 
-  useEffect(() => {
-    if (isEditing && initialState?.totalEarnings !== undefined) {
-      setTotalEarnings(Number(initialState.totalEarnings));
-    }
-  }, [isEditing, initialState?.totalEarnings]);
-
-  useEffect(() => {
-    calculateEarnings();
-  }, [formData.startTime, formData.endTime, formData.hourlyWage]);
-
-  useEffect(() => {
-    if (isEditing && initialState?.totalEarnings !== undefined && formData.hourlyWage) {
-      const start = new Date(`2000/01/01 ${formData.startTime}`);
-      const end = new Date(`2000/01/01 ${formData.endTime}`);
-      const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-      const baseEarnings = hours * parseFloat(formData.hourlyWage || "0");
-      const calculatedTips = Math.max(0, initialState.totalEarnings - baseEarnings);
-      setTips(calculatedTips.toFixed(2));
-      setEstimatedEarnings(baseEarnings);
-      setTotalEarnings(initialState.totalEarnings);
-    }
-  }, [isEditing, initialState?.totalEarnings, formData.startTime, formData.endTime, formData.hourlyWage]);
-
-  const calculateEarnings = () => {
-    if (formData.startTime && formData.endTime && formData.hourlyWage) {
-      const start = new Date(`2000/01/01 ${formData.startTime}`);
-      const end = new Date(`2000/01/01 ${formData.endTime}`);
-      const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
-      const earnings = hours * parseFloat(formData.hourlyWage || "0");
-      setEstimatedEarnings(earnings);
-      const tipsValue = parseFloat(tips || "0");
-      setTotalEarnings(earnings + tipsValue);
-    }
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [id]: value
     }));
-    if (errors[id]) {
-      setErrors(prev => ({
-        ...prev,
-        [id]: ""
-      }));
-    }
-  };
-
-  const handleTipsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value || "0";
-    setTips(value);
-    const tipsValue = parseFloat(value || "0");
-    setTotalEarnings(estimatedEarnings + tipsValue);
-  };
-
-  const validateForm = () => {
-    const newErrors: { [key: string]: string; } = {};
-    if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (!formData.date) newErrors.date = "Date is required";
-    if (!formData.startTime) newErrors.startTime = "Start time is required";
-    if (!formData.endTime) newErrors.endTime = "End time is required";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    clearError(id);
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Please fill in all required fields.",
-        className: "bg-red-50/90 text-red-900 border-none"
-      });
-      return;
-    }
+    if (!validateForm(formData)) return;
 
     try {
       const eventData = {
