@@ -142,7 +142,7 @@ export default function AddTransaction() {
     }
   };
   return <div className="bg-[#D8EAE3] min-h-screen flex flex-col items-center p-4 pb-20 md:p-6 md:pb-24">
-      <div className="w-full max-w-[800px] md:max-w-[640px] mx-auto space-y-4 md:space-y-6">
+      <div className="w-full max-w-[800px] mx-auto space-y-4 md:space-y-6 pb-32">
         <Header title={state?.isEditing ? "Edit Transaction" : "Add Transaction"} showBackButton />
         
         {!state?.isEditing && <TransactionTypeSelector />}
