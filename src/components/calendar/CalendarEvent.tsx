@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Briefcase, GraduationCap, Star, DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -96,6 +97,11 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   };
 
   const getDisplayAmount = () => {
+    // Don't show amount for school events
+    if (category?.toLowerCase() === "school") {
+      return undefined;
+    }
+    
     if (isTransaction && amount !== undefined) {
       return typeof amount === 'number' ? amount : amount.value;
     }
