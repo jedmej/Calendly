@@ -10,6 +10,7 @@ import { TransactionTypeSelector } from "@/components/transactions/TransactionTy
 import { TransactionTypeToggle } from "@/components/transactions/TransactionTypeToggle";
 import { TransactionForm } from "@/components/transactions/TransactionForm";
 import { Trash2, Save } from "lucide-react";
+
 interface LocationState {
   id?: string;
   title?: string;
@@ -20,12 +21,14 @@ interface LocationState {
   isEditing?: boolean;
   returnDate?: string;
 }
+
 interface FormData {
   title: string;
   amount: string;
   category: string;
   date: string;
 }
+
 export default function AddTransaction() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,6 +43,7 @@ export default function AddTransaction() {
     category: "Work",
     date: ""
   });
+
   useEffect(() => {
     if (state?.isEditing) {
       setFormData({
@@ -51,6 +55,7 @@ export default function AddTransaction() {
       setIsIncome(state.type === 'income');
     }
   }, [state]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       id,
@@ -61,6 +66,7 @@ export default function AddTransaction() {
       [id]: value
     }));
   };
+
   const handleDelete = async () => {
     if (!state?.id) return;
     if (window.confirm('Are you sure you want to delete this transaction?')) {
@@ -86,6 +92,7 @@ export default function AddTransaction() {
       }
     }
   };
+
   const handleSubmit = async () => {
     if (!formData.title || !formData.amount || !formData.date) {
       toast({
@@ -141,6 +148,7 @@ export default function AddTransaction() {
       });
     }
   };
+
   return <div className="bg-[#D8EAE3] min-h-screen flex flex-col items-center p-4 pb-20 md:p-6 md:pb-24">
       <div className="w-full max-w-[800px] mx-auto space-y-4 md:space-y-6 pb-32">
         <Header title={state?.isEditing ? "Edit Transaction" : "Add Transaction"} showBackButton />
@@ -160,7 +168,7 @@ export default function AddTransaction() {
           <div className="flex w-full items-stretch px-1 py-1 gap-2">
             {state?.isEditing && <Button variant="destructive" onClick={handleDelete} fullWidth leftIcon={<Trash2 className="w-4 h-4" />}>Delete</Button>}
             <Button variant="primary" onClick={handleSubmit} fullWidth leftIcon={<Save className="w-4 h-4" />}>
-              {state?.isEditing ? "Save Changes" : "Add Transaction"}
+              {state?.isEditing ? "Save" : "Add Transaction"}
             </Button>
           </div>
         </div>
