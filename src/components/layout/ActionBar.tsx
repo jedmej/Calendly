@@ -11,7 +11,7 @@ export const ActionBar = () => {
   const isFinancesRoute = location.pathname === '/finances';
   return <div className="w-full flex justify-center px-4 py-4 md:py-6 z-50">
       <div className="action-bar flex w-full max-w-[320px] md:max-w-[373px] items-stretch rounded-[500px] bg-white/95 backdrop-blur-md shadow-lg border border-[rgba(255,255,255,0.15)]">
-        <div className="flex w-full items-stretch px-2 py-2 gap-4">
+        <div className="flex w-full items-stretch px-2 py-2 gap-0">
           <NavButton icon={<Calendar className="w-5 h-5 md:w-6 md:h-6" />} isActive={isHomeRoute} onClick={() => navigate('/')} />
           
           <div className="flex flex-1 items-center justify-center">
