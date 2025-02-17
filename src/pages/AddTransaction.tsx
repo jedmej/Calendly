@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,7 +10,6 @@ import { TransactionTypeSelector } from "@/components/transactions/TransactionTy
 import { TransactionTypeToggle } from "@/components/transactions/TransactionTypeToggle";
 import { TransactionForm } from "@/components/transactions/TransactionForm";
 import { Trash2, Save } from "lucide-react";
-
 interface LocationState {
   id?: string;
   title?: string;
@@ -22,31 +20,26 @@ interface LocationState {
   isEditing?: boolean;
   returnDate?: string;
 }
-
 interface FormData {
   title: string;
   amount: string;
   category: string;
   date: string;
 }
-
 export default function AddTransaction() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const state = location.state as LocationState;
-  
-  const [isIncome, setIsIncome] = useState<boolean>(() => 
-    state?.type !== undefined ? state.type === 'income' : true
-  );
-
+  const [isIncome, setIsIncome] = useState<boolean>(() => state?.type !== undefined ? state.type === 'income' : true);
   const [formData, setFormData] = useState<FormData>({
     title: "",
     amount: "",
     category: "Work",
     date: ""
   });
-
   useEffect(() => {
     if (state?.isEditing) {
       setFormData({
@@ -58,33 +51,29 @@ export default function AddTransaction() {
       setIsIncome(state.type === 'income');
     }
   }, [state]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
+    const {
+      id,
+      value
+    } = e.target;
     setFormData(prev => ({
       ...prev,
       [id]: value
     }));
   };
-
   const handleDelete = async () => {
     if (!state?.id) return;
-
     if (window.confirm('Are you sure you want to delete this transaction?')) {
       try {
-        const { error } = await supabase
-          .from('transactions')
-          .delete()
-          .eq('id', state.id);
-
+        const {
+          error
+        } = await supabase.from('transactions').delete().eq('id', state.id);
         if (error) throw error;
-
         toast({
           title: "Sukces!",
           description: "Transakcja została usunięta.",
           className: "bg-[#F2FCE2]/90 text-green-800 border-none"
         });
-
         navigate("/");
       } catch (error) {
         console.error("Error deleting transaction:", error);
@@ -97,7 +86,6 @@ export default function AddTransaction() {
       }
     }
   };
-
   const handleSubmit = async () => {
     if (!formData.title || !formData.amount || !formData.date) {
       toast({
@@ -108,47 +96,40 @@ export default function AddTransaction() {
       });
       return;
     }
-
     try {
       if (state?.isEditing && state.id) {
-        const { error } = await supabase
-          .from('transactions')
-          .update({
-            title: formData.title,
-            amount: parseFloat(formData.amount),
-            category: formData.category,
-            transaction_date: formData.date,
-            type: isIncome ? 'income' : 'expense'
-          })
-          .eq('id', state.id);
-
+        const {
+          error
+        } = await supabase.from('transactions').update({
+          title: formData.title,
+          amount: parseFloat(formData.amount),
+          category: formData.category,
+          transaction_date: formData.date,
+          type: isIncome ? 'income' : 'expense'
+        }).eq('id', state.id);
         if (error) throw error;
-
         toast({
           title: "Sukces!",
           description: "Transakcja została zaktualizowana.",
           className: "bg-[#F2FCE2]/90 text-green-800 border-none"
         });
       } else {
-        const { error } = await supabase
-          .from('transactions')
-          .insert({
-            title: formData.title,
-            amount: parseFloat(formData.amount),
-            category: formData.category,
-            transaction_date: formData.date,
-            type: isIncome ? 'income' : 'expense'
-          });
-
+        const {
+          error
+        } = await supabase.from('transactions').insert({
+          title: formData.title,
+          amount: parseFloat(formData.amount),
+          category: formData.category,
+          transaction_date: formData.date,
+          type: isIncome ? 'income' : 'expense'
+        });
         if (error) throw error;
-
         toast({
           title: "Sukces!",
           description: "Transakcja została dodana.",
           className: "bg-[#F2FCE2]/90 text-green-800 border-none"
         });
       }
-
       navigate("/");
     } catch (error) {
       console.error("Error saving transaction:", error);
@@ -160,27 +141,16 @@ export default function AddTransaction() {
       });
     }
   };
-
-  return (
-    <div className="bg-[#D8EAE3] min-h-screen flex flex-col items-center p-4 pb-20 md:p-6 md:pb-24">
-      <div className="w-full max-w-[480px] md:max-w-[640px] mx-auto space-y-4 md:space-y-6">
-        <Header 
-          title={state?.isEditing ? "Edit Transaction" : "Add Transaction"}
-          showBackButton
-        />
+  return <div className="bg-[#D8EAE3] min-h-screen flex flex-col items-center p-4 pb-20 md:p-6 md:pb-24">
+      <div className="w-full max-w-[800px] md:max-w-[640px] mx-auto space-y-4 md:space-y-6">
+        <Header title={state?.isEditing ? "Edit Transaction" : "Add Transaction"} showBackButton />
         
         {!state?.isEditing && <TransactionTypeSelector />}
         
         <Card variant="glass">
-          <TransactionTypeToggle 
-            isIncome={isIncome} 
-            setIsIncome={setIsIncome} 
-          />
+          <TransactionTypeToggle isIncome={isIncome} setIsIncome={setIsIncome} />
           
-          <TransactionForm 
-            formData={formData}
-            handleInputChange={handleInputChange}
-          />
+          <TransactionForm formData={formData} handleInputChange={handleInputChange} />
 
         </Card>
       </div>
@@ -188,27 +158,14 @@ export default function AddTransaction() {
       <div className="fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[320px] md:max-w-[373px]">
         <div className="bg-white/95 backdrop-blur-md shadow-[0px_0px_16px_rgba(0,0,0,0.03)] border border-[rgba(255,255,255,0.15)] rounded-[500px]">
           <div className="flex w-full items-stretch px-2 py-1 gap-2">
-            {state?.isEditing && (
-              <Button
-                variant="destructive"
-                onClick={handleDelete}
-                fullWidth
-                leftIcon={<Trash2 className="w-4 h-4" />}
-              >
+            {state?.isEditing && <Button variant="destructive" onClick={handleDelete} fullWidth leftIcon={<Trash2 className="w-4 h-4" />}>
                 Delete Transaction
-              </Button>
-            )}
-            <Button
-              variant="primary"
-              onClick={handleSubmit}
-              fullWidth
-              leftIcon={<Save className="w-4 h-4" />}
-            >
+              </Button>}
+            <Button variant="primary" onClick={handleSubmit} fullWidth leftIcon={<Save className="w-4 h-4" />}>
               {state?.isEditing ? "Save Changes" : "Add Transaction"}
             </Button>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
