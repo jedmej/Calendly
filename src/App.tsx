@@ -11,6 +11,15 @@ import AddEvent from "./pages/AddEvent";
 import AddTransaction from "./pages/AddTransaction";
 import { Finances } from "./pages/Finances";
 
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
+
 const AnimatedRoutes = () => {
   const location = useLocation();
   return (
@@ -29,8 +38,6 @@ const AnimatedRoutes = () => {
 };
 
 const App = () => {
-  const queryClient = new QueryClient();
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
