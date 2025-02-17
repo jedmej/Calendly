@@ -80,7 +80,7 @@ const Index = () => {
         <Header title="Calendar" />
         <div className="w-full">
           <div className="glass-card rounded-2xl p-4 md:p-6">
-            <div className="flex w-full items-center gap-[40px_100px] text-[15px] md:text-base lg:text-lg text-foreground font-medium leading-loose justify-between">
+            <div className="flex w-full items-center gap-[40px_50px] text-[15px] md:text-base lg:text-lg text-foreground font-medium leading-loose justify-between">
               <button onClick={handleMonthYearClick} className="self-stretch w-auto my-auto hover:text-primary transition-colors">
                 {format(currentDate, 'MMMM yyyy')}
               </button>
