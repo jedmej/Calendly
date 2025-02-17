@@ -2,12 +2,10 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Calendar, PlusCircle, DollarSign } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export const ActionBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isMobile = useIsMobile();
   
   const isAddRoute = location.pathname === '/add';
   const isTransactionRoute = location.pathname === '/add-transaction';
@@ -15,21 +13,21 @@ export const ActionBar: React.FC = () => {
   const isFinancesRoute = location.pathname === '/finances';
   
   return (
-    <div className="bg-background w-full flex justify-center px-4 pb-6 md:pb-8">
-      <div className="action-bar flex w-full max-w-[320px] md:max-w-[373px] items-stretch rounded-[500px] bg-white/95 backdrop-blur-md shadow-[0px_0px_16px_rgba(0,0,0,0.03)] border border-[rgba(255,255,255,0.15)]">
-        <div className="flex w-full items-stretch px-2 py-1 gap-2">
+    <div className="w-full flex justify-center px-4 pb-8">
+      <div className="action-bar flex w-full max-w-[373px] items-stretch">
+        <div className="flex w-full items-stretch px-[7px] py-2 gap-3.5">
           <div 
             onClick={() => navigate('/')}
-            className={`flex flex-1 flex-col items-center justify-center px-6 py-2 cursor-pointer
-              ${isHomeRoute ? 'bg-[rgba(37,99,235,0.05)] rounded-[500px]' : ''}
-            `}
+            className={`flex flex-1 flex-col items-center justify-center px-6 py-2 cursor-pointer`}
           >
-            <Calendar 
-              className={`w-5 h-5 md:w-6 md:h-6 ${isHomeRoute ? 'text-blue-600' : 'text-gray-600 dark:text-gray-400'}`} 
-            />
+            <div className={`p-2 rounded-xl ${isHomeRoute ? 'bg-black/5' : ''}`}>
+              <Calendar 
+                className={`w-6 h-6 ${isHomeRoute ? 'text-black' : 'text-gray-600'}`} 
+              />
+            </div>
           </div>
           
-          <div className="flex flex-1 items-center justify-center px-2">
+          <div className="flex flex-1 items-center justify-center px-4 py-4">
             <button 
               onClick={() => {
                 if (isAddRoute) {
@@ -40,21 +38,21 @@ export const ActionBar: React.FC = () => {
                   navigate('/add');
                 }
               }}
-              className="w-[34px] h-[34px] md:w-[38px] md:h-[38px] rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition-colors"
+              className="w-[38px] h-[38px] rounded-full bg-[#282828] flex items-center justify-center hover:bg-black/80 transition-colors"
             >
-              <PlusCircle className="w-5 h-5 md:w-6 md:h-6 text-white" />
+              <PlusCircle className="w-6 h-6 text-white" />
             </button>
           </div>
 
           <div 
             onClick={() => navigate('/finances')}
-            className={`flex flex-1 flex-col items-center justify-center px-6 py-2 cursor-pointer
-              ${isFinancesRoute ? 'bg-[rgba(37,99,235,0.05)] rounded-[500px]' : ''}
-            `}
+            className={`flex flex-1 flex-col items-center justify-center px-6 py-2 cursor-pointer`}
           >
-            <DollarSign 
-              className={`w-5 h-5 md:w-6 md:h-6 ${isFinancesRoute ? 'text-blue-600' : 'text-gray-600 dark:text-gray-400'}`} 
-            />
+            <div className={`p-2 rounded-xl ${isFinancesRoute ? 'bg-black/5' : ''}`}>
+              <DollarSign 
+                className={`w-6 h-6 ${isFinancesRoute ? 'text-black' : 'text-gray-600'}`} 
+              />
+            </div>
           </div>
         </div>
       </div>

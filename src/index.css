@@ -4,13 +4,13 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
+    --background: 135deg, #D8EAE6 0%, #D1EDD6 70.33%, #D7EBE4 100%;
     --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
 
-    --popover: 210 40% 98%;
+    --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
     --primary: 222.2 47.4% 11.2%;
@@ -38,12 +38,12 @@
     --glass-saturation: 180%;
     --glass-brightness: 110%;
     
-    --calendar-bg: rgba(255, 255, 255, 0.85);
-    --calendar-event-bg: rgba(255, 255, 255, 0.8);
-    --calendar-header-bg: rgba(255, 255, 255, 0.85);
-    --form-bg: rgba(255, 255, 255, 0.85);
-    --action-bar-bg: rgba(255, 255, 255, 0.95);
-    --glass-bg: rgba(255, 255, 255, 0.85);
+    --calendar-bg: rgba(255, 255, 255, 0.6);
+    --calendar-event-bg: rgba(255, 255, 255, 0.7);
+    --calendar-header-bg: rgba(255, 255, 255, 0.6);
+    --form-bg: rgba(255, 255, 255, 0.6);
+    --action-bar-bg: rgba(255, 255, 255, 1);
+    --glass-bg: rgba(255, 255, 255, 0.6);
   }
 
   .dark {
@@ -73,18 +73,18 @@
 
     --border: 240 5.9% 10%;
     --input: 240 5.9% 10%;
-    --ring: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
   }
 }
 
 @layer utilities {
   .glass-morphism {
-    @apply bg-white/85 backdrop-blur-md;
+    @apply bg-white/60 backdrop-blur-md;
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) brightness(var(--glass-brightness));
   }
   
   .glass-card {
-    @apply bg-white/85 backdrop-blur-md border border-white/20 shadow-sm;
+    @apply bg-white/60 backdrop-blur-md border border-white/20;
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) brightness(var(--glass-brightness));
   }
   
@@ -107,7 +107,7 @@
 }
 
 .calendar-header {
-  @apply glass-morphism;
+  @apply glass-morphism rounded-[500px] min-h-[60px] px-6 py-3;
 }
 
 @layer base {
@@ -119,7 +119,8 @@
   }
 
   body {
-    @apply bg-background text-foreground font-text text-base antialiased bg-gradient-to-br from-blue-50 to-white;
+    @apply text-foreground;
+    background: conic-gradient(from 135deg at 50% 50%, #D8EAE6 0deg, #D1EDD6 253.17609071731567deg, #D7EBE4 360deg);
   }
 
   /* Base heading styles */
