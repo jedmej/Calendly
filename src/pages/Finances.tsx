@@ -208,7 +208,7 @@ export const Finances = () => {
             <SummaryCard type="expense" amount={totals.expenses} isActive={activeFilter === "expense"} onClick={() => handleFilterClick("expense")} />
           </section>
 
-          <Card variant="glass" className="p-4 md:p-6">
+          <Card variant="glass" className="p-4 md:p-6 rounded-3xl">
             <div className="flex items-center justify-between mb-4 md:mb-6">
               <Typography variant="h2" className="text-base md:text-lg lg:text-xl">
                 Transakcje
