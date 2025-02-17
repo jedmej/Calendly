@@ -16,7 +16,7 @@ export const EarningsCalculator = ({
   handleTipsChange
 }: EarningsCalculatorProps) => {
   return (
-    <div className="bg-[#F8FAFF] border border-[#E8F1FF] rounded-[24px] p-6 space-y-4">
+    <div className="bg-white/70 border border-[#DCEDCF] rounded-xl p-6 space-y-4">
       <div className="flex justify-between items-center">
         <span className="text-[#4B5563] font-semibold text-sm">Szacowane zarobki</span>
         <span className="text-black font-bold">{(estimatedEarnings || 0).toFixed(2)} zł</span>
