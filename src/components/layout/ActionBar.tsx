@@ -72,7 +72,7 @@ export const ActionBar: React.FC = () => {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 w-full flex justify-center px-4 py-4 md:py-6 z-50 bg-transparent">
-      <div className="action-bar flex w-full md:max-w-[373px] items-stretch rounded-[500px] bg-white/95 backdrop-blur-md shadow-lg border border-[rgba(255,255,255,0.15)]">
+      <div className="action-bar flex w-full md:max-w-[373px] items-stretch rounded-[500px] bg-white/95 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-[rgba(255,255,255,0.15)]">
         <div className="flex w-full items-stretch px-2 py-2 gap-0">
           {/* Left navigation button */}
           <NavButton 
