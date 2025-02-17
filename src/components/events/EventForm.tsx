@@ -28,7 +28,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
           value={formData.title}
           onChange={handleInputChange}
           placeholder="Event title"
-          className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm md:text-base placeholder:text-[#CCCCCC] w-full ${
+          className={`bg-white/70 h-[42px] md:h-[48px] rounded-xl text-sm md:text-base placeholder:text-[#CCCCCC] w-full border border-[#DCEDCF] ${
             errors.title ? "border-red-500" : ""
           }`}
         />
@@ -44,7 +44,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
           type="date"
           value={formData.date}
           onChange={handleInputChange}
-          className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm cursor-pointer w-full ${
+          className={`bg-white/70 h-[42px] md:h-[48px] rounded-xl text-sm cursor-pointer w-full border border-[#DCEDCF] ${
             errors.date ? "border-red-500" : ""
           }`}
         />
@@ -61,7 +61,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
             type="time"
             value={formData.startTime}
             onChange={handleInputChange}
-            className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm w-full ${
+            className={`bg-white/70 h-[42px] md:h-[48px] rounded-xl text-sm w-full border border-[#DCEDCF] ${
               errors.startTime ? "border-red-500" : ""
             }`}
           />
@@ -76,7 +76,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
             type="time"
             value={formData.endTime}
             onChange={handleInputChange}
-            className={`bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm w-full ${
+            className={`bg-white/70 h-[42px] md:h-[48px] rounded-xl text-sm w-full border border-[#DCEDCF] ${
               errors.endTime ? "border-red-500" : ""
             }`}
           />
@@ -96,7 +96,7 @@ export const EventForm = ({ formData, errors, handleInputChange }: EventFormProp
           value={formData.hourlyWage}
           onChange={handleInputChange}
           placeholder="15.00"
-          className="bg-[#EEEEEE]/60 h-[42px] md:h-[48px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full"
+          className="bg-white/70 h-[42px] md:h-[48px] rounded-xl text-sm placeholder:text-[#CCCCCC] w-full border border-[#DCEDCF]"
         />
       </div>
     </div>
