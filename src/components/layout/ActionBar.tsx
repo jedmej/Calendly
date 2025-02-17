@@ -78,7 +78,7 @@ export const ActionBar: React.FC = () => {
           <div 
             className={cn(
               "absolute top-2 bottom-2 w-[calc(33.33%-8px)] rounded-full bg-black/5 transition-transform duration-300 ease-in-out",
-              isLeftActive ? "translate-x-2" : "translate-x-[calc(200%-4px)]"
+              isLeftActive ? "translate-x-[2px]" : "translate-x-[calc(200%-4px)]"
             )}
           />
 
