@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Briefcase, GraduationCap, Star } from "lucide-react";
+import { SmallButton } from "../shared/SmallButton";
 
 interface CategorySelectorProps {
   category: "Work" | "School" | "Other";
@@ -17,18 +18,14 @@ export const CategorySelector = ({ category, setCategory }: CategorySelectorProp
   return (
     <div className="flex w-full gap-2 text-xs md:text-sm lg:text-base font-medium whitespace-nowrap text-center mb-8">
       {categories.map(({ name, icon }) => (
-        <button
+        <SmallButton
           key={name}
           onClick={() => setCategory(name as "Work" | "School" | "Other")}
-          className={`h-9 flex items-center justify-center gap-2.5 flex-1 shrink px-4 rounded-[500px] transition-colors ${
-            category === name
-              ? "bg-[#282828] text-white"
-              : "bg-black/5 text-black hover:bg-black/10"
-          }`}
+          isActive={category === name}
+          leftIcon={icon}
         >
-          {icon}
           {name}
-        </button>
+        </SmallButton>
       ))}
     </div>
   );
