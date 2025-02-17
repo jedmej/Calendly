@@ -77,8 +77,8 @@ export const ActionBar: React.FC = () => {
           {/* Animated background pill */}
           <div 
             className={cn(
-              "absolute top-2 bottom-2 w-[calc(50%-32px)] rounded-full bg-black/5 transition-transform duration-300 ease-in-out",
-              isLeftActive ? "translate-x-0" : "translate-x-[calc(200%+64px)]"
+              "absolute top-2 bottom-2 w-[calc(33.33%-8px)] rounded-full bg-black/5 transition-transform duration-300 ease-in-out",
+              isLeftActive ? "translate-x-2" : "translate-x-[calc(200%-4px)]"
             )}
           />
 
