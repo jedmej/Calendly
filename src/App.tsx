@@ -1,11 +1,12 @@
 
-import * as React from "react"; // Change to more explicit import
+import * as React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { ActionBar } from "@/components/layout/ActionBar";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AddEvent from "./pages/AddEvent";
@@ -34,6 +35,7 @@ const AnimatedRoutes = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
+      <ActionBar />
     </div>
   );
 };
