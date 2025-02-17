@@ -39,12 +39,9 @@ const NavButton: React.FC<NavButtonProps> = ({
 }) => (
   <div 
     onClick={onClick} 
-    className={cn(
-      "flex flex-1 flex-col items-center justify-center px-4 py-2 cursor-pointer rounded-full transition-colors", 
-      isActive ? "bg-black/5" : "hover:bg-black/5"
-    )}
+    className="relative flex flex-1 flex-col items-center justify-center px-4 py-2 cursor-pointer rounded-full"
   >
-    <div className={cn(isActive ? "text-black" : "text-gray-600")}>
+    <div className={cn("relative z-10", isActive ? "text-black" : "text-gray-600")}>
       {icon}
     </div>
   </div>
@@ -54,6 +51,11 @@ const NavButton: React.FC<NavButtonProps> = ({
 export const ActionBar: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Memoized route checks to prevent unnecessary re-renders
   const isAddRoute = pathname === '/add';
@@ -70,10 +72,21 @@ export const ActionBar: React.FC = () => {
     }
   };
 
+  const isLeftActive = pathname === '/';
+
   return (
     <div className="fixed bottom-0 left-0 right-0 w-full flex justify-center px-4 py-4 md:py-6 z-50 bg-transparent">
       <div className="action-bar flex w-full md:max-w-[373px] items-stretch rounded-[500px] bg-white/95 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-[rgba(255,255,255,0.15)]">
-        <div className="flex w-full items-stretch px-2 py-2 gap-0">
+        <div className="flex w-full items-stretch px-2 py-2 gap-0 relative">
+          {/* Animated background pill */}
+          <div 
+            className={cn(
+              "absolute top-2 bottom-2 w-[calc(33.33%-8px)] rounded-full bg-black/5",
+              isMounted && "transition-transform duration-300 ease-in-out",
+              isLeftActive ? "translate-x-[2px]" : "translate-x-[calc(200%+4px)]"
+            )}
+          />
+
           {/* Left navigation button */}
           <NavButton 
             icon={navigationItems[0].icon}
