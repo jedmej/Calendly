@@ -55,6 +55,7 @@ export const EventList: React.FC<EventListProps> = ({
 
   return (
     <motion.div 
+      layout
       drag="x" 
       dragDirectionLock 
       dragConstraints={{
@@ -63,7 +64,13 @@ export const EventList: React.FC<EventListProps> = ({
       }} 
       dragElastic={0.1} 
       onDragEnd={handleDragEnd} 
-      dragMomentum={false} 
+      dragMomentum={false}
+      transition={{
+        layout: {
+          duration: 0.4,
+          ease: [0.4, 0, 0.2, 1]
+        }
+      }}
       className="bg-[rgba(255,255,255,0.7)] border w-full mt-4 p-4 border-[rgba(255,255,255,0.2)] border-solid rounded-3xl overflow-hidden"
     >
       <div className="self-stretch min-h-7 w-full gap-1 text-[15px] text-gray-900 font-medium leading-7">
@@ -76,14 +83,14 @@ export const EventList: React.FC<EventListProps> = ({
           initial="enter" 
           animate="center" 
           exit="exit" 
-          layout
+          layout="position"
           transition={{
             layout: {
-              duration: 0.3,
-              ease: "easeInOut"
+              duration: 0.4,
+              ease: [0.4, 0, 0.2, 1]
             },
             duration: 0.3,
-            ease: "easeInOut"
+            ease: [0.4, 0, 0.2, 1]
           }}
         >
           {events.map((event, index) => (
