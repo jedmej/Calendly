@@ -15,16 +15,16 @@ export const CategorySelector = ({ category, setCategory }: CategorySelectorProp
   ];
 
   return (
-    <div className="flex flex-wrap gap-2 text-sm font-medium mb-8">
+    <div className="flex w-full gap-2 text-xs md:text-sm lg:text-base font-medium whitespace-nowrap text-center mb-8">
       {categories.map(({ name, icon }) => (
         <button
           key={name}
           onClick={() => setCategory(name as "Work" | "School" | "Other")}
-          className={`flex-1 ${
+          className={`h-9 flex items-center justify-center gap-2.5 flex-1 shrink px-4 rounded-[500px] transition-colors ${
             category === name
-              ? "bg-black text-white"
-              : "bg-black/5 hover:bg-black/10"
-          } rounded-[500px] h-[50px] md:h-[60px] flex items-center justify-center gap-2 transition-colors`}
+              ? "bg-[#282828] text-white"
+              : "bg-black/5 text-black hover:bg-black/10"
+          }`}
         >
           {icon}
           {name}
