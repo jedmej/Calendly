@@ -2,14 +2,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { Header } from "@/components/shared/Header";
+import { Card } from "@/components/shared/Card";
+import { Button } from "@/components/shared/Button";
 import { useToast } from "@/components/ui/use-toast";
 import { TransactionHeader } from "@/components/transactions/TransactionHeader";
 import { TransactionTypeSelector } from "@/components/transactions/TransactionTypeSelector";
 import { TransactionTypeToggle } from "@/components/transactions/TransactionTypeToggle";
 import { TransactionForm } from "@/components/transactions/TransactionForm";
-import { SubmitButton } from "@/components/transactions/SubmitButton";
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, Save } from "lucide-react";
 
 interface LocationState {
   id?: string;
@@ -163,11 +164,14 @@ export default function AddTransaction() {
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4 md:p-6">
       <div className="w-full max-w-[480px] md:max-w-[640px] mx-auto space-y-4 md:space-y-6 pb-32">
-        <TransactionHeader isEditing={state?.isEditing} />
+        <Header 
+          title={state?.isEditing ? "Edit Transaction" : "Add Transaction"}
+          showBackButton
+        />
         
         {!state?.isEditing && <TransactionTypeSelector />}
         
-        <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6 md:p-8">
+        <Card variant="glass">
           <TransactionTypeToggle 
             isIncome={isIncome} 
             setIsIncome={setIsIncome} 
@@ -178,24 +182,32 @@ export default function AddTransaction() {
             handleInputChange={handleInputChange}
           />
 
-          {state?.isEditing && (
-            <div className="mt-6 md:mt-8 flex justify-center">
-              <Button
-                onClick={handleDelete}
-                variant="ghost"
-                className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-2"
-              >
-                <Trash2 className="w-4 h-4" />
-                Usuń transakcję
-              </Button>
-            </div>
-          )}
-        </div>
+        </Card>
+      </div>
 
-        <SubmitButton 
-          isEditing={state?.isEditing}
-          onClick={handleSubmit}
-        />
+      <div className="fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[320px] md:max-w-[373px]">
+        <div className="bg-white/95 backdrop-blur-md shadow-[0px_0px_16px_rgba(0,0,0,0.03)] border border-[rgba(255,255,255,0.15)] rounded-[500px]">
+          <div className="flex w-full items-stretch px-2 py-1 gap-2">
+            {state?.isEditing && (
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+                fullWidth
+                leftIcon={<Trash2 className="w-4 h-4" />}
+              >
+                Delete Transaction
+              </Button>
+            )}
+            <Button
+              variant="primary"
+              onClick={handleSubmit}
+              fullWidth
+              leftIcon={<Save className="w-4 h-4" />}
+            >
+              {state?.isEditing ? "Save Changes" : "Add Transaction"}
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

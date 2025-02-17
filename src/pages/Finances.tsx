@@ -1,10 +1,13 @@
 import React from "react";
-import { ActionBar } from "@/components/calendar/ActionBar";
+import { ActionBar } from "@/components/layout/ActionBar";
+import { Header } from "@/components/shared/Header";
+import { Card } from "@/components/shared/Card";
+import { Button } from "@/components/shared/Button";
+import { Typography } from "@/components/shared/Typography";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowDownIcon, ArrowUpIcon, ArrowUpDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,23 +39,26 @@ interface FinancialItem {
   type: "income" | "expense";
 }
 
-const SummaryCard = ({ 
-  type, 
-  amount,
-  isActive,
-  onClick
-}: { 
+type SummaryCardProps = { 
   type: "income" | "expense";
   amount: number;
   isActive: boolean;
   onClick: () => void;
-}) => (
-  <div 
+};
+
+const SummaryCard = ({ 
+  type, 
+  amount,
+  isActive,
+  onClick,
+}: SummaryCardProps) => (
+  <Card
+    variant="glass"
     onClick={onClick}
     className={`flex-1 border rounded-2xl p-4 md:p-6 space-y-3 cursor-pointer transition-all
       ${isActive 
         ? 'bg-blue-600 border-blue-600' 
-        : 'bg-white/70 border-white/20 hover:bg-white/90'
+        : 'hover:bg-white/90'
       }`}
   >
     <div className="flex items-center gap-3">
@@ -65,18 +71,18 @@ const SummaryCard = ({
           <ArrowDownIcon className="w-4 h-4 md:w-5 md:h-5 text-red-600" />
         )}
       </div>
-      <span className={`text-xs md:text-sm font-medium ${
+      <Typography variant="small" className={`font-medium ${
         isActive ? 'text-white' : 'text-gray-600'
       }`}>
         {type === "income" ? "Income" : "Expenses"}
-      </span>
+      </Typography>
     </div>
-    <div className={`text-xl md:text-2xl lg:text-3xl font-medium ${
+    <Typography variant="h2" className={`${
       isActive ? 'text-white' : 'text-gray-900'
     }`}>
       {Math.round(amount)} zł
-    </div>
-  </div>
+    </Typography>
+  </Card>
 );
 
 const TransactionItem = ({ item, onEdit }: { 
@@ -242,9 +248,7 @@ export const Finances = () => {
     <main className="min-h-screen bg-background flex flex-col relative">
       <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 pb-[120px] md:pb-[140px]">
         <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6">
-          <header className="calendar-header rounded-[500px] min-h-[60px] px-6 py-3 flex items-center sticky top-0 z-10">
-            <h1 className="text-[17px] md:text-xl lg:text-2xl text-foreground font-medium">Finanse</h1>
-          </header>
+          <Header title="Finances" />
 
           <section className="flex gap-4 md:gap-6">
             <SummaryCard 
@@ -261,11 +265,11 @@ export const Finances = () => {
             />
           </section>
 
-          <section className="bg-white/70 border border-white/20 rounded-2xl p-4 md:p-6">
+          <Card variant="glass" className="p-4 md:p-6">
             <div className="flex items-center justify-between mb-4 md:mb-6">
-              <h2 className="text-base md:text-lg lg:text-xl text-gray-900 font-medium">
+              <Typography variant="h2" className="text-base md:text-lg lg:text-xl">
                 Transakcje
-              </h2>
+              </Typography>
               <select
                 value={sortBy}
                 onChange={handleSortChange}
@@ -287,7 +291,7 @@ export const Finances = () => {
                 />
               ))}
             </div>
-          </section>
+          </Card>
         </div>
       </div>
       <div className="fixed bottom-0 left-0 right-0 z-20">

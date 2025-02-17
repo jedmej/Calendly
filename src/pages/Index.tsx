@@ -1,9 +1,12 @@
 
 import React, { useState, useEffect } from "react";
-import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarGrid } from "@/components/calendar/CalendarGrid";
 import { EventList } from "@/components/calendar/EventList";
 import { ActionBar } from "@/components/calendar/ActionBar";
+import { Header } from "@/components/shared/Header";
+import { Card } from "@/components/shared/Card";
+import { Button } from "@/components/shared/Button";
+import { Typography } from "@/components/shared/Typography";
 import { addMonths, format } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -82,47 +85,60 @@ const Index = () => {
       className="min-h-screen bg-background flex flex-col items-center p-4 md:p-6"
     >
       <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6 pb-32">
-        <CalendarHeader title="Calendar" />
+        <Header title="Calendar" />
         <div className="w-full">
-          <div className="glass-morphism w-full card-padding rounded-2xl">
+          <Card variant="glass" className="w-full">
             <div className="flex w-full items-center gap-[40px_100px] text-[15px] md:text-base lg:text-lg text-foreground font-medium leading-loose justify-between">
-              <button 
+              <Button
+                variant="ghost"
                 onClick={handleMonthYearClick}
                 className="self-stretch w-[122px] my-auto hover:text-primary transition-colors"
               >
-                {format(currentDate, 'MMMM yyyy')}
-              </button>
+                <Typography variant="body">
+                  {format(currentDate, 'MMMM yyyy')}
+                </Typography>
+              </Button>
               <div className="flex items-center gap-2 text-xs md:text-sm lg:text-base text-muted-foreground font-medium">
-                <button onClick={handlePreviousMonth} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-accent">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handlePreviousMonth}
+                  className="w-9 h-9 md:w-10 md:h-10 rounded-xl"
+                >
                   <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-                </button>
-                <button onClick={handleToday} className="px-4 py-1 md:px-6 md:py-2 rounded-full bg-accent hover:bg-accent/80 transition-colors">Dzisaj</button>
-                <button onClick={handleNextMonth} className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl hover:bg-accent">
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={handleToday}
+                  className="px-4 py-1 md:px-6 md:py-2 rounded-full"
+                >
+                  Dzisaj
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleNextMonth}
+                  className="w-9 h-9 md:w-10 md:h-10 rounded-xl"
+                >
                   <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-                </button>
+                </Button>
               </div>
             </div>
             <div className="flex w-full gap-2 text-xs md:text-sm lg:text-base font-medium whitespace-nowrap text-center leading-loose mt-4">
-              <button 
+              <Button
+                variant={view === "week" ? "primary" : "secondary"}
                 onClick={() => setView("week")} 
-                className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] transition-colors ${
-                  view === "week" 
-                    ? "bg-primary text-primary-foreground" 
-                    : "bg-accent text-muted-foreground hover:text-foreground"
-                }`}
+                fullWidth
               >
                 Tydzien
-              </button>
-              <button 
+              </Button>
+              <Button
+                variant={view === "month" ? "primary" : "secondary"}
                 onClick={() => setView("month")} 
-                className={`self-stretch min-h-9 md:min-h-10 gap-2.5 flex-1 shrink px-4 py-2 rounded-[500px] transition-colors ${
-                  view === "month" 
-                    ? "bg-primary text-primary-foreground" 
-                    : "bg-accent text-muted-foreground hover:text-foreground"
-                }`}
+                fullWidth
               >
                 Miesiac
-              </button>
+              </Button>
             </div>
             <CalendarGrid 
               view={view} 
@@ -130,7 +146,7 @@ const Index = () => {
               onSelectDate={handleDateSelect} 
               onInitialLoad={setSelectedEvents}
             />
-          </div>
+          </Card>
           {selectedDate && <EventList 
             date={format(selectedDate, 'MMM dd, yyyy')} 
             events={selectedEvents}

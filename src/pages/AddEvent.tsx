@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shared/Button";
+import { Card } from "@/components/shared/Card";
+import { Header } from "@/components/shared/Header";
+import { Typography } from "@/components/shared/Typography";
 import { ArrowLeft, Save, Trash } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -231,21 +234,14 @@ const AddEvent = () => {
   return (
     <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4 md:p-6 lg:p-8">
       <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6 pb-32">
-        <header className="calendar-header rounded-[500px] min-h-[60px] px-6 py-3 flex items-center sticky top-0 z-10">
-          <button
-            onClick={handleBack}
-            className="rounded-xl p-2 hover:bg-black/5 w-[36px] h-[36px] flex items-center justify-center mr-2"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <h1 className="text-[17px] md:text-xl lg:text-2xl text-foreground font-medium">
-            {isEditing ? "Edit Event" : "Add New"}
-          </h1>
-        </header>
+        <Header 
+          title={isEditing ? "Edit Event" : "Add New"}
+          showBackButton
+        />
 
         {!isEditing && <EventTypeSelector />}
 
-        <div className="bg-white/70 backdrop-blur-sm border border-white/20 rounded-2xl p-6 md:p-8">
+        <Card variant="glass">
           <CategorySelector category={category} setCategory={setCategory} />
           <EventForm 
             formData={formData}
@@ -260,26 +256,28 @@ const AddEvent = () => {
               handleTipsChange={handleTipsChange}
             />
           </div>
-        </div>
+        </Card>
       </div>
 
       <div className="fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[320px] md:max-w-[373px]">
         <div className="bg-white/95 backdrop-blur-md shadow-[0px_0px_16px_rgba(0,0,0,0.03)] border border-[rgba(255,255,255,0.15)] rounded-[500px]">
           <div className="flex w-full items-stretch px-2 py-1 gap-2">
             {isEditing && (
-              <Button
-                onClick={handleDelete}
-                className="flex-1 bg-red-500 text-white rounded-[500px] h-[50px] md:h-[60px] text-sm md:text-base font-medium"
+              <Button 
+                variant="destructive"
+                onClick={handleDelete} 
+                fullWidth
+                leftIcon={<Trash className="w-4 h-4" />}
               >
-                <Trash className="w-4 h-4 mr-2" />
                 Delete Event
               </Button>
             )}
             <Button
+              variant="primary"
               onClick={handleSubmit}
-              className={`${isEditing ? 'flex-1' : 'w-full'} bg-blue-600 text-white rounded-[500px] h-[50px] md:h-[60px] text-sm md:text-base font-medium`}
+              fullWidth
+              leftIcon={<Save className="w-4 h-4" />}
             >
-              <Save className="w-4 h-4 mr-2" />
               {isEditing ? "Save Changes" : "Add Event"}
             </Button>
           </div>
