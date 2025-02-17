@@ -232,8 +232,8 @@ const AddEvent = () => {
   };
 
   return (
-    <div className="bg-[#F6F7F9] min-h-screen flex flex-col items-center p-4 md:p-6 lg:p-8">
-      <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6 pb-32">
+    <div className="bg-[#D8EAE3] min-h-screen flex flex-col items-center p-4 pb-20 md:p-6 md:pb-24 lg:p-8 lg:pb-24">
+      <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6">
         <Header 
           title={isEditing ? "Edit Event" : "Add New"}
           showBackButton

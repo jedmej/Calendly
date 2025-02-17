@@ -4,16 +4,16 @@
 
 @layer base {
   :root {
-    --background: 135deg, #D8EAE6 0%, #D1EDD6 70.33%, #D7EBE4 100%;
+    --background: 210 40% 98%;
     --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
 
-    --popover: 0 0% 100%;
+    --popover: 210 40% 98%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 0 0% 0%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 240 4.8% 95.9%;
@@ -38,12 +38,12 @@
     --glass-saturation: 180%;
     --glass-brightness: 110%;
     
-    --calendar-bg: rgba(255, 255, 255, 0.6);
-    --calendar-event-bg: rgba(255, 255, 255, 0.7);
-    --calendar-header-bg: rgba(255, 255, 255, 0.6);
-    --form-bg: rgba(255, 255, 255, 0.6);
-    --action-bar-bg: rgba(255, 255, 255, 1);
-    --glass-bg: rgba(255, 255, 255, 0.6);
+    --calendar-bg: rgba(255, 255, 255, 0.85);
+    --calendar-event-bg: rgba(255, 255, 255, 0.8);
+    --calendar-header-bg: rgba(255, 255, 255, 0.85);
+    --form-bg: rgba(255, 255, 255, 0.85);
+    --action-bar-bg: rgba(255, 255, 255, 0.95);
+    --glass-bg: rgba(255, 255, 255, 0.85);
   }
 
   .dark {
@@ -73,7 +73,7 @@
 
     --border: 240 5.9% 10%;
     --input: 240 5.9% 10%;
-    --ring: 240 5.9% 10%;
+    --ring: 240 5.9% 90%;
   }
 }
 
@@ -84,12 +84,12 @@
   }
   
   .glass-card {
-    @apply bg-white/60 backdrop-blur-md border border-white/20;
+    @apply bg-white/60 backdrop-blur-md border-none shadow-sm rounded-3xl;
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) brightness(var(--glass-brightness));
   }
   
   .glass-button {
-    @apply bg-white/95 backdrop-blur-md border border-white/20 shadow-sm hover:bg-white/90 transition-all;
+    @apply bg-white/70 backdrop-blur-md border-none shadow-sm hover:bg-white/80 transition-all rounded-3xl;
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) brightness(var(--glass-brightness));
   }
   
@@ -107,7 +107,7 @@
 }
 
 .calendar-header {
-  @apply glass-morphism rounded-[500px] min-h-[60px] px-6 py-3;
+  @apply glass-morphism;
 }
 
 @layer base {
@@ -119,8 +119,8 @@
   }
 
   body {
-    @apply text-foreground;
-    background: conic-gradient(from 135deg at 50% 50%, #D8EAE6 0deg, #D1EDD6 253.17609071731567deg, #D7EBE4 360deg);
+    @apply bg-background text-foreground font-text text-base antialiased;
+    background-color: #D8EAE3;
   }
 
   /* Base heading styles */
@@ -205,8 +205,8 @@
   }
 
   input:focus, select:focus, textarea:focus {
-    border-color: rgb(59 130 246);
-    --tw-ring-color: rgb(59 130 246 / 0.2);
+    border-color: rgb(0 0 0);
+    --tw-ring-color: rgb(0 0 0 / 0.2);
     --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
     --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
     box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);

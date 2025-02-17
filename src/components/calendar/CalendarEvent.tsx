@@ -112,7 +112,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
   return (
     <div 
       onClick={handleClick}
-      className="bg-[rgba(255,255,255,0.5)] border flex w-full items-center gap-4 mt-2.5 p-4 rounded-xl border-[rgba(0,0,0,0.05)] border-solid cursor-pointer hover:bg-[rgba(255,255,255,0.7)] transition-colors"
+      className="bg-white/70 flex w-full items-center gap-4 mt-2.5 p-4 rounded-[24px] cursor-pointer hover:bg-white/80 transition-colors"
     >
       {showWorkIcon && !isTransaction && (
         <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
@@ -121,7 +121,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
       )}
       {isTransaction && (
         <div className="bg-[#FEF7CD] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
-          <DollarSign className="w-5 h-5 text-[#F97316]" />
+          <DollarSign className="w-5 h-5 text-black" />
         </div>
       )}
       {icon && !showWorkIcon && !isTransaction && (

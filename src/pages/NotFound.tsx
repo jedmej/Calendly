@@ -14,7 +14,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-[#D8EAE3]">
       <div className="text-center">
         <Typography variant="h1" className="mb-4">404</Typography>
         <Typography variant="body" className="mb-4">Ups! Strona nie została znaleziona</Typography>

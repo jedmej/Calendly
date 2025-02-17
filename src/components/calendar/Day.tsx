@@ -36,7 +36,7 @@ export const Day: React.FC<DayProps> = ({
     
     switch (event.category?.toLowerCase()) {
       case "work":
-        return "bg-[rgba(59,130,246,0.7)]";
+        return "bg-black/70";
       case "school":
         return "bg-green-600";
       case "other":

@@ -12,7 +12,7 @@ export const WeekHeader: React.FC = () => {
         <div
           key={index}
           className={`min-h-[48px] flex-1 shrink px-[17px] py-[5px] flex items-center justify-center ${
-            index === currentDayIndex ? "bg-blue-600 text-white" : "bg-[rgba(0,0,0,0.02)]"
+            index === currentDayIndex ? "bg-black text-white" : "bg-[rgba(0,0,0,0.02)]"
           }`}
         >
           {day}

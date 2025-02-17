@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ArrowLeft } from "lucide-react"
@@ -18,7 +17,7 @@ const Header = React.forwardRef<HTMLElement, HeaderProps>(
       <header
         ref={ref}
         className={cn(
-          "rounded-[500px] bg-white/60 backdrop-blur-md min-h-[60px] px-6 py-3 flex items-center sticky top-0 z-10",
+          "calendar-header rounded-[500px] min-h-[60px] px-6 py-3 flex items-center sticky top-0 z-10 bg-white/70 backdrop-blur-md",
           className
         )}
         {...props}

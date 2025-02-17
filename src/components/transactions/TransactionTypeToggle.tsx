@@ -29,7 +29,7 @@ export const TransactionTypeToggle: React.FC<TransactionTypeToggleProps> = ({
         className={`flex-1 ${
           !isIncome 
             ? "bg-red-500 text-white" 
-            : "bg-black/5 hover:bg-black/10"
+            : "bg-black/5 hover:bg-black/10 text-black"
         } rounded-[500px] h-[50px] md:h-[60px] flex items-center justify-center gap-2 transition-colors`}
       >
         <Minus className="w-4 h-4" />

@@ -22,7 +22,7 @@ export const CategorySelector = ({ category, setCategory }: CategorySelectorProp
           onClick={() => setCategory(name as "Work" | "School" | "Other")}
           className={`flex-1 ${
             category === name
-              ? "bg-blue-600 text-white"
+              ? "bg-black text-white"
               : "bg-black/5 hover:bg-black/10"
           } rounded-[500px] h-[50px] md:h-[60px] flex items-center justify-center gap-2 transition-colors`}
         >
