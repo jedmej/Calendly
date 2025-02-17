@@ -3,17 +3,31 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { EventCategory, EventFormData, EventFormErrors } from "../types/event";
 
-export const useEventForm = (initialState?: any) => {
+interface InitialState {
+  id?: string;
+  title?: string;
+  date?: string;
+  startTime?: string;
+  endTime?: string;
+  category?: EventCategory;
+  hourlyWage?: string;
+  coworkers?: string;
+  isEditing?: boolean;
+  totalEarnings?: number;
+}
+
+export const useEventForm = (initialState?: InitialState) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const isEditing = initialState?.isEditing || false;
 
-  const [category, setCategory] = useState<"Work" | "School" | "Other">(
-    initialState?.category as "Work" | "School" | "Other" || "Work"
+  const [category, setCategory] = useState<EventCategory>(
+    initialState?.category || "Work"
   );
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<EventFormData>({
     title: initialState?.title || "",
     date: initialState?.date || "",
     startTime: initialState?.startTime || "",
