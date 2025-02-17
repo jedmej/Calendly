@@ -8,6 +8,7 @@ export interface EventFormData {
   endTime: string;
   hourlyWage: string;
   coworkers: string;
+  location?: string;
 }
 
 export interface EventFormErrors {

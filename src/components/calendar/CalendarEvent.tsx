@@ -1,6 +1,5 @@
-
 import React from "react";
-import { Briefcase, DollarSign } from "lucide-react";
+import { Briefcase, GraduationCap, Star, DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface CalendarEventProps {
@@ -42,10 +41,11 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
 }) => {
   const navigate = useNavigate();
   const showWorkIcon = category?.toLowerCase() === "work";
+  const showSchoolIcon = category?.toLowerCase() === "school";
   const isTransaction = type !== undefined;
 
   const handleClick = () => {
-    if (!id) return; // Don't navigate if there's no id
+    if (!id) return;
 
     if (isTransaction) {
       navigate('/add-transaction', {
@@ -71,6 +71,7 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           category,
           hourlyWage: hourly_wage?.toString(),
           coworkers: withPeople?.join(', '),
+          location: location,
           isEditing: true,
           totalEarnings: total_earnings,
           returnDate: event_date
@@ -119,12 +120,17 @@ export const CalendarEvent: React.FC<CalendarEventProps> = ({
           <Briefcase className="w-5 h-5 text-gray-600" />
         </div>
       )}
+      {showSchoolIcon && !isTransaction && (
+        <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
+          <GraduationCap className="w-5 h-5 text-gray-600" />
+        </div>
+      )}
       {isTransaction && (
         <div className="bg-[#FEF7CD] self-stretch flex items-center justify-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
           <DollarSign className="w-5 h-5 text-black" />
         </div>
       )}
-      {icon && !showWorkIcon && !isTransaction && (
+      {icon && !showWorkIcon && !showSchoolIcon && !isTransaction && (
         <div className="bg-[rgba(0,0,0,0.03)] self-stretch flex items-center gap-2.5 w-10 h-10 my-auto p-2.5 rounded-[500px]">
           <img loading="lazy" src={icon} className="aspect-[1] object-contain w-5 self-stretch my-auto" alt={title} />
         </div>

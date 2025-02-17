@@ -18,6 +18,7 @@ export type Database = {
           event_date: string
           hourly_wage: number | null
           id: string
+          location: string | null
           start_time: string
           title: string
           total_earnings: number | null
@@ -30,6 +31,7 @@ export type Database = {
           event_date: string
           hourly_wage?: number | null
           id?: string
+          location?: string | null
           start_time: string
           title: string
           total_earnings?: number | null
@@ -42,6 +44,7 @@ export type Database = {
           event_date?: string
           hourly_wage?: number | null
           id?: string
+          location?: string | null
           start_time?: string
           title?: string
           total_earnings?: number | null
