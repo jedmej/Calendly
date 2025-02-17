@@ -157,7 +157,7 @@ export default function AddTransaction() {
 
       <div className="fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[320px] md:max-w-[373px]">
         <div className="bg-white/95 backdrop-blur-md shadow-[0px_0px_16px_rgba(0,0,0,0.03)] border border-[rgba(255,255,255,0.15)] rounded-[500px]">
-          <div className="flex w-full items-stretch px-2 py-1 gap-2">
+          <div className="flex w-full items-stretch px-1 py-1 gap-2">
             {state?.isEditing && <Button variant="destructive" onClick={handleDelete} fullWidth leftIcon={<Trash2 className="w-4 h-4" />}>
                 Delete Transaction
               </Button>}
