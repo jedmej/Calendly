@@ -67,12 +67,12 @@ export const EventList: React.FC<EventListProps> = ({
       dragMomentum={false}
       transition={{
         layout: {
-          duration: 0.4,
-          ease: [0.4, 0, 0, 0.21]
+          duration: 0.6,
+          ease: [0.25, 0.1, 0.25, 1]
         },
         height: {
-          duration: 0.4,
-          ease: [0.4, 0, 0, 0.4]
+          duration: 0.6,
+          ease: [0.25, 0.1, 0.25, 1]
         }
       }}
       className="bg-[rgba(255,255,255,0.7)] border w-full mt-4 p-4 border-[rgba(255,255,255,0.2)] border-solid rounded-3xl overflow-hidden"
@@ -90,12 +90,12 @@ export const EventList: React.FC<EventListProps> = ({
           layout="position"
           transition={{
             layout: {
-              duration: 0.4,
-              ease: [0.4, 0, 0, 0.21]
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1]
             },
             height: {
-              duration: 0.4,
-              ease: [0.4, 0, 0, 0.4]
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1]
             }
           }}
         >
