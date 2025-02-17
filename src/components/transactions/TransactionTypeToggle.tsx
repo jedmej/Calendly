@@ -12,25 +12,25 @@ export const TransactionTypeToggle: React.FC<TransactionTypeToggleProps> = ({
   setIsIncome
 }) => {
   return (
-    <div className="flex flex-wrap gap-2 text-sm font-medium mb-8">
+    <div className="flex w-full gap-2 text-xs md:text-sm lg:text-base font-medium whitespace-nowrap text-center mb-8">
       <button
         onClick={() => setIsIncome(true)}
-        className={`flex-1 ${
+        className={`h-9 flex items-center justify-center gap-2.5 flex-1 shrink px-4 rounded-[500px] transition-colors ${
           isIncome 
-            ? "bg-green-500 text-white" 
-            : "bg-black/5 hover:bg-black/10"
-        } rounded-[500px] h-[50px] md:h-[60px] flex items-center justify-center gap-2 transition-colors`}
+            ? "bg-[#282828] text-white" 
+            : "bg-black/5 text-black hover:bg-black/10"
+        }`}
       >
         <Plus className="w-4 h-4" />
         Przychód
       </button>
       <button
         onClick={() => setIsIncome(false)}
-        className={`flex-1 ${
+        className={`h-9 flex items-center justify-center gap-2.5 flex-1 shrink px-4 rounded-[500px] transition-colors ${
           !isIncome 
-            ? "bg-red-500 text-white" 
-            : "bg-black/5 hover:bg-black/10 text-black"
-        } rounded-[500px] h-[50px] md:h-[60px] flex items-center justify-center gap-2 transition-colors`}
+            ? "bg-[#282828] text-white" 
+            : "bg-black/5 text-black hover:bg-black/10"
+        }`}
       >
         <Minus className="w-4 h-4" />
         Wydatek
