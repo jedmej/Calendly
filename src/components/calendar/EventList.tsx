@@ -76,9 +76,14 @@ export const EventList: React.FC<EventListProps> = ({
           initial="enter" 
           animate="center" 
           exit="exit" 
+          layout
           transition={{
-            duration: 0.2,
-            ease: "easeOut"
+            layout: {
+              duration: 0.3,
+              ease: "easeInOut"
+            },
+            duration: 0.3,
+            ease: "easeInOut"
           }}
         >
           {events.map((event, index) => (
