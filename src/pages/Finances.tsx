@@ -61,7 +61,7 @@ const TransactionItem = ({
 }: {
   item: FinancialItem;
   onEdit: (item: FinancialItem) => void;
-}) => <div onClick={() => onEdit(item)} className="flex items-center justify-between p-4 md:p-5 border border-gray-100 cursor-pointer transition-colors bg-white/[0.69] rounded-2xl">
+}) => <div onClick={() => onEdit(item)} className="flex items-center justify-between p-4 md:p-5 border border-gray-100 cursor-pointer transition-colors bg-white/[0.69] rounded-3xl">
     <div className="flex items-center gap-3 md:gap-4">
       <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center ${item.type === "income" ? "bg-[#F2FCE2]" : "bg-[#FFDEE2]"}`}>
         {item.type === "income" ? <ArrowUpIcon className="w-3 h-3 md:w-4 md:h-4 text-green-600" /> : <ArrowDownIcon className="w-3 h-3 md:w-4 md:h-4 text-red-600" />}
