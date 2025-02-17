@@ -9,7 +9,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowDownIcon, ArrowUpIcon, ArrowUpDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-
 interface Transaction {
   id: string;
   title: string;
@@ -18,14 +17,12 @@ interface Transaction {
   category: string;
   transaction_date: string;
 }
-
 interface Event {
   id: string;
   title: string;
   total_earnings: number;
   event_date: string;
 }
-
 interface FinancialItem {
   id: string;
   title: string;
@@ -33,14 +30,12 @@ interface FinancialItem {
   date: string;
   type: "income" | "expense";
 }
-
 type SummaryCardProps = {
   type: "income" | "expense";
   amount: number;
   isActive: boolean;
   onClick: () => void;
 };
-
 const SummaryCard = ({
   type,
   amount,
@@ -60,7 +55,6 @@ const SummaryCard = ({
       {Math.round(amount)} zł
     </Typography>
   </Card>;
-
 const TransactionItem = ({
   item,
   onEdit
@@ -83,12 +77,10 @@ const TransactionItem = ({
       {item.type === "income" ? "+" : "-"}{Math.round(item.amount)} zł
     </div>
   </div>;
-
 type SortOption = {
   label: string;
   value: "date-desc" | "date-asc" | "amount-desc" | "amount-asc";
 };
-
 const sortOptions: SortOption[] = [{
   label: "Data: ↓",
   value: "date-desc"
@@ -102,16 +94,13 @@ const sortOptions: SortOption[] = [{
   label: "Kwota: ↑",
   value: "amount-asc"
 }];
-
 export const Finances = () => {
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = React.useState<"income" | "expense" | null>(null);
   const [sortBy, setSortBy] = React.useState<SortOption["value"]>("date-desc");
-
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(event.target.value as SortOption["value"]);
   };
-
   const {
     data: transactions
   } = useQuery({
@@ -127,7 +116,6 @@ export const Finances = () => {
       return data as Transaction[];
     }
   });
-
   const {
     data: workEvents
   } = useQuery({
@@ -143,7 +131,6 @@ export const Finances = () => {
       return data as Event[];
     }
   });
-
   const allItems = React.useMemo(() => {
     const items: FinancialItem[] = [];
     transactions?.forEach(t => {
@@ -168,12 +155,10 @@ export const Finances = () => {
     });
     return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [transactions, workEvents]);
-
   const totals = React.useMemo(() => ({
     income: allItems.reduce((sum, item) => item.type === "income" ? sum + item.amount : sum, 0),
     expenses: allItems.reduce((sum, item) => item.type === "expense" ? sum + item.amount : sum, 0)
   }), [allItems]);
-
   const handleEditTransaction = (item: FinancialItem) => {
     navigate('/add-transaction', {
       state: {
@@ -187,7 +172,6 @@ export const Finances = () => {
       }
     });
   };
-
   const sortItems = (items: FinancialItem[]) => {
     return [...items].sort((a, b) => {
       switch (sortBy) {
@@ -204,7 +188,6 @@ export const Finances = () => {
       }
     });
   };
-
   const filteredItems = React.useMemo(() => {
     let items = allItems;
     if (activeFilter) {
@@ -212,14 +195,12 @@ export const Finances = () => {
     }
     return sortItems(items);
   }, [allItems, activeFilter, sortBy]);
-
   const handleFilterClick = (type: "income" | "expense") => {
     setActiveFilter(current => current === type ? null : type);
   };
-
   return <main className="min-h-screen bg-[#D8EAE3] flex flex-col relative">
       <div className="flex-1 overflow-y-auto p-4 pb-20 md:p-6 md:pb-24 lg:p-8 lg:pb-24">
-        <div className="w-full max-w-[480px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6">
+        <div className="w-full max-w-[800px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6">
           <Header title="Finances" />
 
           <section className="flex gap-4 md:gap-6">
@@ -249,5 +230,4 @@ export const Finances = () => {
       </div>
     </main>;
 };
-
 export default Finances;
