@@ -18,6 +18,9 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false
     },
   },
 });
@@ -28,16 +31,14 @@ const AnimatedRoutes = () => {
   const shouldShowActionBar = !hideActionBarRoutes.includes(location.pathname);
 
   return (
-    <div className="min-h-screen bg-[D8EAE3] bg-[#d8eae3]">
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Index />} />
-          <Route path="/add" element={<AddEvent />} />
-          <Route path="/add-transaction" element={<AddTransaction />} />
-          <Route path="/finances" element={<Finances />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </AnimatePresence>
+    <div className="min-h-screen bg-[#d8eae3]">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Index />} />
+        <Route path="/add" element={<AddEvent />} />
+        <Route path="/add-transaction" element={<AddTransaction />} />
+        <Route path="/finances" element={<Finances />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
       {shouldShowActionBar && <ActionBar />}
     </div>
   );
