@@ -4,50 +4,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Calendar, Plus, PieChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const ActionBar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isAddRoute = location.pathname === '/add';
-  const isTransactionRoute = location.pathname === '/add-transaction';
-  const isHomeRoute = location.pathname === '/';
-  const isFinancesRoute = location.pathname === '/finances';
-
-  return (
-    <div className="fixed bottom-0 left-0 right-0 w-full flex justify-center px-4 py-4 md:py-6 z-50 bg-transparent">
-      <div className="action-bar flex w-full md:max-w-[373px] items-stretch rounded-[500px] bg-white/95 backdrop-blur-md shadow-lg border border-[rgba(255,255,255,0.15)]">
-        <div className="flex w-full items-stretch px-2 py-2 gap-0">
-          <NavButton 
-            icon={<Calendar className="w-5 h-5 md:w-6 md:h-6" />} 
-            isActive={isHomeRoute} 
-            onClick={() => navigate('/')} 
-          />
-          
-          <div className="flex flex-1 items-center justify-center">
-            <button 
-              onClick={() => {
-                if (isAddRoute) {
-                  navigate('/add-transaction');
-                } else if (isTransactionRoute) {
-                  navigate('/add');
-                } else {
-                  navigate('/add');
-                }
-              }} 
-              className="w-12 h-12 rounded-full bg-black flex items-center justify-center hover:bg-black/90 transition-colors shadow-md"
-            >
-              <Plus className="w-6 h-6 text-white" />
-            </button>
-          </div>
-
-          <NavButton 
-            icon={<PieChart className="w-5 h-5 md:w-6 md:h-6" />} 
-            isActive={isFinancesRoute} 
-            onClick={() => navigate('/finances')} 
-          />
-        </div>
-      </div>
-    </div>
-  );
+// Types for navigation items and props
+type NavigationItem = {
+  icon: React.ReactNode;
+  isActive: (pathname: string) => boolean;
+  onClick: (navigate: (path: string) => void) => void;
 };
 
 interface NavButtonProps {
@@ -56,11 +17,26 @@ interface NavButtonProps {
   onClick: () => void;
 }
 
-const NavButton = ({
+// Navigation configuration for reusability and maintainability
+const navigationItems: NavigationItem[] = [
+  {
+    icon: <Calendar className="w-5 h-5 md:w-6 md:h-6" />,
+    isActive: (pathname) => pathname === '/',
+    onClick: (navigate) => navigate('/')
+  },
+  {
+    icon: <PieChart className="w-5 h-5 md:w-6 md:h-6" />,
+    isActive: (pathname) => pathname === '/finances',
+    onClick: (navigate) => navigate('/finances')
+  }
+];
+
+// Reusable NavButton component with improved props typing
+const NavButton: React.FC<NavButtonProps> = ({
   icon,
   isActive,
   onClick
-}: NavButtonProps) => (
+}) => (
   <div 
     onClick={onClick} 
     className={cn(
@@ -73,3 +49,56 @@ const NavButton = ({
     </div>
   </div>
 );
+
+// Main ActionBar component with improved structure and readability
+export const ActionBar: React.FC = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  // Memoized route checks to prevent unnecessary re-renders
+  const isAddRoute = pathname === '/add';
+  const isTransactionRoute = pathname === '/add-transaction';
+
+  // Handler for the center action button
+  const handleCenterButtonClick = () => {
+    if (isAddRoute) {
+      navigate('/add-transaction');
+    } else if (isTransactionRoute) {
+      navigate('/add');
+    } else {
+      navigate('/add');
+    }
+  };
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 w-full flex justify-center px-4 py-4 md:py-6 z-50 bg-transparent">
+      <div className="action-bar flex w-full md:max-w-[373px] items-stretch rounded-[500px] bg-white/95 backdrop-blur-md shadow-lg border border-[rgba(255,255,255,0.15)]">
+        <div className="flex w-full items-stretch px-2 py-2 gap-0">
+          {/* Left navigation button */}
+          <NavButton 
+            icon={navigationItems[0].icon}
+            isActive={navigationItems[0].isActive(pathname)}
+            onClick={() => navigationItems[0].onClick(navigate)}
+          />
+          
+          {/* Center action button */}
+          <div className="flex flex-1 items-center justify-center">
+            <button 
+              onClick={handleCenterButtonClick}
+              className="w-12 h-12 rounded-full bg-black flex items-center justify-center hover:bg-black/90 transition-colors shadow-md"
+            >
+              <Plus className="w-6 h-6 text-white" />
+            </button>
+          </div>
+
+          {/* Right navigation button */}
+          <NavButton 
+            icon={navigationItems[1].icon}
+            isActive={navigationItems[1].isActive(pathname)}
+            onClick={() => navigationItems[1].onClick(navigate)}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
