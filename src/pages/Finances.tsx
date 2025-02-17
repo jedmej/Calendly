@@ -200,7 +200,7 @@ export const Finances = () => {
   };
   return <main className="min-h-screen bg-[#D8EAE3] flex flex-col relative">
       <div className="flex-1 overflow-y-auto p-4 pb-20 md:p-6 md:pb-24 lg:p-8 lg:pb-24">
-        <div className="w-full max-w-[800px] md:max-w-[640px] lg:max-w-[800px] mx-auto space-y-4 md:space-y-6">
+        <div className="w-full max-w-[800px] mx-auto space-y-4 md:space-y-6 pb-32">
           <Header title="Finances" />
 
           <section className="flex gap-4 md:gap-6">
