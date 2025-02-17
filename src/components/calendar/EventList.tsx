@@ -68,7 +68,11 @@ export const EventList: React.FC<EventListProps> = ({
       transition={{
         layout: {
           duration: 0.4,
-          ease: [0.4, 0, 0.2, 1]
+          ease: [0.4, 0, 0, 0.21]
+        },
+        height: {
+          duration: 0.4,
+          ease: [0.4, 0, 0, 0.4]
         }
       }}
       className="bg-[rgba(255,255,255,0.7)] border w-full mt-4 p-4 border-[rgba(255,255,255,0.2)] border-solid rounded-3xl overflow-hidden"
@@ -87,10 +91,12 @@ export const EventList: React.FC<EventListProps> = ({
           transition={{
             layout: {
               duration: 0.4,
-              ease: [0.4, 0, 0.2, 1]
+              ease: [0.4, 0, 0, 0.21]
             },
-            duration: 0.3,
-            ease: [0.4, 0, 0.2, 1]
+            height: {
+              duration: 0.4,
+              ease: [0.4, 0, 0, 0.4]
+            }
           }}
         >
           {events.map((event, index) => (
@@ -107,3 +113,4 @@ export const EventList: React.FC<EventListProps> = ({
     </motion.div>
   );
 };
+
