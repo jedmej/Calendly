@@ -24,6 +24,9 @@ const queryClient = new QueryClient({
 
 const AnimatedRoutes = () => {
   const location = useLocation();
+  const hideActionBarRoutes = ['/add', '/add-transaction'];
+  const shouldShowActionBar = !hideActionBarRoutes.includes(location.pathname);
+
   return (
     <div className="min-h-screen bg-[D8EAE3] bg-[#d8eae3]">
       <AnimatePresence mode="wait">
@@ -35,7 +38,7 @@ const AnimatedRoutes = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
-      <ActionBar />
+      {shouldShowActionBar && <ActionBar />}
     </div>
   );
 };
