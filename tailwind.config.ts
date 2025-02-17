@@ -3,13 +3,28 @@ import type { Config } from "tailwindcss";
 export default {
 	darkMode: ["class"],
 	content: [
-		"./pages/**/*.{ts,tsx}",
-		"./components/**/*.{ts,tsx}",
-		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
 	],
 	prefix: "",
 	theme: {
+		fontFamily: {
+			display: [
+				"-apple-system",
+				"BlinkMacSystemFont",
+				"SF Pro Display",
+				"Helvetica Neue",
+				"Arial",
+				"sans-serif"
+			],
+			text: [
+				"-apple-system",
+				"BlinkMacSystemFont", 
+				"SF Pro Text",
+				"Helvetica Neue",
+				"Arial",
+				"sans-serif"
+			],
+		},
 		container: {
 			center: true,
 			padding: '2rem',

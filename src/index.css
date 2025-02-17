@@ -4,13 +4,13 @@
 
 @layer base {
   :root {
-    --background: 222 36% 98%; /* This is equivalent to #F8FAFF */
+    --background: 210 40% 98%;
     --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
 
-    --popover: 0 0% 100%;
+    --popover: 210 40% 98%;
     --popover-foreground: 240 10% 3.9%;
 
     --primary: 222.2 47.4% 11.2%;
@@ -34,12 +34,16 @@
 
     --radius: 0.5rem;
 
-    --calendar-bg: rgba(255, 255, 255, 0.7);
-    --calendar-event-bg: rgba(255, 255, 255, 0.5);
-    --calendar-header-bg: rgba(255, 255, 255, 0.7);
-    --form-bg: rgba(255, 255, 255, 0.7);
-    --action-bar-bg: rgb(255, 255, 255);
-    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-blur: 12px;
+    --glass-saturation: 180%;
+    --glass-brightness: 110%;
+    
+    --calendar-bg: rgba(255, 255, 255, 0.85);
+    --calendar-event-bg: rgba(255, 255, 255, 0.8);
+    --calendar-header-bg: rgba(255, 255, 255, 0.85);
+    --form-bg: rgba(255, 255, 255, 0.85);
+    --action-bar-bg: rgba(255, 255, 255, 0.95);
+    --glass-bg: rgba(255, 255, 255, 0.85);
   }
 
   .dark {
@@ -73,115 +77,169 @@
   }
 }
 
+@layer utilities {
+  .glass-morphism {
+    @apply bg-white/85 backdrop-blur-md;
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) brightness(var(--glass-brightness));
+  }
+  
+  .glass-card {
+    @apply bg-white/85 backdrop-blur-md border border-white/20 shadow-sm;
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) brightness(var(--glass-brightness));
+  }
+  
+  .glass-button {
+    @apply bg-white/95 backdrop-blur-md border border-white/20 shadow-sm hover:bg-white/90 transition-all;
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation)) brightness(var(--glass-brightness));
+  }
+  
+  .hover-lift {
+    @apply transition-all duration-200;
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    }
+  }
+  
+  .soft-shadow {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
+  }
+}
+
+.calendar-header {
+  @apply glass-morphism;
+}
+
 @layer base {
   * {
     @apply border-border;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-text text-base antialiased bg-gradient-to-br from-blue-50 to-white;
   }
 
   /* Base heading styles */
   h1, .h1 {
-    font-size: 1.5rem; /* text-2xl */
-    font-weight: 500;
+    @apply font-display;
+    @apply text-2xl font-semibold tracking-tight;
   }
 
   @screen md {
     h1, .h1 {
-      font-size: 1.875rem; /* text-3xl */
+      @apply text-3xl;
     }
   }
 
   @screen lg {
     h1, .h1 {
-      font-size: 2.25rem; /* text-4xl */
+      @apply text-4xl;
     }
   }
 
   h2, .h2 {
-    font-size: 1.25rem; /* text-xl */
-    font-weight: 500;
+    @apply font-display;
+    @apply text-xl font-semibold tracking-tight;
   }
 
   @screen md {
     h2, .h2 {
-      font-size: 1.5rem; /* text-2xl */
+      @apply text-2xl;
     }
   }
 
   @screen lg {
     h2, .h2 {
-      font-size: 1.875rem; /* text-3xl */
+      @apply text-3xl;
     }
   }
 
   h3, .h3 {
-    font-size: 1.125rem; /* text-lg */
-    font-weight: 500;
+    @apply font-display;
+    @apply text-lg font-medium tracking-tight;
   }
 
   @screen md {
     h3, .h3 {
-      font-size: 1.25rem; /* text-xl */
+      @apply text-xl;
     }
   }
 
   @screen lg {
     h3, .h3 {
-      font-size: 1.5rem; /* text-2xl */
+      @apply text-2xl;
     }
   }
 
   /* Base text styles */
-  p, .text-base {
-    font-size: 0.875rem; /* text-sm */
+  p {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgb(75 85 99);
   }
 
   @screen md {
-    p, .text-base {
-      font-size: 1rem; /* text-base */
+    p {
+      font-size: 1rem;
     }
   }
 
   @screen lg {
-    p, .text-base {
-      font-size: 1.125rem; /* text-lg */
+    p {
+      font-size: 1.125rem;
     }
   }
 
   /* Form input heights */
   input, select, textarea {
-    height: 42px;
+    height: 2.75rem;
+    border-radius: 0.75rem;
+    background-color: rgb(255 255 255 / 0.5);
+    border-color: rgb(229 231 235);
+    transition: all 0.2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: rgb(59 130 246);
+    --tw-ring-color: rgb(59 130 246 / 0.2);
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
   }
 
   @screen md {
     input, select, textarea {
-      height: 48px;
+      height: 3rem;
     }
   }
 
   @screen lg {
     input, select, textarea {
-      height: 52px;
+      height: 3.5rem;
     }
   }
 
   /* Button base styles */
   button, .button {
-    font-size: 0.875rem; /* text-sm */
+    @apply font-text;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
   }
 
   @screen md {
     button, .button {
-      font-size: 1rem; /* text-base */
+      font-size: 1rem;
     }
   }
 
   @screen lg {
     button, .button {
-      font-size: 1.125rem; /* text-lg */
+      font-size: 1.125rem;
     }
   }
 }

@@ -118,16 +118,20 @@ type SortOption = {
 };
 
 const sortOptions: SortOption[] = [
-  { label: "Date: Newest → Oldest", value: "date-desc" },
-  { label: "Date: Oldest → Newest", value: "date-asc" },
-  { label: "Amount: Largest → Smallest", value: "amount-desc" },
-  { label: "Amount: Smallest → Largest", value: "amount-asc" },
+{ label: "Data: ↓", value: "date-desc" },
+{ label: "Data: ↑", value: "date-asc" },
+{ label: "Kwota: ↓", value: "amount-desc" },
+{ label: "Kwota: ↑", value: "amount-asc" },
 ];
 
 export const Finances = () => {
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = React.useState<"income" | "expense" | null>(null);
   const [sortBy, setSortBy] = React.useState<SortOption["value"]>("date-desc");
+
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortBy(event.target.value as SortOption["value"]);
+  };
 
   const { data: transactions } = useQuery({
     queryKey: ["transactions"],
@@ -262,24 +266,17 @@ export const Finances = () => {
               <h2 className="text-base md:text-lg lg:text-xl text-gray-900 font-medium">
                 Transakcje
               </h2>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <ArrowUpDown className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[200px]">
-                  {sortOptions.map((option) => (
-                    <DropdownMenuItem
-                      key={option.value}
-                      onClick={() => setSortBy(option.value)}
-                      className="cursor-pointer"
-                    >
-                      {option.label}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <select
+                value={sortBy}
+                onChange={handleSortChange}
+                className="h-8 px-2 rounded-md bg-transparent border-none text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {sortOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="space-y-2 md:space-y-3">
               {filteredItems.map(item => (

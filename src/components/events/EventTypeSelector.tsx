@@ -7,11 +7,11 @@ export const EventTypeSelector = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex gap-3 px-2">
+    <div className="flex gap-2 px-2">
       <button className="flex-1 bg-[#EFF6FF] text-[#2563EB] border border-[#2563EB]/20 rounded-[500px] py-3.5 md:py-4 px-6">
         <div className="flex items-center justify-center gap-2">
-          <Calendar className="w-4 h-4 md:w-5 md:h-5" />
-          <span className="text-sm md:text-base">Wydarzenie</span>
+          <Calendar className="w-4 h-4" />
+          <span className="text-sm">Wydarzenie</span>
         </div>
       </button>
       <button 
@@ -19,8 +19,8 @@ export const EventTypeSelector = () => {
         className="flex-1 bg-black/5 text-black rounded-[500px] py-3.5 md:py-4 px-6"
       >
         <div className="flex items-center justify-center gap-2">
-          <CreditCard className="w-4 h-4 md:w-5 md:h-5" />
-          <span className="text-sm md:text-base">Transakcja</span>
+          <CreditCard className="w-4 h-4" />
+          <span className="text-sm">Transakcja</span>
         </div>
       </button>
     </div>
