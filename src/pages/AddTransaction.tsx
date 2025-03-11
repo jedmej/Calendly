@@ -10,6 +10,7 @@ import { TransactionTypeSelector } from "@/components/transactions/TransactionTy
 import { TransactionTypeToggle } from "@/components/transactions/TransactionTypeToggle";
 import { TransactionForm } from "@/components/transactions/TransactionForm";
 import { Trash2, Save } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface LocationState {
   id?: string;
@@ -32,6 +33,7 @@ interface FormData {
 export default function AddTransaction() {
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const {
     toast
   } = useToast();
@@ -75,6 +77,10 @@ export default function AddTransaction() {
           error
         } = await supabase.from('transactions').delete().eq('id', state.id);
         if (error) throw error;
+        
+        await queryClient.invalidateQueries({ queryKey: ['transactions'] });
+        await queryClient.invalidateQueries({ queryKey: ['events-with-earnings'] });
+        
         toast({
           title: "Sukces!",
           description: "Transakcja została usunięta.",
