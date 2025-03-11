@@ -109,6 +109,10 @@ export const Finances = () => {
   const [activeFilter, setActiveFilter] = React.useState<"income" | "expense" | null>(null);
   const [sortBy, setSortBy] = React.useState<SortOption["value"]>("date-desc");
 
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortBy(event.target.value as SortOption["value"]);
+  };
+
   const {
     data: transactions
   } = useQuery({
