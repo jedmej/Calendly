@@ -10,6 +10,7 @@ import { TransactionTypeSelector } from "@/components/transactions/TransactionTy
 import { TransactionTypeToggle } from "@/components/transactions/TransactionTypeToggle";
 import { TransactionForm } from "@/components/transactions/TransactionForm";
 import { Trash2, Save } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface LocationState {
   id?: string;
@@ -32,9 +33,8 @@ interface FormData {
 export default function AddTransaction() {
   const navigate = useNavigate();
   const location = useLocation();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
   const state = location.state as LocationState;
   const [isIncome, setIsIncome] = useState<boolean>(() => state?.type !== undefined ? state.type === 'income' : true);
   const [formData, setFormData] = useState<FormData>({
@@ -71,10 +71,12 @@ export default function AddTransaction() {
     if (!state?.id) return;
     if (window.confirm('Are you sure you want to delete this transaction?')) {
       try {
-        const {
-          error
-        } = await supabase.from('transactions').delete().eq('id', state.id);
+        const { error } = await supabase.from('transactions').delete().eq('id', state.id);
         if (error) throw error;
+        
+        await queryClient.invalidateQueries({ queryKey: ['transactions'] });
+        await queryClient.invalidateQueries({ queryKey: ['events'] });
+        
         toast({
           title: "Sukces!",
           description: "Transakcja została usunięta.",
@@ -105,9 +107,7 @@ export default function AddTransaction() {
     }
     try {
       if (state?.isEditing && state.id) {
-        const {
-          error
-        } = await supabase.from('transactions').update({
+        const { error } = await supabase.from('transactions').update({
           title: formData.title,
           amount: parseFloat(formData.amount),
           category: formData.category,
@@ -121,9 +121,7 @@ export default function AddTransaction() {
           className: "bg-[#F2FCE2]/90 text-green-800 border-none"
         });
       } else {
-        const {
-          error
-        } = await supabase.from('transactions').insert({
+        const { error } = await supabase.from('transactions').insert({
           title: formData.title,
           amount: parseFloat(formData.amount),
           category: formData.category,
