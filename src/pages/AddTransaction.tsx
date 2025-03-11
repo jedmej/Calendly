@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -74,12 +75,18 @@ export default function AddTransaction() {
         const { error } = await supabase.from('transactions').delete().eq('id', state.id);
         if (error) throw error;
         
+        // Invalidate the queries and ensure they are refetched
         await queryClient.invalidateQueries({ queryKey: ['transactions'] });
         await queryClient.invalidateQueries({ queryKey: ['events'] });
+        await queryClient.invalidateQueries({ queryKey: ['events-with-earnings'] });
+        
+        // Force a refresh of the query cache
+        await queryClient.refetchQueries({ queryKey: ['transactions'] });
+        await queryClient.refetchQueries({ queryKey: ['events-with-earnings'] });
         
         toast({
-          title: "Sukces!",
-          description: "Transakcja została usunięta.",
+          title: "Success!",
+          description: "Transaction has been deleted.",
           className: "bg-[#F2FCE2]/90 text-green-800 border-none"
         });
         navigate("/");
@@ -87,8 +94,8 @@ export default function AddTransaction() {
         console.error("Error deleting transaction:", error);
         toast({
           variant: "destructive",
-          title: "Błąd",
-          description: "Nie udało się usunąć transakcji. Spróbuj ponownie.",
+          title: "Error",
+          description: "Failed to delete transaction. Please try again.",
           className: "bg-red-50/90 text-red-900 border-none"
         });
       }
