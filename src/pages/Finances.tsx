@@ -1,3 +1,4 @@
+
 import React from "react";
 import { ActionBar } from "@/components/layout/ActionBar";
 import { Header } from "@/components/shared/Header";
@@ -125,7 +126,8 @@ export const Finances = () => {
   };
 
   const {
-    data: transactions
+    data: transactions,
+    refetch: refetchTransactions
   } = useQuery({
     queryKey: ["transactions"],
     queryFn: async () => {
@@ -141,7 +143,8 @@ export const Finances = () => {
   });
 
   const {
-    data: workEvents
+    data: workEvents,
+    refetch: refetchEvents
   } = useQuery({
     queryKey: ["events-with-earnings"],
     queryFn: async () => {
@@ -206,8 +209,13 @@ export const Finances = () => {
         const { error } = await supabase.from("transactions").delete().eq("id", id);
         if (error) throw error;
 
+        // Invalidate both query caches
         await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+        await queryClient.invalidateQueries({ queryKey: ["events-with-earnings"] });
+        
+        // Refetch the data to update the UI
         await refetchTransactions();
+        await refetchEvents();
 
         toast({
           title: "Success!",
