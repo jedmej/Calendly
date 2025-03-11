@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,7 +10,6 @@ import { TransactionTypeSelector } from "@/components/transactions/TransactionTy
 import { TransactionTypeToggle } from "@/components/transactions/TransactionTypeToggle";
 import { TransactionForm } from "@/components/transactions/TransactionForm";
 import { Trash2, Save } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
 
 interface LocationState {
   id?: string;
@@ -34,8 +32,9 @@ interface FormData {
 export default function AddTransaction() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const {
+    toast
+  } = useToast();
   const state = location.state as LocationState;
   const [isIncome, setIsIncome] = useState<boolean>(() => state?.type !== undefined ? state.type === 'income' : true);
   const [formData, setFormData] = useState<FormData>({
@@ -72,21 +71,13 @@ export default function AddTransaction() {
     if (!state?.id) return;
     if (window.confirm('Are you sure you want to delete this transaction?')) {
       try {
-        const { error } = await supabase.from('transactions').delete().eq('id', state.id);
+        const {
+          error
+        } = await supabase.from('transactions').delete().eq('id', state.id);
         if (error) throw error;
-        
-        // Invalidate the queries and ensure they are refetched
-        await queryClient.invalidateQueries({ queryKey: ['transactions'] });
-        await queryClient.invalidateQueries({ queryKey: ['events'] });
-        await queryClient.invalidateQueries({ queryKey: ['events-with-earnings'] });
-        
-        // Force a refresh of the query cache
-        await queryClient.refetchQueries({ queryKey: ['transactions'] });
-        await queryClient.refetchQueries({ queryKey: ['events-with-earnings'] });
-        
         toast({
-          title: "Success!",
-          description: "Transaction has been deleted.",
+          title: "Sukces!",
+          description: "Transakcja została usunięta.",
           className: "bg-[#F2FCE2]/90 text-green-800 border-none"
         });
         navigate("/");
@@ -94,8 +85,8 @@ export default function AddTransaction() {
         console.error("Error deleting transaction:", error);
         toast({
           variant: "destructive",
-          title: "Error",
-          description: "Failed to delete transaction. Please try again.",
+          title: "Błąd",
+          description: "Nie udało się usunąć transakcji. Spróbuj ponownie.",
           className: "bg-red-50/90 text-red-900 border-none"
         });
       }
@@ -114,7 +105,9 @@ export default function AddTransaction() {
     }
     try {
       if (state?.isEditing && state.id) {
-        const { error } = await supabase.from('transactions').update({
+        const {
+          error
+        } = await supabase.from('transactions').update({
           title: formData.title,
           amount: parseFloat(formData.amount),
           category: formData.category,
@@ -128,7 +121,9 @@ export default function AddTransaction() {
           className: "bg-[#F2FCE2]/90 text-green-800 border-none"
         });
       } else {
-        const { error } = await supabase.from('transactions').insert({
+        const {
+          error
+        } = await supabase.from('transactions').insert({
           title: formData.title,
           amount: parseFloat(formData.amount),
           category: formData.category,
