@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,6 +22,7 @@ interface LocationState {
   type?: 'income' | 'expense';
   isEditing?: boolean;
   returnDate?: string;
+  isEvent?: boolean; // Flag to identify if the item is an event
 }
 
 interface FormData {
@@ -71,13 +73,17 @@ export default function AddTransaction() {
 
   const handleDelete = async () => {
     if (!state?.id) return;
+    
     if (window.confirm('Are you sure you want to delete this transaction?')) {
       try {
-        const {
-          error
-        } = await supabase.from('transactions').delete().eq('id', state.id);
+        // Determine if we're deleting from events or transactions table
+        const table = state.isEvent ? 'events' : 'transactions';
+        
+        // Delete the item from the appropriate table
+        const { error } = await supabase.from(table).delete().eq('id', state.id);
         if (error) throw error;
         
+        // Invalidate both query caches to ensure UI is updated
         await queryClient.invalidateQueries({ queryKey: ['transactions'] });
         await queryClient.invalidateQueries({ queryKey: ['events-with-earnings'] });
         
